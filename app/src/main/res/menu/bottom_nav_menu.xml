@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Home"
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_baseline_home"></item>
+    <item
+        android:title="Archie"
+        android:id="@+id/nav_archie"
+        android:icon="@drawable/ic_baseline_local_police_24"></item>
+    <item
+        android:title=""
+        android:id="@+id/fab"></item>
+    <item
+        android:title="Meal"
+        android:id="@+id/nav_data_detail"
+        android:icon="@drawable/ic_data"></item>
+    <item
+        android:title="Exercies"
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_account_box"></item>
+</menu>
