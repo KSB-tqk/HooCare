@@ -1,34 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
+        <shape
+            android:innerRadiusRatio="2.55"
+            android:shape="ring"
+            android:thicknessRatio="30"
+            android:useLevel="false">
+            <solid android:color="#8C8B8B"/>
+        </shape>
+    </item>
+
+    <item>
         <rotate android:fromDegrees="270" android:toDegrees="270">
             <shape
-                android:innerRadiusRatio="2.55"
+                android:innerRadiusRatio="2.7"
                 android:shape="ring"
                 android:thickness="15dp"
                 android:useLevel="true">
-                <solid android:color="@color/purple_500" />
+                <gradient
+                    android:angle="0"
+                    android:startColor="#667eea"
+                    android:endColor="#764ba2"
+                    android:useLevel="false"
+                    android:type="sweep"
+                    ></gradient>
             </shape>
         </rotate>
     </item>
-    <item android:bottom="170dp">
+
+    <item android:bottom="163dp">
         <shape
             android:innerRadiusRatio="1000"
             android:shape="ring"
-            android:thickness="15dp"
+            android:thickness="7dp"
             android:useLevel="false">
-            <solid android:color="@color/purple_200" />
+            <solid android:color="#667eea" />
         </shape>
     </item>
     <item>
         <rotate>
-            <inset android:insetBottom="170dp">
+            <inset android:insetBottom="163dp">
                 <shape
                     android:innerRadiusRatio="1000"
                     android:shape="ring"
                     android:thickness="15dp"
                     android:useLevel="false">
-                    <solid android:color="@color/purple_200" />
+                    <solid android:color="#d9d9d9" />
                 </shape>
             </inset>
         </rotate>

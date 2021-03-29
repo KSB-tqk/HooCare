@@ -35,6 +35,7 @@ public class WaterActivity extends AppCompatActivity {
 
                 Intent toMain = new Intent(WaterActivity.this,MainActivity.class);
                 startActivity(toMain);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
     }

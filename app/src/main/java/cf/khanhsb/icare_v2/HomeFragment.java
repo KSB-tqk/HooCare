@@ -1,5 +1,6 @@
 package cf.khanhsb.icare_v2;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,18 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class HomeFragment extends Fragment {
-
-
+    private LinearLayout waterCardview,stepCardView,caloCardView,sleepCardView,trainingCardView;
+    private ProgressBar progressBar;
     public HomeFragment() {
         // Required empty public constructor
     }
-
-
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,18 +34,27 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        LinearLayout waterCardview = (LinearLayout) rootView.findViewById(R.id.water_card_view_linear);
-        LinearLayout stepCardView = (LinearLayout) rootView.findViewById(R.id.step_count_cardview_linear);
-        LinearLayout caloCardView = (LinearLayout) rootView.findViewById(R.id.calo_card_view_linear);
-        LinearLayout sleepCardView = (LinearLayout) rootView.findViewById(R.id.sleep_card_view_linear);
-        LinearLayout trainingCardView = (LinearLayout) rootView.findViewById(R.id.training_card_view_linear);
+        waterCardview = (LinearLayout) rootView.findViewById(R.id.water_card_view_linear);
+        stepCardView = (LinearLayout) rootView.findViewById(R.id.step_count_cardview_linear);
+        caloCardView = (LinearLayout) rootView.findViewById(R.id.calo_card_view_linear);
+        sleepCardView = (LinearLayout) rootView.findViewById(R.id.sleep_card_view_linear);
+        trainingCardView = (LinearLayout) rootView.findViewById(R.id.training_card_view_linear);
+
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar_homefrag);
+        TextView statusOfProgressBar = (TextView) rootView.findViewById(R.id.status_of_progressbar_homefrag);
+        int value = Integer.parseInt(statusOfProgressBar.getText().toString());
+
+        progressBar.setMax(10000);
+        ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 0, value);
+        anim.setDuration(3000);
+        progressBar.startAnimation(anim);
 
         waterCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), WaterActivity.class);
                 startActivity(intent);
-                Toast.makeText(v.getContext(),"Water",Toast.LENGTH_SHORT).show();
+                getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
 
@@ -53,10 +63,11 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent toStepData = new Intent(getActivity(),StepCountActivity.class);
                 startActivity(toStepData);
-                Toast.makeText(v.getContext(),"Step",Toast.LENGTH_SHORT).show();
+                getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
 
         return rootView;
     }
+    
 }
