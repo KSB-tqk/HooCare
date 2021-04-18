@@ -3,6 +3,7 @@ package cf.khanhsb.icare_v2;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,16 +13,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import com.yarolegovich.slidingrootnav.callback.DragListener;
@@ -29,7 +40,7 @@ import com.yarolegovich.slidingrootnav.callback.DragListener;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
-
+    private TextView username;
     private ViewPager viewPager;
     private ViewPagerAdapter mViewPagerAdapter;
 
@@ -42,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String[] nav_drawer_title;
     private Drawable[] nav_drawer_icon;
-
+    private FirebaseAuth mAuth;
     private SlidingRootNav slidingRootNav;
 
     @Override
@@ -50,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //settting up bottom nav
+        //....................................
+        //setting up bottom nav
         BottomNavigationView btmNav = findViewById(R.id.bottom_nav);
         btmNav.setBackground(null);
         btmNav.setItemIconTintList(null);
@@ -72,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        btmNav.getMenu().findItem(R.id.nav_home).setChecked(true);
+                         btmNav.getMenu().findItem(R.id.nav_home).setChecked(true);
                         break;
                     case 1:
                         btmNav.getMenu().findItem(R.id.nav_archie).setChecked(true);
@@ -97,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar.bringToFront();
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle(null);
-
         slidingRootNav = new SlidingRootNavBuilder(this)
                 .withDragDistance(180)
                 .withMenuLocked(true)
@@ -111,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView closeNavMenuButton = (ImageView) findViewById(R.id.close_nav_menu_button);
         ImageView openNavMenuButton = (ImageView) findViewById(R.id.nav_menu_icon);
+
 
         closeNavMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 slidingRootNav.openMenu();
             }
         });
+
     }
 
 
@@ -134,7 +147,9 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    System.out.println("item.getItemId()");
                     switch (item.getItemId()) {
+
                         case R.id.nav_home:
                             viewPager.setCurrentItem(0);
                             break;
@@ -147,10 +162,18 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_profile:
                             viewPager.setCurrentItem(3);
                             break;
+
                     }
                     return true;
                 }
             };
+
+    public void Logout(View view) {
+        mAuth.signOut();
+        startActivity(new Intent(MainActivity.this,SigninActivity.class));
+        finish();
+    }
+
 
     /*@Override
     public void onBackPressed(){
