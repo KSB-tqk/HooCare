@@ -3,20 +3,20 @@
     <item
         android:title="Home"
         android:id="@+id/nav_home"
-        android:icon="@drawable/ic_baseline_home"></item>
+        android:icon="@drawable/home_icon_selector"></item>
     <item
         android:title="Archie"
         android:id="@+id/nav_archie"
-        android:icon="@drawable/ic_baseline_local_police_24"></item>
+        android:icon="@drawable/medal_icon_selector"></item>
     <item
         android:title=""
         android:id="@+id/fab"></item>
     <item
         android:title="Meal"
         android:id="@+id/nav_data_detail"
-        android:icon="@drawable/ic_data"></item>
+        android:icon="@drawable/meal_icon_selector"></item>
     <item
         android:title="Exercies"
         android:id="@+id/nav_profile"
-        android:icon="@drawable/ic_account_box"></item>
+        android:icon="@drawable/gym_icon_selector"></item>
 </menu>
