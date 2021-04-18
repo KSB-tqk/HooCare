@@ -1,34 +1,63 @@
 package cf.khanhsb.icare_v2;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.yarolegovich.slidingrootnav.SlidingRootNav;
+import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+import com.yarolegovich.slidingrootnav.callback.DragListener;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    ViewPager viewPager;
+    private ViewPager viewPager;
     private ViewPagerAdapter mViewPagerAdapter;
+
+    //setting up nav_drawer item
+    private static final int POS_CLOSE = 0;
+    private static final int POS_PROFILES = 1;
+    private static final int POS_SETTING = 2;
+    private static final int POS_ABOUT_US = 3;
+    private static final int POS_LOGOUT = 4;
+
+    private String[] nav_drawer_title;
+    private Drawable[] nav_drawer_icon;
+
+    private SlidingRootNav slidingRootNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //settting up bottom nav
+        BottomNavigationView btmNav = findViewById(R.id.bottom_nav);
+        btmNav.setBackground(null);
+        btmNav.setItemIconTintList(null);
+        btmNav.getMenu().getItem(2).setEnabled(false);
+        btmNav.setOnNavigationItemSelectedListener(navListener);
 
-        BottomNavigationView btnNav = findViewById(R.id.bottom_nav);
-        btnNav.setBackground(null);
-        btnNav.getMenu().getItem(2).setEnabled(false);
-        btnNav.setOnNavigationItemSelectedListener(navListener);
-
-
+        //setting up viewpager
         viewPager = findViewById(R.id.view_pager);
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mViewPagerAdapter);
@@ -43,16 +72,16 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        btnNav.getMenu().findItem(R.id.nav_home).setChecked(true);
+                        btmNav.getMenu().findItem(R.id.nav_home).setChecked(true);
                         break;
                     case 1:
-                        btnNav.getMenu().findItem(R.id.nav_archie).setChecked(true);
+                        btmNav.getMenu().findItem(R.id.nav_archie).setChecked(true);
                         break;
                     case 2:
-                        btnNav.getMenu().findItem(R.id.nav_data_detail).setChecked(true);
+                        btmNav.getMenu().findItem(R.id.nav_data_detail).setChecked(true);
                         break;
                     case 3:
-                        btnNav.getMenu().findItem(R.id.nav_profile).setChecked(true);
+                        btmNav.getMenu().findItem(R.id.nav_profile).setChecked(true);
                 }
             }
 
@@ -61,9 +90,46 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        /*getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_container, new HomeFragment()).commit();*/
+
+        //setting up nav drawer
+        Toolbar toolbar = findViewById(R.id.nav_menu_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.bringToFront();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setTitle(null);
+
+        slidingRootNav = new SlidingRootNavBuilder(this)
+                .withDragDistance(180)
+                .withMenuLocked(true)
+                .withRootViewScale(0.75f)
+                .withRootViewElevation(30)
+                .withMenuOpened(false)
+                .withContentClickableWhenMenuOpened(false)
+                .withSavedState(savedInstanceState)
+                .withMenuLayout(R.layout.drawer_menu)
+                .inject();
+
+        ImageView closeNavMenuButton = (ImageView) findViewById(R.id.close_nav_menu_button);
+        ImageView openNavMenuButton = (ImageView) findViewById(R.id.nav_menu_icon);
+
+        closeNavMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                slidingRootNav.closeMenu();
+                slidingRootNav.setMenuLocked(true);
+            }
+        });
+
+        openNavMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                slidingRootNav.setMenuLocked(false);
+                slidingRootNav.openMenu();
+            }
+        });
     }
+
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -86,36 +152,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
-    /*private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment fragment = null;
-                    switch (item.getItemId()) {
-                        case R.id.nav_home:
-                            //toolbar.setTitle("Home");
-                            fragment = new HomeFragment();
-
-                            break;
-                        case R.id.nav_archie:
-                            //toolbar.setTitle("Archie");
-                            fragment = new ArchieveFragment();
-
-                            break;
-                        case R.id.nav_data_detail:
-                            //toolbar.setTitle("Data");
-                            fragment = new FoodFragment();
-
-                            break;
-                        case R.id.nav_profile:
-                            //toolbar.setTitle("Profile");
-                            fragment = new GymFragment();
-
-                            break;
-                    }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).commit();
-                    return true;
-                }
-            };*/
-
+    /*@Override
+    public void onBackPressed(){
+        finish();
+    }*/
 }
