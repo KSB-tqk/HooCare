@@ -21,7 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".WaterActivity" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity">
+
+        </activity>
     </application>
 
 </manifest>
