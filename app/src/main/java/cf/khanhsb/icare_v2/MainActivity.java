@@ -2,6 +2,7 @@ package cf.khanhsb.icare_v2;
 
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.ColorInt;
@@ -44,20 +45,12 @@ import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView username;
+    private TextView username,toolBarTitle;
     private ViewPager viewPager;
     private ViewPagerAdapter mViewPagerAdapter;
     private Toolbar toolbar;
-    private TextView toolBarTitle;
-    //setting up nav_drawer item
-    private static final int POS_CLOSE = 0;
-    private static final int POS_PROFILES = 1;
-    private static final int POS_SETTING = 2;
-    private static final int POS_ABOUT_US = 3;
-    private static final int POS_LOGOUT = 4;
+    private ImageView toolBarImageView;
 
-    private String[] nav_drawer_title;
-    private Drawable[] nav_drawer_icon;
     private FirebaseAuth mAuth;
     private SlidingRootNav slidingRootNav;
 
@@ -93,22 +86,33 @@ public class MainActivity extends AppCompatActivity {
                         btmNav.getMenu().findItem(R.id.nav_home).setChecked(true);
                         toolBarTitle.setText(getString(R.string.HomeFragTitle));
                         toolbar.setBackground(getDrawable(R.color.transparent));
-                         btmNav.getMenu().findItem(R.id.nav_home).setChecked(true);
+                        toolBarTitle.getBackground().setTint(Color.WHITE);
+                        toolBarTitle.setTextColor(getResources().getColor(R.color.lime_200));
+                        toolBarImageView.setColorFilter(Color.WHITE);
                         break;
                     case 1:
                         btmNav.getMenu().findItem(R.id.nav_archie).setChecked(true);
                         toolBarTitle.setText(getString(R.string.ArchieveFragTitle));
-                        toolbar.setBackground(getDrawable(R.color.lime_200));
+                        toolBarTitle.setTextColor(Color.WHITE);
+                        toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
+                        toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
+                        toolbar.setBackground(getDrawable(R.color.transparent));
                         break;
                     case 2:
                         btmNav.getMenu().findItem(R.id.nav_meal).setChecked(true);
                         toolBarTitle.setText(getString(R.string.MealFragTitle));
-                        toolbar.setBackground(getDrawable(R.color.lime_200));
+                        toolBarTitle.setTextColor(Color.WHITE);
+                        toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
+                        toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
+                        toolbar.setBackground(getDrawable(R.color.transparent));
                         break;
                     case 3:
                         btmNav.getMenu().findItem(R.id.nav_gym).setChecked(true);
                         toolBarTitle.setText(getString(R.string.GymFragTitle));
-                        toolbar.setBackground(getDrawable(R.color.lime_200));
+                        toolBarTitle.setTextColor(Color.WHITE);
+                        toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
+                        toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
+                        toolbar.setBackground(getDrawable(R.color.transparent));
                         break;
                 }
             }
@@ -118,8 +122,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        /**setting up toolbar*/
         toolBarTitle = findViewById(R.id.tool_bar_title);
+        toolBarImageView = findViewById(R.id.nav_menu_icon);
 
         /**setting up nav drawer*/
         toolbar = findViewById(R.id.nav_menu_toolbar);

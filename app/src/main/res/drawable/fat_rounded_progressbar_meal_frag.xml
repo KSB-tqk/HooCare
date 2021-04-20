@@ -2,20 +2,20 @@
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="45dp"/>
-            <solid android:color="#D5D3D3"/>
+            <solid android:color="#FCF2CC"/>
         </shape>
     </item>
 
-    <item android:id="@android:id/progress"
-        android:top="2dp"
-        android:bottom="2dp"
-        android:left="2dp"
-        android:right="2dp">
+    <item android:id="@android:id/progress">
 
         <scale android:scaleWidth="100%">
             <shape>
                 <corners android:radius="8dp"/>
-                <solid android:color="#a6c0fe"></solid>
+                <gradient
+                    android:angle="180"
+                    android:endColor="#FCE289"
+                    android:startColor="#FCBF52"
+                    android:useLevel="true"></gradient>
             </shape>
         </scale>
     </item>

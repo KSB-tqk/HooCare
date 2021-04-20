@@ -22,8 +22,8 @@
 
     <style name="ShapeAppearance.HooCare.MediumComponent.Rounded" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerFamilyTopLeft">cut</item>
-        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerSizeTopRight">45dp</item>
         <item name="cornerSizeBottomLeft">20dp</item>
-        <item name="cornerSizeBottomRight">45dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
     </style>
 </resources>

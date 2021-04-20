@@ -3,13 +3,305 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FoodFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="data"
-        android:textSize="40dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Diet"
+            android:layout_marginLeft="20dp"
+            android:textStyle="bold"
+            android:textSize="19dp"></TextView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            app:cardElevation="8dp"
+            app:shapeAppearance="@style/ShapeAppearance.HooCare.MediumComponent.Rounded">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ProgressBar
+                        android:id="@+id/progressbar_meal_frag"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginRight="20dp"
+                        android:indeterminateOnly="false"
+                        android:progress="70"
+                        android:progressDrawable="@drawable/progress_bar_meal_fragment"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        tools:ignore="MissingConstraints">
+
+                    </ProgressBar>
+
+                    <ProgressBar
+                        android:id="@+id/fake_progressba_meal_frag"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginRight="20dp"
+                        android:indeterminateOnly="false"
+                        android:progress="70"
+                        android:progressDrawable="@drawable/fake_progress_bar_meal_fragment"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:ignore="MissingConstraints"></ProgressBar>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="@+id/progressbar_meal_frag"
+                        app:layout_constraintEnd_toEndOf="@+id/progressbar_meal_frag"
+                        app:layout_constraintStart_toStartOf="@+id/progressbar_meal_frag"
+                        app:layout_constraintTop_toTopOf="@+id/progressbar_meal_frag">
+
+                        <TextView
+                            android:id="@+id/progressbar_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1500"
+                            android:textColor="@color/lime_200"
+                            android:textStyle="bold"
+                            android:textSize="32dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Kcal left"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small">
+
+                        </TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="20dp"
+                        app:layout_constraintEnd_toStartOf="@+id/progressbar_meal_frag"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="MissingConstraints">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:paddingTop="10dp">
+
+                            <View
+                                android:layout_width="3dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="6dp"
+                                android:layout_marginRight="6dp"
+                                android:layout_marginBottom="6dp"
+                                android:background="@drawable/calories_stepcount_background_bar"
+                                android:backgroundTint="#87a3f8" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="top"
+                                    android:text="Eaten">
+
+                                </TextView>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+
+                                        android:text="1620"
+                                        android:textSize="25dp"
+                                        android:textStyle="bold">
+
+                                    </TextView>
+
+                                    <TextView
+                                        android:id="@+id/kcal_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingLeft="2dp"
+                                        android:text="Kcals"
+                                        android:textSize="15dp">
+
+                                    </TextView>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp">
+
+                            <View
+                                android:layout_width="3dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="6dp"
+                                android:layout_marginRight="6dp"
+                                android:layout_marginBottom="6dp"
+                                android:background="@drawable/calories_stepcount_background_bar" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Burned">
+
+                                </TextView>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="620"
+                                        android:textSize="25dp"
+                                        android:textStyle="bold">
+
+                                    </TextView>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingLeft="2dp"
+                                        android:text="Kcals"
+                                        android:textSize="15dp">
+
+                                    </TextView>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Carbs"
+                            android:textSize="18dp"
+                            android:textStyle="bold"></TextView>
+                        <ProgressBar
+                            android:layout_width="70dp"
+                            android:layout_height="6dp"
+                            android:layout_gravity="center"
+                            android:indeterminateOnly="false"
+                            android:progressDrawable="@drawable/carbs_rounded_progressbar_meal_frag"
+                            android:progress="30"></ProgressBar>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="10g left"
+                            android:textSize="14dp"></TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="18dp"
+                            android:text="Protein"></TextView>
+                        <ProgressBar
+                            android:layout_width="70dp"
+                            android:layout_height="6dp"
+                            android:layout_gravity="center"
+                            android:indeterminateOnly="false"
+                            android:progressDrawable="@drawable/protein_rounded_progressbar_meal_frag"
+                            android:progress="30"></ProgressBar>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:layout_gravity="center"
+                            android:text="12g left"></TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="18dp"
+                            android:text="Fat"></TextView>
+                        <ProgressBar
+                            android:layout_width="70dp"
+                            android:layout_height="6dp"
+                            android:layout_gravity="center"
+                            android:indeterminateOnly="false"
+                            android:progressDrawable="@drawable/fat_rounded_progressbar_meal_frag"
+                            android:progress="70"></ProgressBar>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:layout_gravity="center"
+                            android:text="5g left"></TextView>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
 </FrameLayout>
