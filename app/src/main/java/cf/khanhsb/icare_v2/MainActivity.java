@@ -1,32 +1,64 @@
 package cf.khanhsb.icare_v2;
 
+
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.GestureDetector;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GestureDetectorCompat;
 import androidx.viewpager.widget.ViewPager;
-
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
 public class MainActivity extends AppCompatActivity {
-
+    private TextView username;
     private ViewPager viewPager;
     private ViewPagerAdapter mViewPagerAdapter;
     private Toolbar toolbar;
     private TextView toolBarTitle;
+    //setting up nav_drawer item
+    private static final int POS_CLOSE = 0;
+    private static final int POS_PROFILES = 1;
+    private static final int POS_SETTING = 2;
+    private static final int POS_ABOUT_US = 3;
+    private static final int POS_LOGOUT = 4;
 
+    private String[] nav_drawer_title;
+    private Drawable[] nav_drawer_icon;
+    private FirebaseAuth mAuth;
     private SlidingRootNav slidingRootNav;
 
     @Override
@@ -61,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                         btmNav.getMenu().findItem(R.id.nav_home).setChecked(true);
                         toolBarTitle.setText(getString(R.string.HomeFragTitle));
                         toolbar.setBackground(getDrawable(R.color.transparent));
+                         btmNav.getMenu().findItem(R.id.nav_home).setChecked(true);
                         break;
                     case 1:
                         btmNav.getMenu().findItem(R.id.nav_archie).setChecked(true);
@@ -94,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar.bringToFront();
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle(null);
-
         slidingRootNav = new SlidingRootNavBuilder(this)
                 .withDragDistance(180)
                 .withMenuLocked(true)
@@ -108,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView closeNavMenuButton = (ImageView) findViewById(R.id.close_nav_menu_button);
         ImageView openNavMenuButton = (ImageView) findViewById(R.id.nav_menu_icon);
+
 
         closeNavMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 slidingRootNav.openMenu();
             }
         });
+
     }
 
 
@@ -131,7 +165,9 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    System.out.println("item.getItemId()");
                     switch (item.getItemId()) {
+
                         case R.id.nav_home:
                             viewPager.setCurrentItem(0);
                             break;
@@ -144,12 +180,20 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_gym:
                             viewPager.setCurrentItem(3);
                             break;
+
                     }
                     return true;
                 }
             };
-
 /*@Override
+    public void Logout(View view) {
+        mAuth.signOut();
+        startActivity(new Intent(MainActivity.this,SigninActivity.class));
+        finish();
+    }
+
+
+    /*@Override
     public void onBackPressed(){
         finish();
     }*/
