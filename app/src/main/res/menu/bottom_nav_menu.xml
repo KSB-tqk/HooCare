@@ -13,10 +13,10 @@
         android:id="@+id/fab"></item>
     <item
         android:title="Meal"
-        android:id="@+id/nav_data_detail"
+        android:id="@+id/nav_meal"
         android:icon="@drawable/meal_icon_selector"></item>
     <item
         android:title="Exercies"
-        android:id="@+id/nav_profile"
+        android:id="@+id/nav_gym"
         android:icon="@drawable/gym_icon_selector"></item>
 </menu>
