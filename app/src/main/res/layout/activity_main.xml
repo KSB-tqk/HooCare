@@ -32,7 +32,7 @@
                 android:backgroundTint="@color/white"
                 android:fontFamily="@font/momcakebold"
                 android:padding="8dp"
-                android:text="Sumary"
+                android:text="Summary"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
                 android:textColor="@color/lime_200"></TextView>
         </androidx.appcompat.widget.Toolbar>
