@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -67,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
         btmNav.setOnNavigationItemSelectedListener(navListener);
 
 
+
+
+
         /**setting up viewpager*/
         viewPager = findViewById(R.id.view_pager);
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -105,6 +110,11 @@ public class MainActivity extends AppCompatActivity {
                         toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
                         toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
                         toolbar.setBackground(getDrawable(R.color.transparent));
+                        MealFragment mealFragment = new MealFragment();
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.add(R.id.view_pager,mealFragment);
+                        fragmentTransaction.commit();
                         break;
                     case 3:
                         btmNav.getMenu().findItem(R.id.nav_gym).setChecked(true);
@@ -170,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    System.out.println("item.getItemId()");
                     switch (item.getItemId()) {
 
                         case R.id.nav_home:

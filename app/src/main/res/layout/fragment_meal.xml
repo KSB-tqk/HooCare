@@ -4,20 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FoodFragment">
+    tools:context=".MealFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Your Diet"
-            android:layout_marginLeft="20dp"
-            android:textStyle="bold"
-            android:textSize="19dp"></TextView>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="Your Diet"
+                android:textSize="19dp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_marginRight="20dp"
+                android:text="Details"
+                android:textColor="@color/lime_200"
+                android:textSize="16dp"></TextView>
+        </LinearLayout>
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -292,6 +309,7 @@
                             android:indeterminateOnly="false"
                             android:progressDrawable="@drawable/fat_rounded_progressbar_meal_frag"
                             android:progress="70"></ProgressBar>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -302,6 +320,36 @@
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="Meals today"
+                android:textSize="19dp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_marginRight="20dp"
+                android:text="Customize"
+                android:textColor="@color/lime_200"
+                android:textSize="16dp"></TextView>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/meal_plan_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:paddingTop="20dp"></androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
 </FrameLayout>
