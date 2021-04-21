@@ -33,7 +33,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_count);
 
-        //assign variable
+        /**assign variable*/
         progressBar = (ProgressBar) findViewById(R.id.progressbar_stepcount_detail);
         statusOfProgressBar = (TextView) findViewById(R.id.progressbar_status);
         day_tab = (TextView) findViewById(R.id.text_item1);
@@ -45,20 +45,20 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
 
 
 
-        //set tabview onclick listener
+        /**set tabview onclick listener*/
         day_tab.setOnClickListener(this);
         week_tab.setOnClickListener(this);
         month_tab.setOnClickListener(this);
         def_color = week_tab.getTextColors();
 
-        //animation on the rounded progressbar
+        /**animation on the rounded progressbar*/
         int value = Integer.parseInt(statusOfProgressBar.getText().toString());
         progressBar.setMax(10000);
         ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 0, value);
         anim.setDuration(3000);
         progressBar.startAnimation(anim);
 
-        //back button on the toolbar click event
+        /**back button on the toolbar click event*/
         backtohomefrag_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +70,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
 
         ArrayList<BarDataSet> chartBarDataSetList = new ArrayList<>();
 
-        //add data to barchart
+        /**add data to barchart*/
         dataValue.add(new BarEntry(0, 3000));
         dataValue.add(new BarEntry(1, 4000));
         dataValue.add(new BarEntry(2, 6000));
@@ -79,7 +79,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         dataValue.add(new BarEntry(5, 7200));
         dataValue.add(new BarEntry(6, 125));
 
-        //create bardata and add bardataset to bardata
+        /**create bardata and add bardataset to bardata*/
         ArrayList<String> daylist = new ArrayList<String>() ;
         daylist.add("mon");
         daylist.add("tue");
@@ -97,7 +97,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     }
 
 
-    //sliding navigation bar (day/week/month)
+    /**sliding navigation bar (day/week/month)*/
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
