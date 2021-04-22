@@ -349,7 +349,7 @@
             android:id="@+id/meal_plan_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:paddingTop="20dp"></androidx.recyclerview.widget.RecyclerView>
+            android:paddingTop="10dp"></androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
 </FrameLayout>
