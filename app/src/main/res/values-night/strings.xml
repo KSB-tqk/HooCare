@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="body_measurement_headline_weight">Weight</string>
+    <string name="body_measurement_Detail">Details</string>
+    <string name="meals_today_header">Meals today</string>
+    <string name="meals_today_customize">Customize</string>
+    <string name="eaten">Eaten</string>
+</resources>

@@ -1,5 +1,6 @@
 package cf.khanhsb.icare_v2;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,7 +18,10 @@ public class MealFragment extends Fragment {
     //initialize variable for recyclerview
     private RecyclerView recyclerView;
     private ArrayList<String> titles,detailOfMeals,kcalOfMeal;
+    private ArrayList<Integer> icons;
+    private ArrayList<Drawable> backgroundView;
     private MealViewPagerAdapter adapter;
+    private MealPlanData mealPlanData;
 
     public MealFragment() {
         // Required empty public constructor
@@ -40,6 +44,8 @@ public class MealFragment extends Fragment {
         titles = new ArrayList<String>();
         detailOfMeals = new ArrayList<String>();
         kcalOfMeal = new ArrayList<String>();
+        icons = new ArrayList<Integer>();
+        backgroundView = new ArrayList<Drawable>();
         titles.add("BreakFast");
         titles.add("Lunch");
         titles.add("Dinner");
@@ -52,13 +58,23 @@ public class MealFragment extends Fragment {
         kcalOfMeal.add("405");
         kcalOfMeal.add("615");
         kcalOfMeal.add("375");
+        icons.add(R.drawable.fire);
+        icons.add(R.drawable.fire);
+        icons.add(R.drawable.fire);
+        icons.add(R.drawable.fire);
+        backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_image));
+        backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_image));
+        backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_image));
+        backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_image));
+
+        mealPlanData = new MealPlanData(titles,detailOfMeals,kcalOfMeal,icons,backgroundView);
 
         /**setting up the recyclerview*/
         recyclerView = rootview.findViewById(R.id.meal_plan_recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL,false));
-        adapter = new MealViewPagerAdapter(titles,detailOfMeals,kcalOfMeal);
+        adapter = new MealViewPagerAdapter(mealPlanData);
         recyclerView.setAdapter(adapter);
 
         return rootview;
