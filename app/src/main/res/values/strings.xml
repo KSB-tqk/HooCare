@@ -6,4 +6,24 @@
     <string name="MealFragTitle">Meal</string>
     <string name="GymFragTitle">Gym</string>
     <string name="ArchieveFragTitle">Archieve</string>
+    <string name="body_measurement_headline_weight">Weight</string>
+    <string name="body_measurement_header">Body Measurement</string>
+    <string name="body_measurement_Detail">Details</string>
+    <string name="meals_today_header">Meals today</string>
+    <string name="meals_today_customize">Customize</string>
+    <string name="carbs_text">Carbs</string>
+    <string name="kcals">Kcals</string>
+    <string name="_620">620</string>
+    <string name="_10g_left">10g left</string>
+    <string name="_12g_left">12g left</string>
+    <string name="fat">Fat</string>
+    <string name="_5g_left">5g left</string>
+    <string name="protein">Protein</string>
+    <string name="burned">Burned</string>
+    <string name="_1620">1620</string>
+    <string name="eaten">Eaten</string>
+    <string name="kcal_left">Kcal left</string>
+    <string name="_1500">1500</string>
+    <string name="your_diet">Your Diet</string>
+    <string name="details">Details</string>
 </resources>
