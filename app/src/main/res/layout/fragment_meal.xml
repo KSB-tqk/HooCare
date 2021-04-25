@@ -20,7 +20,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="30dp"
                 android:text="@string/your_diet"
                 android:textSize="19sp"
                 android:textStyle="bold" />
@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="30dp"
                 android:layout_weight="1"
                 android:gravity="end"
                 android:text="@string/details"
@@ -39,10 +39,10 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="0dp"
-            android:paddingBottom="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:cardElevation="8dp"
             app:shapeAppearance="@style/ShapeAppearance.HooCare.MediumComponent.Rounded">
 
@@ -113,7 +113,7 @@
                         android:id="@+id/linearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintEnd_toStartOf="@+id/progressbar_meal_frag"
                         app:layout_constraintStart_toStartOf="parent"
@@ -316,7 +316,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="30dp"
                 android:text="@string/meals_today_header"
                 android:textSize="19sp"
                 android:textStyle="bold" />
@@ -324,7 +324,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="30dp"
                 android:layout_weight="1"
                 android:gravity="end"
                 android:text="@string/meals_today_customize"
@@ -347,7 +347,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="30dp"
                 android:text="@string/body_measurement_header"
                 android:textSize="19sp"
                 android:textStyle="bold" />
@@ -355,7 +355,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="30dp"
                 android:layout_weight="1"
                 android:gravity="end"
                 android:text="@string/body_measurement_Detail"
@@ -366,22 +366,153 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="0dp"
-            android:paddingBottom="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:cardElevation="8dp"
             app:shapeAppearance="@style/ShapeAppearance.HooCare.MediumComponent.Rounded">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/body_measurement_headline_weight"
-                android:textSize="13sp"
-                android:textStyle="bold">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp">
 
-            </TextView>
+                <TextView
+                    android:id="@+id/weight_headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/body_measurement_headline_weight"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/weight_detail_linear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/weight_headline"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/weight_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_85_05"
+                        android:textColor="@color/lime_200"
+                        android:textSize="45sp"/>
+
+                    <TextView
+                        android:id="@+id/weight_currentcy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/kg"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/lime_200"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_above="@id/view_white_weight_detail"
+                    android:layout_below="@id/weight_headline"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/clock_icon_contentDes"
+                        android:src="@drawable/today_timeline_icon_mealfrag" />
+
+                    <TextView
+                        android:id="@+id/weight_updatetime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:text="@string/today_8_26_am"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view_white_weight_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_below="@id/weight_detail_linear"
+                    android:background="#F0F2F7"/>
+
+                <TextView
+                    android:id="@+id/body_height_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/_185_cm"
+                    android:layout_below="@id/view_white_weight_detail"
+                    android:paddingTop="10dp"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/body_fat_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view_white_weight_detail"
+                   android:layout_alignParentEnd="true"
+                    android:layout_toEndOf="@id/BMI_title"
+                    android:paddingTop="10dp"
+                    android:text="@string/_20"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/BMI_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view_white_weight_detail"
+                    android:layout_toStartOf="@+id/body_fat_title"
+                    android:layout_toEndOf="@+id/body_height_data"
+                    android:paddingTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/_27_3_bmi"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/body_height_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/body_height_data"
+                    android:textSize="13sp"
+                    android:text="@string/height"/>
+
+                <TextView
+                    android:id="@+id/body_fat_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/body_fat_data"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="13sp"
+                    android:text="@string/body_fat"/>
+
+                <TextView
+                    android:id="@+id/BMI_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/body_fat_data"
+                    android:layout_toStartOf="@+id/body_fat_title"
+                    android:layout_toEndOf="@+id/body_height_data"
+                    android:gravity="center"
+                    android:textSize="13sp"
+                    android:text="@string/overweight" />
+            </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="120dp" />
     </LinearLayout>
 
 </ScrollView>

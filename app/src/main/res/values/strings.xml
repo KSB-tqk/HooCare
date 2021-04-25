@@ -26,4 +26,27 @@
     <string name="_1500">1500</string>
     <string name="your_diet">Your Diet</string>
     <string name="details">Details</string>
+    <string name="summary_text">Summary</string>
+    <string name="steps">Steps</string>
+    <string name="_7500">7500</string>
+    <string name="back_button_contentDes">back button</string>
+    <string name="calories_burned">Calories Burned</string>
+    <string name="_789_kcal">789 Kcal</string>
+    <string name="distances">Distances</string>
+    <string name="_7_89_km">7.89 Km</string>
+    <string name="day">Day</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="menu_contentDes">menu</string>
+    <string name="add_button">Add Button</string>
+    <string name="_85_05">85.05</string>
+    <string name="kg">kg</string>
+    <string name="today_8_26_am">Today 8:26 AM</string>
+    <string name="clock_icon_contentDes">clock icon</string>
+    <string name="_185_cm">185 cm</string>
+    <string name="_20">20%</string>
+    <string name="_27_3_bmi">27.3 BMI</string>
+    <string name="height">Height</string>
+    <string name="body_fat">Body Fat</string>
+    <string name="overweight">Overweight</string>
 </resources>
