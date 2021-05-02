@@ -49,4 +49,9 @@
     <string name="height">Height</string>
     <string name="body_fat">Body Fat</string>
     <string name="overweight">Overweight</string>
+    <string name="your_program">Your program</string>
+    <string name="view_button_contentDes">view button</string>
+    <string name="_52_min_workoutLength">52 min</string>
+    <string name="workout_name_detail">Legs Toning and Glutes Workout at Home</string>
+    <string name="next_workout">Next workout</string>
 </resources>
