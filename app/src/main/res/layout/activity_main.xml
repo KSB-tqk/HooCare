@@ -21,20 +21,21 @@
                 android:id="@+id/nav_menu_icon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/nav_drawer_menu"></ImageView>
+                android:src="@drawable/nav_drawer_menu"
+                android:contentDescription="@string/menu_contentDes" />
 
             <TextView
                 android:id="@+id/tool_bar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:background="@drawable/cardview_background_gradient"
                 android:backgroundTint="@color/white"
                 android:fontFamily="@font/momcakebold"
                 android:padding="8dp"
-                android:text="Summary"
+                android:text="@string/summary_text"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                android:textColor="@color/lime_200"></TextView>
+                android:textColor="@color/lime_200" />
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.viewpager.widget.ViewPager
@@ -76,9 +77,8 @@
             android:backgroundTint="#58C892"
             android:src="@drawable/ic_baseline_add"
             app:layout_anchor="@id/bottom_app_bar"
-            app:layout_anchorGravity="center_horizontal">
-
-        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+            app:layout_anchorGravity="center_horizontal"
+            android:contentDescription="@string/add_button" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.cardview.widget.CardView>
 

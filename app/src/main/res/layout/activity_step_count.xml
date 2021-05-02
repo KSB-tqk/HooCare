@@ -1,294 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/big_constranitlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f2f2f2"
     tools:context=".StepCountActivity">
-
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/uptop_linearlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
 
-        <LinearLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/big_constranitlayout"
+            <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/uptop_linearlayout"
+                <ImageView
+                    android:id="@+id/button_backtohomefrag"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@string/back_button_contentDes"
+                    android:src="@drawable/ic_back" />
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/steps"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="10dp"
+            app:cardElevation="8dp"
+            app:shapeAppearance="@style/ShapeAppearance.HooCare.MediumComponent.Rounded">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:id="@+id/progressbar_stepcount_detail"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:indeterminateOnly="false"
+                    android:progressDrawable="@drawable/rounded_progressbar_with_radius_corner"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="MissingConstraints"
+                    tools:progress="100" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="vertical"
-                    tools:ignore="MissingConstraints">
+                    app:layout_constraintBottom_toBottomOf="@+id/progressbar_stepcount_detail"
+                    app:layout_constraintEnd_toEndOf="@+id/progressbar_stepcount_detail"
+                    app:layout_constraintStart_toStartOf="@+id/progressbar_stepcount_detail"
+                    app:layout_constraintTop_toTopOf="@+id/progressbar_stepcount_detail">
 
-                    <com.google.android.material.appbar.AppBarLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <androidx.appcompat.widget.Toolbar
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:id="@+id/button_backtohomefrag"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:src="@drawable/ic_back">
-
-                                </ImageView>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="center"
-                                    android:text="Steps"
-                                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                                    android:textColor="@color/white"
-                                    android:textStyle="bold">
-
-                                </TextView>
-                            </LinearLayout>
-                        </androidx.appcompat.widget.Toolbar>
-                    </com.google.android.material.appbar.AppBarLayout>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/progressbar_status"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:cardElevation="8dp"
-                        android:layout_margin="20dp"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        app:shapeAppearance="@style/ShapeAppearance.HooCare.MediumComponent.Rounded">
+                        android:text="@string/_7500"
+                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            >
-
-                            <ProgressBar
-                                android:id="@+id/progressbar_stepcount_detail"
-                                android:layout_width="200dp"
-                                android:layout_height="200dp"
-                                android:layout_gravity="center"
-                                android:indeterminateOnly="false"
-                                android:progressDrawable="@drawable/rounded_progressbar_with_radius_corner"
-                                app:layout_constraintStart_toStartOf="parent"
-                                tools:ignore="MissingConstraints"
-                                tools:progress="100">
-
-                            </ProgressBar>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                app:layout_constraintBottom_toBottomOf="@+id/progressbar_stepcount_detail"
-                                app:layout_constraintEnd_toEndOf="@+id/progressbar_stepcount_detail"
-                                app:layout_constraintStart_toStartOf="@+id/progressbar_stepcount_detail"
-                                app:layout_constraintTop_toTopOf="@+id/progressbar_stepcount_detail">
-
-                                <TextView
-                                    android:id="@+id/progressbar_status"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="7500"
-                                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Steps"
-                                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                                </TextView>
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/progressbar_stepcount_detail"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:ignore="MissingConstraints">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal"
-                                    android:paddingTop="10dp">
-
-                                    <View
-                                        android:layout_width="5dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginLeft="6dp"
-                                        android:layout_marginRight="6dp"
-                                        android:layout_marginBottom="6dp"
-                                        android:background="@drawable/calories_stepcount_background_bar" />
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Calories Burned">
-
-                                        </TextView>
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center_vertical"
-                                            android:paddingTop="6dp"
-                                            android:paddingBottom="6dp"
-                                            android:text="789 Kcal"
-                                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                                        </TextView>
-                                    </LinearLayout>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal"
-                                    android:paddingTop="20dp">
-
-                                    <View
-                                        android:layout_width="5dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginLeft="6dp"
-                                        android:layout_marginRight="6dp"
-                                        android:layout_marginBottom="6dp"
-                                        android:background="@drawable/tab_item_background"
-                                        android:backgroundTint="#87a3f8" />
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Distances">
-
-                                        </TextView>
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:paddingTop="6dp"
-                                            android:paddingBottom="6dp"
-                                            android:text="7.89 Km"
-                                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                                        </TextView>
-                                    </LinearLayout>
-                                </LinearLayout>
-                            </LinearLayout>
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/tab_background">
+                        android:text="@string/steps"
+                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/selected_background_tab"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:background="@drawable/tab_item_background" />
-
-                            <TextView
-                                android:id="@+id/textbackground2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1" />
-
-                            <TextView
-                                android:id="@+id/textbackground3"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/text_item1"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:padding="5dp"
-                                android:text="Day"
-                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                                android:textColor="@color/white" />
-
-                            <TextView
-                                android:id="@+id/text_item2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Week"
-                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
-
-                            <TextView
-                                android:id="@+id/text_item3"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Month"
-                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
-                        </LinearLayout>
-                    </FrameLayout>
+                    </TextView>
                 </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <Space
+                    android:id="@+id/space_margin_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    app:layout_constraintLeft_toRightOf="@id/progressbar_stepcount_detail" />
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/step_count_barchart_viewPager2"
+                <Space
+                    android:id="@+id/space_margin_between"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    app:layout_constraintLeft_toRightOf="@id/progressbar_stepcount_detail"
+                    app:layout_constraintTop_toBottomOf="@id/view_pink_step_count" />
+
+                <View
+                    android:id="@+id/view_pink_step_count"
+                    android:layout_width="5dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:background="@drawable/calories_stepcount_background_bar"
+                    app:layout_constraintLeft_toRightOf="@id/progressbar_stepcount_detail"
+                    app:layout_constraintTop_toBottomOf="@id/space_margin_top" />
+
+                <TextView
+                    android:id="@+id/kcal_burn_text_step_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/calories_burned"
+                    app:layout_constraintLeft_toRightOf="@id/view_pink_step_count"
+                    app:layout_constraintTop_toBottomOf="@id/space_margin_top" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:text="@string/_789_kcal"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    app:layout_constraintLeft_toRightOf="@id/view_pink_step_count"
+                    app:layout_constraintTop_toBottomOf="@id/kcal_burn_text_step_count" />
+
+
+                <View
+                    android:id="@+id/view_blue_step_count"
+                    android:layout_width="5dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/tab_item_background"
+                    android:backgroundTint="#87a3f8"
+                    app:layout_constraintLeft_toRightOf="@id/progressbar_stepcount_detail"
+                    app:layout_constraintTop_toBottomOf="@id/space_margin_between" />
+
+                <TextView
+                    android:id="@+id/distance_text_view_step_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/distances"
+                    app:layout_constraintLeft_toRightOf="@id/view_blue_step_count"
+                    app:layout_constraintTop_toBottomOf="@id/space_margin_between" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:text="@string/_7_89_km"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    app:layout_constraintLeft_toRightOf="@id/view_pink_step_count"
+                    app:layout_constraintTop_toBottomOf="@id/distance_text_view_step_count" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_background">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-            </androidx.viewpager2.widget.ViewPager2>
+                <TextView
+                    android:id="@+id/selected_background_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/tab_item_background" />
 
-        </LinearLayout>
-    </ScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <TextView
+                    android:id="@+id/textbackground2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textbackground3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_item1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/day"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/text_item2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/week"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+                <TextView
+                    android:id="@+id/text_item3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/month"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/step_count_barchart_viewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/uptop_linearlayout">
+
+    </androidx.viewpager2.widget.ViewPager2>
+</androidx.constraintlayout.widget.ConstraintLayout>
