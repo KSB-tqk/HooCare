@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,652 +7,589 @@
     android:background="#f2f2f2"
     tools:context=".HomeFragment">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_background"
+        android:orientation="vertical">
 
-        <ScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/title_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:ignore="MissingConstraints">
+            android:layout_height="125dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp">
 
+            <Space
+                android:id="@+id/nav_menu_space"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                tools:ignore="MissingConstraints" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/big_text_linear_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/nav_menu_space">
+
+                <TextView
+                    android:id="@+id/big_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/for_today_label"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold">
+
+                </TextView>
 
                 <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/gudmorning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/good_morning_label"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/username_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/username"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_view"
+            android:background="@drawable/main_fragment_rounded_corner_data"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/step_count_cardview"
+                android:layout_width="190dp"
+                android:layout_height="210dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="1sp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/step_count_cardview_linear"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/header_background"
-                    android:orientation="vertical">
-                    //top linear layout
-
-                    <LinearLayout
-                        android:id="@+id/all_text_linear_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="125dp"
-                        android:orientation="horizontal">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/title_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="5dp">
-                            <Space
-                                android:id="@+id/nav_menu_space"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                ></Space>
-                            <LinearLayout
-                                android:id="@+id/big_text_linear_layout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="15dp"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/nav_menu_space">
-                                <TextView
-                                    android:id="@+id/big_text_view"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="For Today"
-                                    android:textColor="@color/white"
-                                    android:textSize="25dp"
-                                    android:textStyle="bold">
-
-                                </TextView>
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:id="@+id/gudmorning"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Good Morning , "
-                                        android:textColor="@color/white"></TextView>
-
-                                    <TextView
-                                        android:id="@+id/username_text_view"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:textColor="@color/white"
-                                        android:textStyle="bold"></TextView>
-                                </LinearLayout>
-                            </LinearLayout>
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </LinearLayout>
-
-                    //bottom Linear layout
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cardview_background_gradient"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/main_fragment_rounded_corner_data"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:padding="5dp"
+                            android:text="@string/walk_label"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                            android:textColor="@android:color/white">
+
+                        </TextView>
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/walk_icon"
+                            android:src="@drawable/ic_running_cardview">
+
+                        </ImageView>
+
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+
+                        <ProgressBar
+                            android:id="@+id/progressBar_homefrag"
+                            android:layout_width="137dp"
+                            android:layout_height="136dp"
+                            android:indeterminateOnly="false"
+                            android:progressDrawable="@drawable/circle"
+                            tools:ignore="MissingConstraints"
+                            tools:progress="75" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="16dp">
-
-                            //Left linear layout
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/step_count_cardview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    app:cardCornerRadius="25dp"
-
-                                    app:cardElevation="1sp"
-                                    app:cardUseCompatPadding="true">
-
-                                    <LinearLayout
-                                        android:id="@+id/step_count_cardview_linear"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:background="@drawable/cardview_background_gradient"
-                                        android:clickable="true"
-                                        android:foreground="?android:attr/selectableItemBackground"
-                                        android:orientation="vertical"
-                                        android:padding="10dp">
-
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="left"
-                                                android:layout_weight="1"
-                                                android:gravity="left"
-                                                android:padding="5dp"
-                                                android:text="Walk"
-                                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                                                android:textColor="@android:color/white">
-
-                                            </TextView>
-
-                                            <ImageView
-                                                android:layout_width="30dp"
-                                                android:layout_height="30dp"
-                                                android:adjustViewBounds="true"
-                                                android:src="@drawable/ic_running_cardview">
-
-                                            </ImageView>
-
-                                        </LinearLayout>
-
-                                        <androidx.constraintlayout.widget.ConstraintLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content">
-
-
-                                            <ProgressBar
-                                                android:id="@+id/progressBar_homefrag"
-                                                android:layout_width="137dp"
-                                                android:layout_height="136dp"
-                                                android:indeterminateOnly="false"
-                                                android:progressDrawable="@drawable/circle"
-                                                tools:progress="75"></ProgressBar>
-
-                                            <LinearLayout
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:gravity="center"
-                                                android:orientation="vertical"
-                                                app:layout_constraintBottom_toBottomOf="@+id/progressBar_homefrag"
-                                                app:layout_constraintEnd_toEndOf="@+id/progressBar_homefrag"
-                                                app:layout_constraintStart_toStartOf="@+id/progressBar_homefrag"
-                                                app:layout_constraintTop_toTopOf="@+id/progressBar_homefrag">
-
-                                                <TextView
-                                                    android:id="@+id/status_of_progressbar_homefrag"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:text="7500"
-                                                    android:textColor="@color/white"></TextView>
-
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:text="steps"
-                                                    android:textColor="#d9d9d9"></TextView>
-                                            </LinearLayout>
-                                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                    </LinearLayout>
-                                </androidx.cardview.widget.CardView>
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/calo_card_view"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    app:cardBackgroundColor="@color/white"
-                                    app:cardCornerRadius="25dp"
-                                    app:cardElevation="6dp"
-                                    app:cardUseCompatPadding="true">
-
-                                    <LinearLayout
-                                        android:id="@+id/calo_card_view_linear"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            android:paddingLeft="10dp"
-                                            android:paddingTop="16dp"
-                                            android:paddingRight="6dp"
-                                            android:paddingBottom="8dp">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="left"
-                                                android:layout_weight="1"
-                                                android:gravity="left"
-                                                android:padding="5dp"
-                                                android:text="Calories"
-                                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                                            </TextView>
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginLeft="26dp"
-                                                android:adjustViewBounds="true"
-                                                android:maxWidth="40dp"
-                                                android:maxHeight="40dp"
-                                                android:src="@drawable/fire">
-
-                                            </ImageView>
-                                        </LinearLayout>
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:text="460.25"
-                                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                                            android:textColor="@color/black"
-                                            android:textStyle="bold">
-
-                                        </TextView>
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:paddingBottom="16dp"
-                                            android:text="kcal"
-                                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                                        </TextView>
-                                    </LinearLayout>
-                                </androidx.cardview.widget.CardView>
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/sleep_card_view"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    app:cardBackgroundColor="@color/white"
-                                    app:cardCornerRadius="25dp"
-                                    app:cardElevation="6dp"
-                                    app:cardUseCompatPadding="true">
-
-                                    <LinearLayout
-                                        android:id="@+id/sleep_card_view_linear"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            android:paddingLeft="10dp"
-                                            android:paddingTop="16dp"
-                                            android:paddingRight="10dp"
-                                            android:paddingBottom="8dp">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="left"
-                                                android:layout_marginRight="18dp"
-                                                android:layout_weight="1"
-                                                android:gravity="left"
-                                                android:padding="5dp"
-                                                android:text="Sleep"
-                                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                                            </TextView>
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginLeft="26dp"
-                                                android:minWidth="40dp"
-                                                android:minHeight="40dp"
-                                                android:src="@drawable/sleeping_in_bed">
-
-                                            </ImageView>
-                                        </LinearLayout>
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:text="8:32"
-                                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                                            android:textColor="@color/black"
-                                            android:textStyle="bold">
-
-                                        </TextView>
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:paddingBottom="16dp"
-                                            android:text="hours"
-                                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                                        </TextView>
-                                    </LinearLayout>
-                                </androidx.cardview.widget.CardView>
-
-                            </LinearLayout>
-
-                            //Right linear layout
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/water_card_view"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    app:cardBackgroundColor="@color/white"
-                                    app:cardCornerRadius="25dp"
-                                    app:cardElevation="6dp"
-                                    app:cardUseCompatPadding="true">
-
-                                    <LinearLayout
-                                        android:id="@+id/water_card_view_linear"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:clickable="true"
-                                        android:foreground="?android:attr/selectableItemBackground"
-                                        android:orientation="vertical">
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            android:paddingLeft="10dp"
-                                            android:paddingTop="16dp"
-                                            android:paddingRight="10dp"
-                                            android:paddingBottom="8dp">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="left"
-                                                android:layout_marginRight="16dp"
-                                                android:layout_weight="1"
-                                                android:gravity="left"
-                                                android:padding="5dp"
-                                                android:text="Water"
-                                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                                            </TextView>
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginLeft="9dp"
-                                                android:adjustViewBounds="true"
-                                                android:maxWidth="28dp"
-                                                android:maxHeight="28dp"
-                                                android:src="@drawable/water">
-
-                                            </ImageView>
-                                        </LinearLayout>
-
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:orientation="vertical">
-
-                                            <LinearLayout
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight="2"
-                                                android:orientation="vertical">
-
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_gravity="center"
-                                                    android:text="0.55"
-                                                    android:textColor="@color/black"
-                                                    android:textStyle="bold">
-
-                                                </TextView>
-
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_gravity="center"
-                                                    android:text="liters">
-
-                                                </TextView>
-                                            </LinearLayout>
-
-                                            <ImageView
-                                                android:layout_width="84dp"
-                                                android:layout_height="92dp"
-                                                android:layout_weight="1"
-                                                android:adjustViewBounds="true"
-                                                android:paddingBottom="15dp"
-                                                android:src="@drawable/cup">
-
-                                            </ImageView>
-                                        </LinearLayout>
-                                    </LinearLayout>
-                                </androidx.cardview.widget.CardView>
-
-
-                                //cardview 3
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/training_card_view"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    app:cardBackgroundColor="@color/white"
-                                    app:cardCornerRadius="25dp"
-                                    app:cardElevation="6dp"
-                                    app:cardUseCompatPadding="true">
-
-                                    <LinearLayout
-                                        android:id="@+id/training_card_view_linear"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            android:paddingLeft="10dp"
-                                            android:paddingTop="16dp"
-                                            android:paddingRight="10dp">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="left"
-                                                android:layout_weight="1"
-                                                android:gravity="left"
-                                                android:padding="5dp"
-                                                android:text="Training"
-                                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                                            </TextView>
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginLeft="9dp"
-                                                android:adjustViewBounds="true"
-                                                android:maxWidth="30dp"
-                                                android:maxHeight="30dp"
-                                                android:src="@drawable/dumbbell">
-
-                                            </ImageView>
-                                        </LinearLayout>
-
-                                        <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:adjustViewBounds="true"
-                                            android:maxWidth="40dp"
-                                            android:maxHeight="40dp"
-                                            android:src="@drawable/pushups_48px">
-
-                                        </ImageView>
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:text="Push up">
-
-                                        </TextView>
-
-                                        <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:adjustViewBounds="true"
-                                            android:maxWidth="40dp"
-                                            android:maxHeight="40dp"
-                                            android:src="@drawable/plank_48px">
-
-                                        </ImageView>
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:text="Plank">
-
-                                        </TextView>
-
-                                        <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:adjustViewBounds="true"
-                                            android:maxWidth="40dp"
-                                            android:maxHeight="40dp"
-                                            android:src="@drawable/triceps_48px">
-
-                                        </ImageView>
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:layout_marginBottom="8dp"
-                                            android:text="Triceps">
-
-                                        </TextView>
-
-                                    </LinearLayout>
-                                </androidx.cardview.widget.CardView>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            app:cardBackgroundColor="@color/white"
-                            app:cardCornerRadius="25dp"
-                            app:cardElevation="6dp"
-                            app:cardUseCompatPadding="true">
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="@+id/progressBar_homefrag"
+                            app:layout_constraintEnd_toEndOf="@+id/progressBar_homefrag"
+                            app:layout_constraintStart_toStartOf="@+id/progressBar_homefrag"
+                            app:layout_constraintTop_toTopOf="@+id/progressBar_homefrag">
 
-                            <LinearLayout
-                                android:id="@+id/time_on_screen_card_view_linear"
+                            <TextView
+                                android:id="@+id/status_of_progressbar_homefrag"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                android:text="@string/step_num_label"
+                                android:textColor="@color/white" />
 
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:paddingLeft="10dp"
-                                    android:paddingTop="16dp"
-                                    android:paddingRight="10dp"
-                                    android:paddingBottom="8dp">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="left"
-                                        android:layout_marginRight="18dp"
-                                        android:layout_weight="1"
-                                        android:gravity="left"
-                                        android:padding="5dp"
-                                        android:text="Time on Screen"
-                                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                                    </TextView>
-
-                                    <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_marginLeft="26dp"
-                                        android:adjustViewBounds="true"
-                                        android:src="@drawable/time_on_screen_img">
-
-                                    </ImageView>
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="8:32"
-                                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                                    android:textColor="@color/black"
-                                    android:textStyle="bold">
-
-                                </TextView>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:paddingBottom="16dp"
-                                    android:text="hours"
-                                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                                </TextView>
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/step_text_label"
+                                android:textColor="#d9d9d9" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <ImageView
-                    android:id="@+id/figma_custom_icon"
-                    android:layout_width="135dp"
-                    android:layout_height="135dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="30dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/figma_background_custom_icon"></ImageView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/calo_card_view"
+                android:layout_width="190dp"
+                android:layout_height="160dp"
+                android:layout_below="@id/step_count_cardview"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="6dp"
+                app:cardUseCompatPadding="true">
 
-            </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/calo_card_view_linear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="6dp"
+                        android:paddingBottom="8dp"
+                        tools:ignore="UseCompoundDrawables">
 
-        </ScrollView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:padding="5dp"
+                            android:text="@string/calories_label"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
 
+                        </TextView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="26dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/fire_icon"
+                            android:maxWidth="40dp"
+                            android:maxHeight="40dp"
+                            android:src="@drawable/fire">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/kcal_num_label"
+                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                        android:textColor="@color/black"
+                        android:textStyle="bold">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingBottom="16dp"
+                        android:text="@string/kcal_label"
+                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
+
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/sleep_card_view"
+                android:layout_width="190dp"
+                android:layout_height="160dp"
+                android:layout_below="@id/calo_card_view"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="6dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/sleep_card_view_linear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="16dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="8dp"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginEnd="18dp"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:padding="5dp"
+                            android:text="@string/sleep_label"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
+
+                        </TextView>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="26dp"
+                            android:contentDescription="@string/sleep_icon"
+                            android:minWidth="40dp"
+                            android:minHeight="40dp"
+                            android:src="@drawable/sleeping_in_bed">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/sleep_time_label"
+                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                        android:textColor="@color/black"
+                        android:textStyle="bold">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingBottom="16dp"
+                        android:text="@string/sleep_time_currency_label"
+                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
+
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/water_card_view"
+                android:layout_width="190dp"
+                android:layout_height="210dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="6dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/water_card_view_linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="16dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="8dp"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginEnd="16dp"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:padding="5dp"
+                            android:text="@string/water_label"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
+
+                        </TextView>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="9dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/water_icon"
+                            android:maxWidth="28dp"
+                            android:maxHeight="28dp"
+                            android:src="@drawable/water">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/water_num_label"
+                                android:textColor="@color/black"
+                                android:textStyle="bold">
+
+                            </TextView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/water_text_label">
+
+                            </TextView>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="86dp"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/cup_of_water"
+                            android:paddingBottom="15dp"
+                            android:src="@drawable/cup">
+
+                        </ImageView>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/training_card_view"
+                android:layout_width="190dp"
+                android:layout_height="160dp"
+                android:layout_below="@id/water_card_view"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="6dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/training_card_view_linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="16dp"
+                        android:paddingRight="10dp"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:padding="5dp"
+                            android:text="@string/training"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
+
+                        </TextView>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="9dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/gym_icon"
+                            android:maxWidth="30dp"
+                            android:maxHeight="30dp"
+                            android:src="@drawable/dumbbell">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="40dp"
+                        android:maxHeight="40dp"
+                        android:src="@drawable/pushups_48px"
+                        tools:ignore="ContentDescription">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingBottom="16dp"
+                        android:text="@string/workout_count" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="190dp"
+                android:layout_height="160dp"
+                android:layout_below="@id/training_card_view"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="6dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/time_on_screen_card_view_linear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="16dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="8dp"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:padding="5dp"
+                            android:text="@string/time_on_screen"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
+
+                        </TextView>
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="16dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/time_onscreen_icon"
+                            android:src="@drawable/time_on_screen_img">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/on_screen_num_label"
+                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                        android:textColor="@color/black"
+                        android:textStyle="bold">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingBottom="16dp"
+                        android:text="@string/on_screen_hour"
+                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
+
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/figma_custom_icon"
+            android:layout_width="135dp"
+            android:layout_height="135dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/floating_image"
+            android:scaleType="centerCrop"
+            android:src="@drawable/figma_background_custom_icon" />
+
+    </RelativeLayout>
+</ScrollView>
+
