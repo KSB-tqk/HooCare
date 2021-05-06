@@ -10,7 +10,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,20 @@ public class GymFragment extends Fragment {
     private TextView workoutHeadline,workoutTitle;
     private Boolean gotPlan = false;
     private ImageView clockIcon;
+
+    /**Gym listview*/
+    private ListView listView;
+    private String[] gymListTitle = {"Abs - Beginner",
+            "Abs - Beginner",
+            "Abs - Beginner",
+            "Abs - Beginner",
+            "Shoulder & Back - Beginner"};
+    private int[] gymListImage = {R.drawable.workout_real_pic_item_list_icon,
+            R.drawable.workout_real_pic_item_list_icon,
+            R.drawable.workout_real_pic_item_list_icon,
+            R.drawable.workout_real_pic_item_list_icon,
+            R.drawable.workout_real_pic_item_list_icon};
+    /**Gym listview*/
 
     public GymFragment() {
         // Required empty public constructor
@@ -41,6 +58,21 @@ public class GymFragment extends Fragment {
         workoutHeadline = (TextView) rootView.findViewById(R.id.workout_headline);
         workoutTitle = (TextView) rootView.findViewById(R.id.workout_title);
         clockIcon = (ImageView) rootView.findViewById(R.id.clockIcon);
+
+        listView = (ListView) rootView.findViewById(R.id.classic_workout_listview);
+        GymListViewAdapter listViewAdapter = new GymListViewAdapter(getActivity(),R.layout.item_workout_list,
+                gymListImage,gymListTitle);
+        listView.setAdapter(listViewAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(),List_Data_Activity.class);
+                intent.putExtra("workoutTitle",gymListTitle[position]);
+                intent.putExtra("workoutImage",gymListImage[position]);
+                startActivity(intent);
+            }
+        });
+
 
         clockIcon.setColorFilter(Color.WHITE);
         viewButtonExercises.setColorFilter(getResources().getColor(R.color.lime_200));
