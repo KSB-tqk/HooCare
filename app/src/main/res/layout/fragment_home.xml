@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="#f2f2f2"
     tools:context=".HomeFragment">
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/header_background"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="ScrollViewSize">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/title_view"
@@ -71,11 +71,16 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RelativeLayout
+            android:id="@+id/home_frag_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/title_view"
             android:background="@drawable/main_fragment_rounded_corner_data"
             android:orientation="vertical">
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/sleep_card_view" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/step_count_cardview"
@@ -589,7 +594,6 @@
             android:contentDescription="@string/floating_image"
             android:scaleType="centerCrop"
             android:src="@drawable/figma_background_custom_icon" />
-
     </RelativeLayout>
 </ScrollView>
 

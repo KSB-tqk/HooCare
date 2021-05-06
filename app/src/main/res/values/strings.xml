@@ -83,4 +83,6 @@
     <string name="username">UserName</string>
     <string name="good_morning_label">Good Morning ,</string>
     <string name="workout_count">5 Workouts</string>
+    <string name="beginner_label">Beginner</string>
+    <string name="workout_count_label">5 Workouts</string>
 </resources>
