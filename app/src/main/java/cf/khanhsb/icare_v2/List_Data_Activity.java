@@ -15,7 +15,7 @@ public class List_Data_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list__data);
+        setContentView(R.layout.activity_list_data);
 
         workoutTitle = (TextView) findViewById(R.id.gym_list_workout_text);
         workoutImage = (ImageView) findViewById(R.id.gym_list_image_view);
@@ -24,7 +24,10 @@ public class List_Data_Activity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(List_Data_Activity.this,MainActivity.class);
+                intent.putExtra("fragmentPosition",3);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
 
