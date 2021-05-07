@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="body_measurement_headline_weight">Weight</string>
+    <string name="body_measurement_Detail">Details</string>
+    <string name="meals_today_header">Meals today</string>
+    <string name="meals_today_customize">Customize</string>
+    <string name="eaten">Eaten</string>
+    <string name="summary_text">Summary</string>
+    <string name="steps">Steps</string>
+    <string name="back_button_contentDes">back button</string>
+    <string name="distances">Distances</string>
+    <string name="day">Day</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="menu_contentDes">menu</string>
+    <string name="kg">kg</string>
+    <string name="_20">20%</string>
+    <string name="height">Height</string>
+    <string name="body_fat">Body Fat</string>
+    <string name="overweight">Overweight</string>
+    <string name="your_program">Your program</string>
+    <string name="view_button_contentDes">view button</string>
+    <string name="_52_min_workoutLength">52 min</string>
+</resources>

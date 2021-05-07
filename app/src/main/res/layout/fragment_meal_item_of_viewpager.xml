@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/meal_item_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="135dp"
+        android:layout_height="230dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:paddingBottom="20dp"
+        android:backgroundTint="@color/lime_200"
+        app:cardElevation="8dp"
+        app:shapeAppearance="@style/ShapeAppearance.HooCare.MediumComponent.Rounded">
+
+
+    </com.google.android.material.card.MaterialCardView>
+    <LinearLayout
+        android:id="@+id/meal_detail_background_view"
+        android:layout_width="135dp"
+        android:layout_height="230dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:translationZ="10dp"
+        android:background="@drawable/meal_plan_detail_background_image">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:translationZ="30dp">
+
+            <LinearLayout
+                android:id="@+id/meal_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="35dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/linear_meal_item_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        tools:ignore="MissingConstraints">
+
+                        <TextView
+                            android:id="@+id/meal_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="BreakFast"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"></TextView>
+
+                        <TextView
+                            android:id="@+id/meal_detail"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:lineSpacingExtra="2dp"
+                            android:text="Bread, \nPeanut butter, \nApple"
+                            android:textSize="13dp"></TextView>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/linear_meal_item_detail"
+                        android:layout_marginTop="25dp">
+
+                        <TextView
+                            android:id="@+id/numberOfKcal_MealFrag_ViewPager"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:textColor="@color/white"
+                            android:text="525"
+                            android:textSize="30dp"></TextView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:textColor="@color/white"
+                            android:text="kcal"
+                            android:textSize="13dp"></TextView>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/meal_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:adjustViewBounds="true"
+        android:translationZ="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-5dp"
+        android:src="@drawable/water"></ImageView>
+
+</RelativeLayout>

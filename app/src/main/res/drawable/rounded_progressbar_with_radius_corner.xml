@@ -19,8 +19,8 @@
                 android:useLevel="true">
                 <gradient
                     android:angle="0"
-                    android:startColor="#667eea"
-                    android:endColor="#764ba2"
+                    android:endColor="#2FA678"
+                    android:startColor="#58C892"
                     android:useLevel="false"
                     android:type="sweep"
                     ></gradient>
@@ -34,7 +34,7 @@
             android:shape="ring"
             android:thickness="7dp"
             android:useLevel="false">
-            <solid android:color="#667eea" />
+            <solid android:color="#58C892" />
         </shape>
     </item>
     <item>

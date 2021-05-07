@@ -1,86 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:cardElevation="30dp"
     tools:context=".MainActivity">
-    <FrameLayout
-        android:id="@+id/frame_container"
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </FrameLayout>
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </androidx.viewpager.widget.ViewPager>
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-
-        app:fabCradleRoundedCornerRadius="50dp"
-        app:fabCradleMargin="10dp"
-        app:fabCradleVerticalOffset="4dp"
-        app:hideOnScroll="true">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_nav"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/nav_menu_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="16dp"
-            app:menu="@menu/bottom_nav_menu">
+            android:layout_height="wrap_content">
 
-        </com.google.android.material.bottomnavigation.BottomNavigationView>
+            <ImageView
+                android:id="@+id/nav_menu_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/nav_drawer_menu"
+                android:contentDescription="@string/menu_contentDes" />
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_500"
-        android:src="@drawable/ic_baseline_add"
-        app:layout_anchorGravity="center"
-        app:fab_addButtonSize="normal"
-        app:fab_addButtonColorNormal="@color/purple_500"
-        app:fab_addButtonColorPressed="@color/purple_700"
-        app:fab_expandDirection="up"
-        app:tint="@color/white"
-        app:layout_anchor="@id/bottom_app_bar">
-        <com.getbase.floatingactionbutton.FloatingActionButton
+            <TextView
+                android:id="@+id/tool_bar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/cardview_background_gradient"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/momcakebold"
+                android:padding="8dp"
+                android:text="@string/summary_text"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                android:textColor="@color/lime_200" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.viewpager.widget.ViewPager>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:fabAlignmentMode="center"
+            app:fabAnimationMode="scale"
+            app:fabCradleMargin="8dp"
+            app:fabCradleRoundedCornerRadius="8dp"
+            app:fabCradleVerticalOffset="0dp">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_nav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="8dp"
+                app:elevation="8dp"
+                app:itemIconSize="30dp"
+                app:labelVisibilityMode="unlabeled"
+                app:menu="@menu/bottom_nav_menu">
+
+            </com.google.android.material.bottomnavigation.BottomNavigationView>
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="#FFF"
-            app:fab_size="mini"
-            app:fab_icon="@drawable/triceps_48px"
-            app:fab_title="Hi test this is me">
+            android:backgroundTint="#58C892"
+            android:src="@drawable/ic_baseline_add"
+            app:layout_anchor="@id/bottom_app_bar"
+            app:layout_anchorGravity="center_horizontal"
+            android:contentDescription="@string/add_button" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.cardview.widget.CardView>
 
-        </com.getbase.floatingactionbutton.FloatingActionButton>
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="#FFF"
-            app:fab_size="mini"
-            app:fab_icon="@drawable/triceps_48px"
-            app:fab_title="Hi test this is me">
-
-        </com.getbase.floatingactionbutton.FloatingActionButton>
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="#FFF"
-            app:fab_size="mini"
-            app:fab_icon="@drawable/triceps_48px"
-            app:fab_title="Hi test this is me">
-
-        </com.getbase.floatingactionbutton.FloatingActionButton>
-
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
