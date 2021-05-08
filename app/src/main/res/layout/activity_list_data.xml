@@ -82,7 +82,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="-40dp"
         android:background="@drawable/gym_fragment_rounded_corner_background"
         android:translationZ="10dp"
@@ -90,7 +90,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
@@ -234,8 +234,8 @@
                 android:id="@+id/exercises_title_list_data_linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:layout_below="@id/level_text_list_data">
+                android:layout_below="@id/level_text_list_data"
+                android:paddingTop="20dp">
 
                 <TextView
                     android:id="@+id/exercises_title_list_data"
@@ -261,12 +261,33 @@
                     android:text="(16)"
                     android:textSize="13sp" />
             </LinearLayout>
+
             <ListView
                 android:id="@+id/list_view_list_data"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="200dp"
+                android:layout_below="@id/exercises_title_list_data_linear">
 
             </ListView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/list_view_list_data"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/cardview_background_gradient"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="START"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

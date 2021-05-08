@@ -28,6 +28,7 @@
         app:layout_constraintTop_toTopOf="@id/exercises_gif_image" />
 
     <TextView
+        android:id="@+id/exercises_workout_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
