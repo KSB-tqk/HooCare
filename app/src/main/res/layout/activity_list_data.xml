@@ -9,7 +9,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/gym_list_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -23,7 +23,7 @@
             <ImageView
                 android:id="@+id/gym_list_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/workout_real_pic_item_list_icon"
                 app:layout_collapseMode="parallax" />
@@ -83,7 +83,6 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-40dp"
         android:background="@drawable/gym_fragment_rounded_corner_background"
         android:translationZ="10dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
@@ -262,13 +261,13 @@
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <ListView
+            <cf.khanhsb.icare_v2.NonScrollListView
                 android:id="@+id/list_view_list_data"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/exercises_title_list_data_linear">
 
-            </ListView>
+            </cf.khanhsb.icare_v2.NonScrollListView>
 
             <TextView
                 android:layout_width="match_parent"

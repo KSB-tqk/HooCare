@@ -28,7 +28,7 @@ public class GymFragment extends Fragment {
     private ImageView clockIcon;
 
     /**Gym listview*/
-    private ListView listView;
+    private NonScrollListView listView;
     private String[] gymListTitle = {"Abs - Beginner",
             "Abs - Beginner",
             "Abs - Beginner",
@@ -61,7 +61,7 @@ public class GymFragment extends Fragment {
         workoutTitle = (TextView) rootView.findViewById(R.id.workout_title);
         clockIcon = (ImageView) rootView.findViewById(R.id.clockIcon);
 
-        listView = (ListView) rootView.findViewById(R.id.classic_workout_listview);
+        listView = (NonScrollListView) rootView.findViewById(R.id.classic_workout_listview);
         GymListViewAdapter listViewAdapter = new GymListViewAdapter(getActivity(),
                 R.layout.item_workout_list,
                 gymListImage,

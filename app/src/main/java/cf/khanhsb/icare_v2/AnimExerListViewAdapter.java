@@ -32,7 +32,7 @@ public class AnimExerListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        return title.length;
     }
 
     @Override
@@ -58,6 +58,7 @@ public class AnimExerListViewAdapter extends BaseAdapter {
 
         holder.exerciseTitle.setText(title[position]);
         holder.gifImage.setImageResource(gifImage[position]);
+        holder.exerciseText.setText(textDetail[position]);
 
         return view;
     }
