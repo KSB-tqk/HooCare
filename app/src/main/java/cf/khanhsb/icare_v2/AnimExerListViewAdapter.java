@@ -58,6 +58,8 @@ public class AnimExerListViewAdapter extends BaseAdapter {
 
         holder.exerciseTitle.setText(title[position]);
         holder.gifImage.setImageResource(gifImage[position]);
+
+        return view;
     }
     public class Holder
     {
