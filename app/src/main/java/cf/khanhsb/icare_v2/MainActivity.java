@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPagerAdapter mViewPagerAdapter;
     private Toolbar toolbar;
     private ImageView toolBarImageView;
-
+    private Boolean isGymFragment = false;
     private FirebaseAuth mAuth;
     private SlidingRootNav slidingRootNav;
 
@@ -68,15 +68,47 @@ public class MainActivity extends AppCompatActivity {
         btmNav.getMenu().getItem(2).setEnabled(false);
         btmNav.setOnNavigationItemSelectedListener(navListener);
 
-
-
-
+        /**setting up toolbar*/
+        toolBarTitle = findViewById(R.id.tool_bar_title);
+        toolBarImageView = findViewById(R.id.nav_menu_icon);
 
         /**setting up viewpager*/
         viewPager = findViewById(R.id.view_pager);
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mViewPagerAdapter);
 
+        /**setting up nav drawer*/
+        toolbar = findViewById(R.id.nav_menu_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.bringToFront();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setTitle(null);
+        slidingRootNav = new SlidingRootNavBuilder(this)
+                .withDragDistance(180)
+                .withMenuLocked(true)
+                .withRootViewScale(0.75f)
+                .withRootViewElevation(30)
+                .withMenuOpened(false)
+                .withContentClickableWhenMenuOpened(false)
+                .withSavedState(savedInstanceState)
+                .withMenuLayout(R.layout.drawer_menu)
+                .inject();
+
+        ImageView closeNavMenuButton = (ImageView) findViewById(R.id.close_nav_menu_button);
+        ImageView openNavMenuButton = (ImageView) findViewById(R.id.nav_menu_icon);
+
+        /**sliding between fragment and activity*/
+        Intent intent = getIntent();
+        int fragmentPosition = intent.getIntExtra("fragmentPosition",0);
+        viewPager.setCurrentItem(fragmentPosition);
+        if(fragmentPosition==3){
+            btmNav.getMenu().findItem(R.id.nav_gym).setChecked(true);
+            toolBarTitle.setText(getString(R.string.GymFragTitle));
+            toolBarTitle.setTextColor(Color.WHITE);
+            toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
+            toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
+            toolbar.setBackground(getDrawable(R.color.transparent));
+        }
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -132,29 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        /**setting up toolbar*/
-        toolBarTitle = findViewById(R.id.tool_bar_title);
-        toolBarImageView = findViewById(R.id.nav_menu_icon);
 
-        /**setting up nav drawer*/
-        toolbar = findViewById(R.id.nav_menu_toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.bringToFront();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(null);
-        slidingRootNav = new SlidingRootNavBuilder(this)
-                .withDragDistance(180)
-                .withMenuLocked(true)
-                .withRootViewScale(0.75f)
-                .withRootViewElevation(30)
-                .withMenuOpened(false)
-                .withContentClickableWhenMenuOpened(false)
-                .withSavedState(savedInstanceState)
-                .withMenuLayout(R.layout.drawer_menu)
-                .inject();
 
-        ImageView closeNavMenuButton = (ImageView) findViewById(R.id.close_nav_menu_button);
-        ImageView openNavMenuButton = (ImageView) findViewById(R.id.nav_menu_icon);
 
 
         closeNavMenuButton.setOnClickListener(new View.OnClickListener() {
@@ -199,16 +210,10 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
-/*@Override
+    /*@Override
     public void Logout(View view) {
         mAuth.signOut();
         startActivity(new Intent(MainActivity.this,SigninActivity.class));
-        finish();
-    }
-
-
-    /*@Override
-    public void onBackPressed(){
         finish();
     }*/
 }

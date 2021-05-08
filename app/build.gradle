@@ -49,5 +49,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
-    
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 }

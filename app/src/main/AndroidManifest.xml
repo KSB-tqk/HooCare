@@ -11,11 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ICare_v2">
-        <activity android:name=".List_Data_Activity"></activity>
+        <activity android:name=".List_Exercises_Activity"></activity>
+        <activity android:name=".List_Data_Activity" />
         <activity android:name=".StepCountActivity" />
         <activity android:name=".SigninActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".OnBoardActivity"></activity>
+        <activity android:name=".OnBoardActivity" />
         <activity android:name=".WaterActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
