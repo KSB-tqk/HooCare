@@ -100,7 +100,9 @@
                 android:paddingStart="15dp"
                 android:paddingTop="20dp"
                 android:paddingEnd="0dp"
+                android:paddingBottom="15dp"
                 android:text="ABS"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="23sp"
                 android:textStyle="bold" />
@@ -128,6 +130,7 @@
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:paddingStart="15dp"
+                android:paddingTop="5dp"
                 android:paddingEnd="0dp"
                 android:text="Level"
                 android:textSize="13sp" />
@@ -166,6 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:layout_marginTop="5dp"
                         android:text="Time"
                         android:textSize="13sp"
                         app:layout_constraintLeft_toRightOf="@id/time_icon_list_data"
@@ -177,6 +181,7 @@
                         android:layout_height="13dp"
                         android:layout_alignBottom="@id/time_title_list_data"
                         android:layout_alignParentBottom="true"
+                        android:layout_marginTop="5dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/time_icon_list_data"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -189,9 +194,10 @@
                 android:id="@+id/area_focus_text_list_data_linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/area_focus_title_list_data"
+                android:layout_below="@id/level_title_list_data"
                 android:layout_alignParentEnd="true"
                 android:orientation="horizontal"
+                android:layout_marginTop="5dp"
                 android:paddingEnd="20dp">
 
                 <ImageView
@@ -217,7 +223,7 @@
                 android:id="@+id/area_focus_title_list_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/title_list_data"
+                android:layout_above="@id/area_focus_text_list_data_linear"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="center"
                 android:layout_toEndOf="@id/time_title_list_data_constraint"
@@ -277,8 +283,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:translationZ="20dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:translationZ="20dp">
 
         <TextView
             android:layout_width="match_parent"

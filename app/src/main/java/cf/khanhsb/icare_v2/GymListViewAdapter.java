@@ -12,19 +12,20 @@ import android.widget.TextView;
 
 public class GymListViewAdapter extends BaseAdapter {
 
-    private String[] title;
+    private String[] title,time;
     private int[] image;
     private Context context;
     private View view;
     private int resource;
     private Holder holder;
 
-    public GymListViewAdapter(Context context,int resource,int[] workoutImage,String[] workoutTitle){
+    public GymListViewAdapter(Context context,int resource,int[] workoutImage,String[] workoutTitle,String[] time){
         super();
         this.context = context;
         this.image = workoutImage;
         this.title = workoutTitle;
         this.resource = resource;
+        this.time = time;
     }
 
     @Override
@@ -50,15 +51,17 @@ public class GymListViewAdapter extends BaseAdapter {
 
         holder = new Holder();
         holder.workoutTitle = (TextView) view.findViewById(R.id.body_part_workout_title);
+        holder.workoutTime = (TextView) view.findViewById(R.id.body_part_workout_time);
         holder.workoutImage = (ImageView) view.findViewById(R.id.body_part_icon);
 
         holder.workoutTitle.setText(title[position]);
         holder.workoutImage.setImageResource(image[position]);
+        holder.workoutTime.setText(time[position]);
         return view;
     }
     public class Holder
     {
-        TextView workoutTitle;
+        TextView workoutTitle,workoutTime;
         ImageView workoutImage;
     }
 }
