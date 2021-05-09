@@ -83,7 +83,6 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gym_fragment_rounded_corner_background"
         android:translationZ="10dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
@@ -250,7 +249,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/exercises_text_list_data"
+                    android:id="@+id/exercises_count_list_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -269,24 +268,31 @@
 
             </cf.khanhsb.icare_v2.NonScrollListView>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/list_view_list_data"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/cardview_background_gradient"
-                android:gravity="center"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="START"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/start_button_anim_exer_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:translationZ="20dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/list_view_list_data"
+            android:layout_margin="10dp"
+            android:background="@drawable/cardview_background_gradient"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="START"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
