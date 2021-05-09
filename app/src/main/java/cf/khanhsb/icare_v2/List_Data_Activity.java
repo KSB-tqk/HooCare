@@ -21,7 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 public class List_Data_Activity extends AppCompatActivity {
     private ImageView workoutImage, backButton, moreButton, favButton;
     private TextView workoutTitle, workoutTime, exerciseTitle, exerciseDurationValue,
-            exerciseDurationText,animTitle,videoTitle;
+            exerciseDurationText,animTitle,videoTitle,focusArea,workoutBigTitle;
     private LinearLayout startButtonAnimExer;
     private ConstraintLayout bottomSheetContainer,selectedBackground;
     private ViewPager2 viewPager2;
@@ -66,6 +66,9 @@ public class List_Data_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_list_data);
 
         workoutTitle = (TextView) findViewById(R.id.gym_list_workout_text);
+        workoutBigTitle = (TextView) findViewById(R.id.title_list_data);
+        workoutTime = (TextView) findViewById(R.id.time_title_list_data);
+        focusArea = (TextView) findViewById(R.id.area_focus_title_list_data);
         workoutImage = (ImageView) findViewById(R.id.gym_list_image_view);
         backButton = (ImageView) findViewById(R.id.back_button_list_data);
         bottomSheetContainer = (ConstraintLayout) findViewById(R.id.bottom_sheet_container_exer_anim);
@@ -83,10 +86,13 @@ public class List_Data_Activity extends AppCompatActivity {
             }
         });
 
+        /**setting up intent from gym fragment*/
         Intent intent = getIntent();
-
         workoutTitle.setText(intent.getStringExtra("workoutTitle"));
         workoutImage.setImageResource(intent.getIntExtra("workoutImage", 0));
+        workoutTime.setText(intent.getStringExtra("workoutTime"));
+        focusArea.setText(intent.getStringExtra("focusBodyPart"));
+        workoutBigTitle.setText(intent.getStringExtra("focusBodyPart"));
 
         /**setting up animation exercise listview*/
         listView = findViewById(R.id.list_view_list_data);
