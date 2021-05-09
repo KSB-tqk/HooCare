@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Objects;
+
 public class GymFragment extends Fragment {
     private FloatingActionButton viewButtonExercises;
     private TextView workoutHeadline,workoutTitle;
@@ -60,8 +62,10 @@ public class GymFragment extends Fragment {
         clockIcon = (ImageView) rootView.findViewById(R.id.clockIcon);
 
         listView = (ListView) rootView.findViewById(R.id.classic_workout_listview);
-        GymListViewAdapter listViewAdapter = new GymListViewAdapter(getActivity(),R.layout.item_workout_list,
-                gymListImage,gymListTitle);
+        GymListViewAdapter listViewAdapter = new GymListViewAdapter(getActivity(),
+                R.layout.item_workout_list,
+                gymListImage,
+                gymListTitle);
         listView.setAdapter(listViewAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -70,6 +74,7 @@ public class GymFragment extends Fragment {
                 intent.putExtra("workoutTitle",gymListTitle[position]);
                 intent.putExtra("workoutImage",gymListImage[position]);
                 startActivity(intent);
+                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 

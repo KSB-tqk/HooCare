@@ -15,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 
 public class HomeFragment extends Fragment {
     private LinearLayout waterCardview,stepCardView,caloCardView,sleepCardView,trainingCardView;
@@ -54,7 +56,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), WaterActivity.class);
                 startActivity(intent);
-                getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.hold_position,R.anim.slide_in_bottom);
             }
         });
 
@@ -63,7 +65,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent toStepData = new Intent(getActivity(),StepCountActivity.class);
                 startActivity(toStepData);
-                getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.hold_position,R.anim.slide_in_bottom);
             }
         });
 
