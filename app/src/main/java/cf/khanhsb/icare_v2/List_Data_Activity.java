@@ -1,5 +1,6 @@
 package cf.khanhsb.icare_v2;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.Image;
@@ -76,6 +77,7 @@ public class List_Data_Activity extends AppCompatActivity {
             "HwLOdOmXcrI"};
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,7 +112,7 @@ public class List_Data_Activity extends AppCompatActivity {
         workoutTime.setText(intent.getStringExtra("workoutTime"));
         focusArea.setText(intent.getStringExtra("focusBodyPart"));
         workoutBigTitle.setText(intent.getStringExtra("focusBodyPart"));
-        exerciseCount.setText("("+String.valueOf(anim_exer_ListText.length)+")");
+        exerciseCount.setText("("+ anim_exer_ListText.length +")");
 
         Lifecycle lifecycle = this.getLifecycle();
 
