@@ -9,7 +9,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/gym_list_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -23,7 +23,7 @@
             <ImageView
                 android:id="@+id/gym_list_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/workout_real_pic_item_list_icon"
                 app:layout_collapseMode="parallax" />
@@ -83,8 +83,6 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-40dp"
-        android:background="@drawable/gym_fragment_rounded_corner_background"
         android:translationZ="10dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
@@ -102,7 +100,9 @@
                 android:paddingStart="15dp"
                 android:paddingTop="20dp"
                 android:paddingEnd="0dp"
+                android:paddingBottom="15dp"
                 android:text="ABS"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="23sp"
                 android:textStyle="bold" />
@@ -130,6 +130,7 @@
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:paddingStart="15dp"
+                android:paddingTop="5dp"
                 android:paddingEnd="0dp"
                 android:text="Level"
                 android:textSize="13sp" />
@@ -168,6 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:layout_marginTop="5dp"
                         android:text="Time"
                         android:textSize="13sp"
                         app:layout_constraintLeft_toRightOf="@id/time_icon_list_data"
@@ -179,6 +181,7 @@
                         android:layout_height="13dp"
                         android:layout_alignBottom="@id/time_title_list_data"
                         android:layout_alignParentBottom="true"
+                        android:layout_marginTop="5dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/time_icon_list_data"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -191,9 +194,10 @@
                 android:id="@+id/area_focus_text_list_data_linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/area_focus_title_list_data"
+                android:layout_below="@id/level_title_list_data"
                 android:layout_alignParentEnd="true"
                 android:orientation="horizontal"
+                android:layout_marginTop="5dp"
                 android:paddingEnd="20dp">
 
                 <ImageView
@@ -219,7 +223,7 @@
                 android:id="@+id/area_focus_title_list_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/title_list_data"
+                android:layout_above="@id/area_focus_text_list_data_linear"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="center"
                 android:layout_toEndOf="@id/time_title_list_data_constraint"
@@ -251,7 +255,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/exercises_text_list_data"
+                    android:id="@+id/exercises_count_list_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -262,32 +266,39 @@
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <ListView
+            <cf.khanhsb.icare_v2.NonScrollListView
                 android:id="@+id/list_view_list_data"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/exercises_title_list_data_linear">
 
-            </ListView>
+            </cf.khanhsb.icare_v2.NonScrollListView>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/list_view_list_data"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/cardview_background_gradient"
-                android:gravity="center"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="START"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/start_button_anim_exer_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:translationZ="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/list_view_list_data"
+            android:layout_margin="10dp"
+            android:background="@drawable/cardview_background_gradient"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="START"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
