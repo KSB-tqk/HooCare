@@ -80,7 +80,7 @@
     <string name="floating_image">floating image</string>
     <string name="walk_label">Walk</string>
     <string name="walk_icon">walk icon</string>
-    <string name="username">UserName</string>
+
     <string name="good_morning_label">Good Morning ,</string>
     <string name="workout_count">5 Workouts</string>
     <string name="beginner_label">Beginner</string>
@@ -108,7 +108,5 @@
     <string name="_50">/50</string>
     <string name="friends">Friends</string>
     <string name="claim_your_rank_reward">Claim your Rank Reward</string>
-    <string name="animation_exercise_text_detail">Start with your feet together and your arms by
-        your side,then jump up with your feet apart and your hands overhead.</string>
-    <string name="second_text_detail_animation_exercise">Return to the start position then do the next step. This exercise provides full-body workout and works all your large muscle groups.</string>
+
 </resources>

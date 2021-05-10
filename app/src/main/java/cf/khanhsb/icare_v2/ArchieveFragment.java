@@ -13,7 +13,8 @@ import android.widget.Button;
 
 
 public class ArchieveFragment extends Fragment {
-    private Button button1;
+    private Button dailyclaim_button;
+            Button rankclaim_button;
 
 
     public ArchieveFragment() {
@@ -34,14 +35,21 @@ public class ArchieveFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_archieve, container, false);
 
-        button1=(Button) rootView.findViewById(R.id.button_Claim);
-
-        button1.setOnClickListener(new View.OnClickListener() {
+        dailyclaim_button=(Button) rootView.findViewById(R.id.dailyclaim_button);
+        rankclaim_button=(Button) rootView.findViewById(R.id.rankclaim_button);
+        rankclaim_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                button1.setBackgroundColor(Color.GRAY);
+                rankclaim_button.setBackgroundColor(Color.GRAY);
             }
         });
+        dailyclaim_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dailyclaim_button.setBackgroundColor(Color.GRAY);
+            }
+        });
+
         return rootView;
     }
 }
