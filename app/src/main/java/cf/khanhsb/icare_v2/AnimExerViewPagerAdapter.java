@@ -5,8 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -16,10 +19,12 @@ public class AnimExerViewPagerAdapter extends RecyclerView.Adapter<AnimExerViewP
     private int[] gifImage;
     private String[] videoId;
     private boolean isVideo = false;
+    private Lifecycle lifecycle;
 
-    public AnimExerViewPagerAdapter(int[] gif, String[] video){
+    public AnimExerViewPagerAdapter(int[] gif, String[] video,Lifecycle lifecycle){
         this.gifImage = gif;
         this.videoId = video;
+        this.lifecycle = lifecycle;
     }
 
     @NonNull
@@ -37,6 +42,13 @@ public class AnimExerViewPagerAdapter extends RecyclerView.Adapter<AnimExerViewP
         if(position == 1){
             holder.gifImageView.setVisibility(View.GONE);
             holder.youTubePlayerView.setVisibility(View.VISIBLE);
+            holder.youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                @Override
+                public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                    String videoId = "w0yjlVqfgyU";
+                    youTubePlayer.loadVideo(videoId, 0);
+                }
+            });
         }
         else{
             holder.gifImageView.setVisibility(View.VISIBLE);
@@ -58,6 +70,7 @@ public class AnimExerViewPagerAdapter extends RecyclerView.Adapter<AnimExerViewP
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             youTubePlayerView = itemView.findViewById(R.id.youtube_player_view_viewpager);
+            lifecycle.addObserver(youTubePlayerView);
             gifImageView = itemView.findViewById(R.id.gif_anim_view_viewpager);
         }
     }
