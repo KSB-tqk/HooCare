@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             toolBarTitle.setTextColor(Color.WHITE);
             toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
             toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
-            toolbar.setBackground(getDrawable(R.color.transparent));
+            toolbar.setBackground(getDrawable(R.color.white));
         }
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                         toolBarTitle.setTextColor(Color.WHITE);
                         toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
                         toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
-                        toolbar.setBackground(getDrawable(R.color.transparent));
+                        toolbar.setBackground(getDrawable(R.color.white));
                         MealFragment mealFragment = new MealFragment();
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                         toolBarTitle.setTextColor(Color.WHITE);
                         toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
                         toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
-                        toolbar.setBackground(getDrawable(R.color.transparent));
+                        toolbar.setBackground(getDrawable(R.color.white));
                         break;
                 }
             }

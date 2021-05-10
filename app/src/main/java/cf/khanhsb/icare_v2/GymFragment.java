@@ -38,7 +38,6 @@ public class GymFragment extends Fragment {
             R.drawable.workout_real_pic_item_list_icon,
             R.drawable.workout_real_pic_item_list_icon,
             R.drawable.workout_real_pic_item_list_icon};
-
     /**
      * Gym listview
      */
