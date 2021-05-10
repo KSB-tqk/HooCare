@@ -11,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -67,7 +69,11 @@ public class List_Data_Activity extends AppCompatActivity {
             R.drawable.gif_test_image_anim_exer_viewpager,
             R.drawable.gif_test_image_anim_exer_viewpager,
             R.drawable.gif_test_image_anim_exer_viewpager};
-
+    private String[] videoId = {"w0yjlVqfgyU",
+            "obc8bQWANvM",
+            "uYr7rhV0qpo",
+            "qclZKbBCyWA",
+            "HwLOdOmXcrI"};
 
 
     @Override
@@ -106,6 +112,8 @@ public class List_Data_Activity extends AppCompatActivity {
         workoutBigTitle.setText(intent.getStringExtra("focusBodyPart"));
         exerciseCount.setText("("+String.valueOf(anim_exer_ListText.length)+")");
 
+        Lifecycle lifecycle = this.getLifecycle();
+
         /**setting up animation exercise listview*/
         listView = findViewById(R.id.list_view_list_data);
         AnimExerListViewAdapter animExerListViewAdapter = new AnimExerListViewAdapter(this,
@@ -131,9 +139,28 @@ public class List_Data_Activity extends AppCompatActivity {
                 videoTitle = bottomSheetView.findViewById(R.id.video_title);
                 selectedBackground =  bottomSheetView.findViewById(R.id.tab_animation_view);
 
-                animExerViewPagerAdapter = new AnimExerViewPagerAdapter(gymViewPagerImage,anim_exer_ListDurationText);
+                /**setting up viewpager in animaiton exercise*/
+                animExerViewPagerAdapter = new AnimExerViewPagerAdapter(gymViewPagerImage,videoId,lifecycle);
                 viewPager2 = bottomSheetView.findViewById(R.id.animation_exercise_viewPager);
                 viewPager2.setAdapter(animExerViewPagerAdapter);
+
+                viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        super.onPageSelected(position);
+                        if(position == 1){
+                            int size = videoTitle.getWidth();
+                            videoTitle.setTypeface(videoTitle.getTypeface(), Typeface.BOLD);
+                            animTitle.setTypeface(null, Typeface.NORMAL);
+                            selectedBackground.animate().x(size).setDuration(200);
+                        }
+                        else {
+                            videoTitle.setTypeface(null, Typeface.NORMAL);
+                            animTitle.setTypeface(animTitle.getTypeface(), Typeface.BOLD);
+                            selectedBackground.animate().x(0).setDuration(200);
+                        }
+                    }
+                });
 
                 videoTitle.setOnClickListener(new View.OnClickListener() {
                     @Override
