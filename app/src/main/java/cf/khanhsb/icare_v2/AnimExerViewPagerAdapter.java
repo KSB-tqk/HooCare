@@ -1,30 +1,37 @@
 package cf.khanhsb.icare_v2;
 
+import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class AnimExerViewPagerAdapter extends RecyclerView.Adapter<AnimExerViewPagerAdapter.ViewHolder>{
+public class AnimExerViewPagerAdapter extends
+        RecyclerView.Adapter<AnimExerViewPagerAdapter.ViewHolder>{
 
     private int[] gifImage;
     private String[] videoId;
-    private boolean isVideo = false;
-    private Lifecycle lifecycle;
+    private Context context;
+    private String API_KEY = "AIzaSyCe98cPPK21IhB-wpsnXQk-ARzdeoDjtZs";
 
-    public AnimExerViewPagerAdapter(int[] gif, String[] video,Lifecycle lifecycle){
+    public AnimExerViewPagerAdapter(int[] gif, String[] video, Context context){
         this.gifImage = gif;
         this.videoId = video;
-        this.lifecycle = lifecycle;
+        this.context = context;
     }
 
     @NonNull
@@ -44,7 +51,8 @@ public class AnimExerViewPagerAdapter extends RecyclerView.Adapter<AnimExerViewP
             holder.youTubePlayerView.setVisibility(View.VISIBLE);
             holder.youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                 @Override
-                public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                public void onReady(YouTubePlayer youTubePlayer) {
+                    super.onReady(youTubePlayer);
                     String videoId = "w0yjlVqfgyU";
                     youTubePlayer.loadVideo(videoId, 0);
                 }
@@ -62,6 +70,7 @@ public class AnimExerViewPagerAdapter extends RecyclerView.Adapter<AnimExerViewP
         return 2;
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         //initialize variable
         YouTubePlayerView youTubePlayerView;
@@ -69,8 +78,7 @@ public class AnimExerViewPagerAdapter extends RecyclerView.Adapter<AnimExerViewP
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            youTubePlayerView = itemView.findViewById(R.id.youtube_player_view_viewpager);
-            lifecycle.addObserver(youTubePlayerView);
+            youTubePlayerView = itemView.findViewById(R.id.video_view_viewpager);
             gifImageView = itemView.findViewById(R.id.gif_anim_view_viewpager);
         }
     }

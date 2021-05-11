@@ -20,8 +20,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubePlayerView;
 
-public class List_Data_Activity extends AppCompatActivity {
+public class List_Data_Activity extends YouTubeBaseActivity {
     private ImageView workoutImage, backButton, moreButton, favButton;
     private TextView workoutTitle, workoutTime, exerciseTitle, exerciseDurationValue,
             exerciseDurationText,animTitle,videoTitle,focusArea,workoutBigTitle,
@@ -30,6 +32,7 @@ public class List_Data_Activity extends AppCompatActivity {
     private ConstraintLayout bottomSheetContainer,selectedBackground;
     private ViewPager2 viewPager2;
     private AnimExerViewPagerAdapter animExerViewPagerAdapter;
+
 
     /**
      * animation exercise listview
@@ -70,11 +73,8 @@ public class List_Data_Activity extends AppCompatActivity {
             R.drawable.gif_test_image_anim_exer_viewpager,
             R.drawable.gif_test_image_anim_exer_viewpager,
             R.drawable.gif_test_image_anim_exer_viewpager};
-    private String[] videoId = {"w0yjlVqfgyU",
-            "obc8bQWANvM",
-            "uYr7rhV0qpo",
-            "qclZKbBCyWA",
-            "HwLOdOmXcrI"};
+    private String[] videoId = {"w0yjlVqfgyU","w0yjlVqfgyU",
+            "w0yjlVqfgyU","w0yjlVqfgyU","w0yjlVqfgyU"};
 
 
     @SuppressLint("SetTextI18n")
@@ -114,7 +114,6 @@ public class List_Data_Activity extends AppCompatActivity {
         workoutBigTitle.setText(intent.getStringExtra("focusBodyPart"));
         exerciseCount.setText("("+ anim_exer_ListText.length +")");
 
-        Lifecycle lifecycle = this.getLifecycle();
 
         /**setting up animation exercise listview*/
         listView = findViewById(R.id.list_view_list_data);
@@ -142,7 +141,8 @@ public class List_Data_Activity extends AppCompatActivity {
                 selectedBackground =  bottomSheetView.findViewById(R.id.tab_animation_view);
 
                 /**setting up viewpager in animaiton exercise*/
-                animExerViewPagerAdapter = new AnimExerViewPagerAdapter(gymViewPagerImage,videoId,lifecycle);
+                animExerViewPagerAdapter = new AnimExerViewPagerAdapter(gymViewPagerImage,videoId,
+                        bottomSheetView.getContext());
                 viewPager2 = bottomSheetView.findViewById(R.id.animation_exercise_viewPager);
                 viewPager2.setAdapter(animExerViewPagerAdapter);
 
