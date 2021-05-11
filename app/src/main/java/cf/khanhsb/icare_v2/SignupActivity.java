@@ -17,13 +17,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends Activity {
-    private EditText mEmail, mPass;
-    private TextView mTextView;
+    private EditText mEmail, mPass, mName, mUsername;
+    private TextView mHaveAccount;
     private Button signupButton;
     //
     private FirebaseAuth mAuth;
+    private FirebaseDatabase rootNode;
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +35,14 @@ public class SignupActivity extends Activity {
         setContentView(R.layout.activity_signup);
         mEmail = findViewById(R.id.et_email_signup);
         mPass = findViewById(R.id.et_password_signup);
-        mTextView = findViewById(R.id.jumptosignin);
+        mName = findViewById(R.id.et_fullname);
+        mUsername = findViewById(R.id.et_username);
+        mHaveAccount = findViewById(R.id.jumptosignin);
         signupButton = findViewById(R.id.btSignup);
         //
         mAuth = FirebaseAuth.getInstance();
         //Already have account
-        mTextView.setOnClickListener(new View.OnClickListener() {
+        mHaveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignupActivity.this,SigninActivity.class));
@@ -52,8 +58,19 @@ public class SignupActivity extends Activity {
         });
     }
     private void createUser(){
+
+        rootNode = FirebaseDatabase.getInstance();
+        reference = rootNode.getReference("users");
+
+        //Get all the values
+        String name = mName.getText().toString();
+        String username = mUsername.getText().toString();
         String email = mEmail.getText().toString();
         String pass = mPass.getText().toString();
+        UserHelperClass helperClass = new UserHelperClass(name, username, email, pass);
+        reference.child(username).setValue(helperClass);
+        //..................
+
 
         if(!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             if(!pass.isEmpty()){
