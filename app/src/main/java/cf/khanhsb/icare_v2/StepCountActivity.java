@@ -34,7 +34,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_step_count);
 
         /**assign variable*/
-        progressBar = (ProgressBar) findViewById(R.id.progressbar_stepcount_detail);
+        
         statusOfProgressBar = (TextView) findViewById(R.id.progressbar_status);
         day_tab = (TextView) findViewById(R.id.text_item1);
         week_tab = (TextView) findViewById(R.id.text_item2);
@@ -51,12 +51,6 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         month_tab.setOnClickListener(this);
         def_color = week_tab.getTextColors();
 
-        /**animation on the rounded progressbar*/
-        int value = Integer.parseInt(statusOfProgressBar.getText().toString());
-        progressBar.setMax(10000);
-        ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 0, value);
-        anim.setDuration(3000);
-        progressBar.startAnimation(anim);
 
         /**back button on the toolbar click event*/
         backtohomefrag_button.setOnClickListener(new View.OnClickListener() {
