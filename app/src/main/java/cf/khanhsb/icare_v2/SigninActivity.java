@@ -21,8 +21,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SigninActivity extends AppCompatActivity {
     private EditText mEmail, mPass;
-    private TextView mTextView;
+    private TextView mHaveNoAccount;
     private Button signinButton;
+    private TextView mForgotpass;
     //
     private FirebaseAuth mAuth;
 
@@ -33,16 +34,26 @@ public class SigninActivity extends AppCompatActivity {
         //
         mEmail = findViewById(R.id.et_email_signin);
         mPass = findViewById(R.id.et_password_signin);
-        mTextView = findViewById(R.id.jumptosignup);
+        mHaveNoAccount = findViewById(R.id.jumptosignup);
         signinButton = findViewById(R.id.btSignin);
+        mForgotpass = findViewById(R.id.forgotpass);
         //
         mAuth = FirebaseAuth.getInstance();
-        mTextView.setOnClickListener(new View.OnClickListener() {
+        //Move to resetpass
+        mForgotpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SigninActivity.this,ResetPWActivity.class));
+            }
+        });
+        //Move to sign up
+        mHaveNoAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SigninActivity.this,SignupActivity.class));
             }
         });
+
 
         //Move to sign after sign up
         signinButton.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +62,7 @@ public class SigninActivity extends AppCompatActivity {
                 loginUser();
             }
         });
+
     }
     private void loginUser(){
         String email = mEmail.getText().toString();
