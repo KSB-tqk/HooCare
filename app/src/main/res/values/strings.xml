@@ -108,5 +108,19 @@
     <string name="_50">/50</string>
     <string name="friends">Friends</string>
     <string name="claim_your_rank_reward">Claim your Rank Reward</string>
+    <string name="user_name">User Name</string>
+    <string name="animation_exercise_text_detail">Start with your feet together and your arms by
+        your side,then jump up with your feet apart and your hands overhead.</string>
+    <string name="second_text_detail_animation_exercise">Return to the start position then do the next step. This exercise provides full-body workout and works all your large muscle groups.</string>
+    <string name="intermediate_label">Intermediate</string>
+    <string name="username">username</string>
 
+    <string name="view_leader_board">View Leader Board</string>
+    <string name="novice_gymer">Novice Gymer</string>
+    <string name="intermidiate_runner">Intermidiate Runner</string>
+    <string name="healthy_lifestyle">Healthy Lifestyle</string>
+    <string name="strongest_man">Strongest Man</string>
+    <string name="_12_10_2021">12/10/2021</string>
+       <string name="_2_9_2021">2/9/2021</string>
+     <string name="skilled_gymer">Skilled Gymer</string>
 </resources>
