@@ -149,7 +149,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/workout_real_pic_item_list_icon"
+                    android:src="@drawable/beginner_workout_background"
                     app:layout_constraintBottom_toBottomOf="@id/classic_workout_title_relative"
                     app:layout_constraintLeft_toLeftOf="@id/classic_workout_title_relative"
                     app:layout_constraintRight_toRightOf="@id/classic_workout_title_relative"
@@ -186,24 +186,169 @@
 
                 <cf.khanhsb.icare_v2.NonScrollListView
                     android:id="@+id/classic_workout_listview"
-                    android:paddingBottom="10dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@color/white"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/classic_workout_title_relative">
 
                 </cf.khanhsb.icare_v2.NonScrollListView>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/classic_workout_detail_intermediate"
+            android:layout_width="365dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/classic_workout_title_linear"
+            android:elevation="8dp"
+            app:cardCornerRadius="20dp"
+            android:layout_marginTop="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/classic_workout_detail">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/intermediate_workout_background"
+                    app:layout_constraintBottom_toBottomOf="@id/classic_workout_title_relative_intermediate"
+                    app:layout_constraintLeft_toLeftOf="@id/classic_workout_title_relative_intermediate"
+                    app:layout_constraintRight_toRightOf="@id/classic_workout_title_relative_intermediate"
+                    app:layout_constraintTop_toTopOf="@id/classic_workout_title_relative_intermediate" />
+
+                <RelativeLayout
+                    android:id="@+id/classic_workout_title_relative_intermediate"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:padding="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/num_of_workout_intermediate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/workout_count_label"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/classic_workout_title_intermediate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/num_of_workout_intermediate"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/intermediate_label"
+                        android:textColor="@color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <cf.khanhsb.icare_v2.NonScrollListView
+                    android:id="@+id/classic_workout_listview_intermediate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/classic_workout_title_relative_intermediate">
+
+                </cf.khanhsb.icare_v2.NonScrollListView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/classic_workout_detail_advanced"
+            android:layout_width="365dp"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            app:cardCornerRadius="20dp"
+            android:layout_marginTop="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/classic_workout_detail_intermediate">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/advanced_workout_background"
+                    app:layout_constraintBottom_toBottomOf="@id/classic_workout_title_relative_advanced"
+                    app:layout_constraintLeft_toLeftOf="@id/classic_workout_title_relative_advanced"
+                    app:layout_constraintRight_toRightOf="@id/classic_workout_title_relative_advanced"
+                    app:layout_constraintTop_toTopOf="@id/classic_workout_title_relative_advanced" />
+
+                <RelativeLayout
+                    android:id="@+id/classic_workout_title_relative_advanced"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:padding="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/num_of_workout_advanced"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/workout_count_label"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/classic_workout_title_advanced"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/num_of_workout_advanced"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/advanced_label"
+                        android:textColor="@color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <cf.khanhsb.icare_v2.NonScrollListView
+                    android:id="@+id/classic_workout_listview_advanced"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/classic_workout_title_relative_advanced">
+
+                </cf.khanhsb.icare_v2.NonScrollListView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.cardview.widget.CardView>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_constraintTop_toBottomOf="@id/classic_workout_detail" />
+            android:layout_height="100dp"
+            app:layout_constraintTop_toBottomOf="@id/classic_workout_detail_advanced" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

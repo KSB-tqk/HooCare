@@ -108,5 +108,11 @@
     <string name="_50">/50</string>
     <string name="friends">Friends</string>
     <string name="claim_your_rank_reward">Claim your Rank Reward</string>
-
+    <string name="animation_exercise_text_detail">Start with your feet together and your arms by
+        your side,then jump up with your feet apart and your hands overhead.</string>
+    <string name="second_text_detail_animation_exercise">Return to the start position then do
+        the next step. This exercise provides full-body workout and works all your large muscle groups.</string>
+    <string name="intermediate_label">Intermediate</string>
+    <string name="advanced_label">Advanced</string>
+    <string name="steps_label">STEPS</string>
 </resources>
