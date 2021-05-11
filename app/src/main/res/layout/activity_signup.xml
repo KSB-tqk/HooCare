@@ -46,9 +46,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
+        android:background="@drawable/login_button_bg"
         android:text="SIGN UP"
         android:layout_marginBottom="25dp"
-        android:background="@drawable/login_button_bg"
         android:textColor="#fafafa"
         android:id="@+id/btSignup"
         />
@@ -59,4 +59,17 @@
         android:textAlignment="center"
         android:id="@+id/jumptosignin"
         />
+    <Button
+        android:id="@+id/btGoogleAtSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/icon_google"
+        android:text="SIGN IN WITH GOOGLE"
+        android:background="@drawable/login_button_bg"
+        android:textColor="#fafafa"
+        android:textColorHighlight="#EC2727"
+        app:iconTint="#F80808" />
 </LinearLayout>

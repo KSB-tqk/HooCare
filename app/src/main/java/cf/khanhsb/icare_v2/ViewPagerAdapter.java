@@ -19,7 +19,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return new ArchieveFragment();
             case 2:
-                return new FoodFragment();
+                return new MealFragment();
             case 3:
                 return new GymFragment();
         }

@@ -12,18 +12,24 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.MyApp.MediumComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.HooCare.MediumComponent.Rounded</item>
+        <item name="fab_addButtonColorNormal">@style/MyFabStyle</item>
     </style>
-
-    <style name="ShapeAppearance.MyApp.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerFamily">cut</item>
-        <item name="cornerSize">8dp</item>
+    <style name="MyFabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/lime_200</item>
+        <item name="rippleColor">#ffffff</item>
     </style>
-
     <style name="ShapeAppearance.HooCare.MediumComponent.Rounded" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerFamilyTopLeft">cut</item>
-        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeTopRight">45dp</item>
         <item name="cornerSizeBottomLeft">20dp</item>
-        <item name="cornerSizeBottomRight">45dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+    </style>
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="behavior_peekHeight">700dp</item>
     </style>
 </resources>
