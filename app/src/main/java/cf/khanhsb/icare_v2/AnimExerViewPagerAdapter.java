@@ -26,11 +26,13 @@ public class AnimExerViewPagerAdapter extends
     private int[] gifImage;
     private String[] videoId;
     private Context context;
+    private int positionOfView;
 
-    public AnimExerViewPagerAdapter(int[] gif, String[] video, Context context){
+    public AnimExerViewPagerAdapter(int[] gif, String[] video,int position, Context context){
         this.gifImage = gif;
         this.videoId = video;
         this.context = context;
+        this.positionOfView = position;
     }
 
     @NonNull
@@ -45,22 +47,17 @@ public class AnimExerViewPagerAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         if(position == 1){
             holder.gifImageView.setVisibility(View.GONE);
-            holder.youTubePlayerView.setVisibility(View.VISIBLE);
-            holder.youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-                @Override
-                public void onReady(YouTubePlayer youTubePlayer) {
-                    super.onReady(youTubePlayer);
-                    String videoId = "w0yjlVqfgyU";
-                    youTubePlayer.loadVideo(videoId, 0);
-                }
-            });
+            holder.videoView.setVisibility(View.VISIBLE);
+            holder.videoView.setVideoURI(Uri.parse(videoId[positionOfView]));
+            holder.videoView.start();
         }
         else{
             holder.gifImageView.setVisibility(View.VISIBLE);
-            holder.gifImageView.setImageResource(gifImage[position]);
-            holder.youTubePlayerView.setVisibility(View.GONE);
+            holder.gifImageView.setImageResource(gifImage[positionOfView]);
+            holder.videoView.setVisibility(View.GONE);
         }
     }
 
@@ -72,12 +69,12 @@ public class AnimExerViewPagerAdapter extends
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         //initialize variable
-        YouTubePlayerView youTubePlayerView;
+        VideoView videoView;
         GifImageView gifImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            youTubePlayerView = itemView.findViewById(R.id.video_view_viewpager);
+            videoView = itemView.findViewById(R.id.video_view_viewpager);
             gifImageView = itemView.findViewById(R.id.gif_anim_view_viewpager);
         }
     }
