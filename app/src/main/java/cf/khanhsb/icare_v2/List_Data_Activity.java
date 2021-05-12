@@ -58,11 +58,21 @@ public class List_Data_Activity extends YouTubeBaseActivity {
             "20",
             "20",
             "20"};
-    private int[] gymListImage = {R.drawable.jumping_jack_list_data_item,
-            R.drawable.jumping_jack_list_data_item,
-            R.drawable.jumping_jack_list_data_item,
-            R.drawable.jumping_jack_list_data_item,
-            R.drawable.jumping_jack_list_data_item};
+    private String[] videoUri = {"https://firebasestorage.googleapis.com/v0/b/" +
+            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
+            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
+            ,"https://firebasestorage.googleapis.com/v0/b/" +
+                    "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
+                    "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
+            ,"https://firebasestorage.googleapis.com/v0/b/" +
+            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
+            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
+            ,"https://firebasestorage.googleapis.com/v0/b/" +
+            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
+            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
+            ,"https://firebasestorage.googleapis.com/v0/b/" +
+            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
+            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"};
     /**
      * animation exercise listview
      */
@@ -118,7 +128,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
         /**setting up animation exercise listview*/
         listView = findViewById(R.id.list_view_list_data);
         AnimExerListViewAdapter animExerListViewAdapter = new AnimExerListViewAdapter(this,
-                R.layout.item_exercises_list_data, gymListImage, anim_exer_ListTitle, anim_exer_ListText);
+                R.layout.item_exercises_list_data, videoUri , anim_exer_ListTitle, anim_exer_ListText);
         listView.setAdapter(animExerListViewAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -26,7 +26,6 @@ public class AnimExerViewPagerAdapter extends
     private int[] gifImage;
     private String[] videoId;
     private Context context;
-    private String API_KEY = "AIzaSyCe98cPPK21IhB-wpsnXQk-ARzdeoDjtZs";
 
     public AnimExerViewPagerAdapter(int[] gif, String[] video, Context context){
         this.gifImage = gif;
