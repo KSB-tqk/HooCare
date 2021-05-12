@@ -58,7 +58,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
                 Intent toMain = new Intent(StepCountActivity.this,MainActivity.class);
                 startActivity(toMain);
-                overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
 
