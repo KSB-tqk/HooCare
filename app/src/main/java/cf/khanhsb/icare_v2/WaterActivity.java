@@ -7,35 +7,37 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.john.waveview.WaveView;
 
 public class WaterActivity extends AppCompatActivity {
 
     private int waterHasDrink = 0;
+    private WaveView waveView;
+    private SeekBar seekBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water);
 
-        TextView waterTextView = (TextView) findViewById(R.id.today_water_drinked_text_view);
-        Button drinkBtn = (Button) findViewById(R.id.drink_button);
-        Button backBtn = (Button) findViewById(R.id.back_button);
-
-        drinkBtn.setOnClickListener(new OnClickListener() {
+        seekBar = findViewById(R.id.water_seek_bar);
+        waveView = findViewById(R.id.wave_view_water);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onClick(View v) {
-                waterHasDrink += 100;
-                waterTextView.setText("Total amount of water drunk: "+ String.valueOf(waterHasDrink) +"ml");
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                waveView.setProgress(progress);
             }
-        });
 
-        backBtn.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
-                Intent toMain = new Intent(WaterActivity.this,MainActivity.class);
-                startActivity(toMain);
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
     }
