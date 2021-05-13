@@ -30,13 +30,12 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/back_button_contentDes"
-                    android:background="?attr/selectableItemBackground"
-                    android:src="@drawable/back_arrow_icon_list_data" />
+                    android:src="@drawable/back_image_button_anim" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/blank_space_water"
+                    android:layout_toStartOf="@id/more_menu_waterfrag"
                     android:layout_toEndOf="@id/button_backtohomefrag">
 
                     <TextView
@@ -55,12 +54,12 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
-                    android:id="@+id/blank_space_water"
+                    android:id="@+id/more_menu_waterfrag"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/more_icon_list_data" />
+                    android:src="@drawable/more_image_button_anim" />
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -128,8 +127,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="of 3.5L goal"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -183,11 +181,10 @@
                     android:text="more to go"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/drink_water_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -221,15 +218,6 @@
                 app:wave_hz="normal"
                 app:wave_length="middle" />
 
-            <SeekBar
-                android:id="@+id/water_seek_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/drink_water_button"/>
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="175dp"
@@ -238,6 +226,12 @@
                 app:layout_constraintLeft_toLeftOf="@id/wave_view_water"
                 app:layout_constraintRight_toRightOf="@id/wave_view_water"
                 app:layout_constraintTop_toTopOf="@id/wave_view_water" />
+            
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                app:layout_constraintTop_toBottomOf="@id/drink_water_button"
+                app:layout_constraintLeft_toLeftOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

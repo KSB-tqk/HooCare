@@ -36,7 +36,7 @@
                         android:layout_height="30dp"
                         android:layout_centerVertical="true"
                         android:contentDescription="@string/back_button_contentDes"
-                        android:src="@drawable/back_arrow_icon_list_data" />
+                        android:src="@drawable/back_image_button_anim" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
                         android:layout_height="30dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/more_icon_list_data" />
+                        android:src="@drawable/more_image_button_anim" />
                 </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
