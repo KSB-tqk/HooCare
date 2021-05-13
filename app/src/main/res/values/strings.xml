@@ -116,4 +116,12 @@
     <string name="intermediate_label">Intermediate</string>
     <string name="advanced_label">Advanced</string>
     <string name="steps_label">STEPS</string>
+    <string name="_2000_ml">(~2000 ml)</string>
+    <string name="_8_cups">8 cups </string>
+    <string name="most_people_need">Most people need </string>
+    <string name="done">Done</string>
+    <string name="plus_button">plus button</string>
+    <string name="set_your_daily_goal">SET YOUR DAILY GOAL</string>
+    <string name="cups">Cups</string>
+    <string name="a_day">a day.</string>
 </resources>

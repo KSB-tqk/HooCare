@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), WaterActivity.class);
                 startActivity(intent);
-                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.hold_position,R.anim.slide_in_bottom);
+                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 
@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent toStepData = new Intent(getActivity(),StepCountActivity.class);
                 startActivity(toStepData);
-                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.hold_position,R.anim.slide_in_bottom);
+                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 
