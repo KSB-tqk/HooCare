@@ -49,6 +49,7 @@
                                 android:src="@drawable/ic_crowns" />
 
                             <ImageView
+                                android:id="@+id/image_avt_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
@@ -137,9 +138,9 @@
                             android:textStyle="bold" />
 
                         <ImageView
+                            android:id="@+id/image_avt_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
                             android:layout_marginStart="10dp"
                             android:background="@drawable/avt_leaderboard"
                             android:src="@drawable/ic_profile" />
@@ -216,7 +217,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:id="@+id/image_avt_3"
                             android:layout_marginStart="10dp"
                             android:background="@drawable/avt_leaderboard"
                             android:src="@drawable/ic_profile" />
@@ -294,7 +295,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:id="@+id/image_avt_4"
                             android:layout_marginStart="10dp"
                             android:background="@drawable/avt_leaderboard"
                             android:src="@drawable/ic_profile" />
@@ -371,7 +372,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:id="@+id/image_avt_5"
                             android:layout_marginStart="10dp"
                             android:background="@drawable/avt_leaderboard"
                             android:src="@drawable/ic_profile" />
@@ -447,7 +448,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:id="@+id/image_avt_6"
                             android:layout_marginStart="10dp"
                             android:background="@drawable/avt_leaderboard"
                             android:src="@drawable/ic_profile" />
@@ -524,7 +525,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:id="@+id/image_avt_7"
                             android:layout_marginStart="10dp"
                             android:background="@drawable/avt_leaderboard"
                             android:src="@drawable/ic_profile" />
@@ -602,7 +603,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:id="@+id/image_avt_8"
                             android:layout_marginStart="10dp"
                             android:background="@drawable/avt_leaderboard"
                             android:src="@drawable/ic_profile" />
@@ -679,7 +680,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:id="@+id/image_avt_9"
                             android:layout_marginStart="10dp"
                             android:background="@drawable/avt_leaderboard"
                             android:src="@drawable/ic_profile" />
@@ -756,7 +757,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:id="@+id/image_avt_10"
                             android:layout_marginStart="10dp"
                             android:background="@drawable/avt_leaderboard"
                             android:src="@drawable/ic_profile" />
