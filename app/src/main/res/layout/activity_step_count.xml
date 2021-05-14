@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="#f2f2f2"
     tools:context=".StepCountActivity">
+
     <LinearLayout
         android:id="@+id/uptop_linearlayout"
         android:layout_width="match_parent"
@@ -20,157 +21,93 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:contentInsetStart="0dp">
 
-                <ImageView
-                    android:id="@+id/button_backtohomefrag"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:contentDescription="@string/back_button_contentDes"
-                    android:src="@drawable/ic_back" />
-
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/steps"
-                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
+
+                    <ImageView
+                        android:id="@+id/button_backtohomefrag"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:contentDescription="@string/back_button_contentDes"
+                        android:src="@drawable/back_arrow_icon_list_data" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@id/blank_space"
+                        android:layout_toEndOf="@id/button_backtohomefrag">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/cardview_background_gradient"
+                            android:backgroundTint="@color/white"
+                            android:fontFamily="@font/momcakebold"
+                            android:padding="8dp"
+                            android:text="@string/steps_label"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                            android:textColor="@color/lime_200"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <Space
+                        android:id="@+id/blank_space"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="0dp"
-            android:paddingBottom="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardCornerRadius="20dp"
             app:cardElevation="8dp"
-            app:shapeAppearance="@style/ShapeAppearance.HooCare.MediumComponent.Rounded">
+            app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ProgressBar
-                    android:id="@+id/progressbar_stepcount_detail"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:indeterminateOnly="false"
-                    android:progressDrawable="@drawable/rounded_progressbar_with_radius_corner"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="MissingConstraints"
-                    tools:progress="100" />
-
-                <LinearLayout
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp">
+                <ImageView
+                    android:id="@+id/calender_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/calendar_icon"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+                <TextView
+                    android:id="@+id/step_count_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/calender_icon"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/progressbar_stepcount_detail"
-                    app:layout_constraintEnd_toEndOf="@+id/progressbar_stepcount_detail"
-                    app:layout_constraintStart_toStartOf="@+id/progressbar_stepcount_detail"
-                    app:layout_constraintTop_toTopOf="@+id/progressbar_stepcount_detail">
+                    android:text="7500"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/progressbar_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/_7500"
-                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/steps"
-                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
-                    </TextView>
-                </LinearLayout>
-
-                <Space
-                    android:id="@+id/space_margin_top"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    app:layout_constraintLeft_toRightOf="@id/progressbar_stepcount_detail" />
-
-                <Space
-                    android:id="@+id/space_margin_between"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    app:layout_constraintLeft_toRightOf="@id/progressbar_stepcount_detail"
-                    app:layout_constraintTop_toBottomOf="@id/view_pink_step_count" />
-
-                <View
-                    android:id="@+id/view_pink_step_count"
-                    android:layout_width="5dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginRight="6dp"
-                    android:layout_marginBottom="6dp"
-                    android:background="@drawable/calories_stepcount_background_bar"
-                    app:layout_constraintLeft_toRightOf="@id/progressbar_stepcount_detail"
-                    app:layout_constraintTop_toBottomOf="@id/space_margin_top" />
-
-                <TextView
-                    android:id="@+id/kcal_burn_text_step_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/calories_burned"
-                    app:layout_constraintLeft_toRightOf="@id/view_pink_step_count"
-                    app:layout_constraintTop_toBottomOf="@id/space_margin_top" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="5dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:text="@string/_789_kcal"
-                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                    app:layout_constraintLeft_toRightOf="@id/view_pink_step_count"
-                    app:layout_constraintTop_toBottomOf="@id/kcal_burn_text_step_count" />
-
-
-                <View
-                    android:id="@+id/view_blue_step_count"
-                    android:layout_width="5dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="6dp"
-                    android:background="@drawable/tab_item_background"
-                    android:backgroundTint="#87a3f8"
-                    app:layout_constraintLeft_toRightOf="@id/progressbar_stepcount_detail"
-                    app:layout_constraintTop_toBottomOf="@id/space_margin_between" />
-
-                <TextView
-                    android:id="@+id/distance_text_view_step_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/distances"
-                    app:layout_constraintLeft_toRightOf="@id/view_blue_step_count"
-                    app:layout_constraintTop_toBottomOf="@id/space_margin_between" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:text="@string/_7_89_km"
-                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                    app:layout_constraintLeft_toRightOf="@id/view_pink_step_count"
-                    app:layout_constraintTop_toBottomOf="@id/distance_text_view_step_count" />
-
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_gym"
+                    app:layout_constraintTop_toBottomOf="@id/step_count_text"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
         <FrameLayout
             android:layout_width="match_parent"
