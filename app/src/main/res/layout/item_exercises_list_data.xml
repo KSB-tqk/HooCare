@@ -3,16 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:translationZ="20dp"
     android:layout_margin="20dp">
 
-    <pl.droidsonroids.gif.GifImageView
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/exercises_gif_image"
+    <FrameLayout
+        android:id="@+id/exercises_video_frame"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/jumping_jack_list_data_item" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <VideoView
+            android:id="@+id/exercises_video"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:clickable="false" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/exercises_workout_title"
@@ -24,8 +32,8 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/exercises_gif_image"
-        app:layout_constraintTop_toTopOf="@id/exercises_gif_image" />
+        app:layout_constraintStart_toEndOf="@id/exercises_video_frame"
+        app:layout_constraintTop_toTopOf="@id/exercises_video_frame" />
 
     <TextView
         android:id="@+id/exercises_workout_duration"

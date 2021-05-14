@@ -34,8 +34,9 @@
                         android:id="@+id/button_backtohomefrag"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
+                        android:layout_centerVertical="true"
                         android:contentDescription="@string/back_button_contentDes"
-                        android:src="@drawable/back_arrow_icon_list_data" />
+                        android:src="@drawable/back_image_button_anim" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -57,11 +58,13 @@
                             app:layout_constraintRight_toRightOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <Space
+                    <ImageView
                         android:id="@+id/blank_space"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_alignParentEnd="true" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/more_image_button_anim" />
                 </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
@@ -79,40 +82,154 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10dp">
+                android:layout_marginTop="15dp"
+                android:paddingBottom="20dp">
+
+                <LinearLayout
+                    android:id="@+id/calender_icon_linear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                    <ImageView
+                        android:id="@+id/calender_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/calendar_icon"
+                        app:layout_constraintRight_toLeftOf="@id/date_time_text" />
+
+                    <TextView
+                        android:id="@+id/date_time_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12 November"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/calender_icon"
+                        app:layout_constraintRight_toRightOf="@id/step_count_text"
+                        app:layout_constraintTop_toTopOf="@id/calender_icon" />
+                </LinearLayout>
+
                 <ImageView
-                    android:id="@+id/calender_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/calendar_icon"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    android:id="@+id/right_arrow_datetime"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/left_arrow_datetime_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/calender_icon_linear"
+                    app:layout_constraintRight_toLeftOf="@id/calender_icon_linear"
+                    app:layout_constraintTop_toTopOf="@id/calender_icon_linear" />
+
+                <ImageView
+                    android:id="@+id/left_arrow_datetime"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/right_arrow_datetime_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/calender_icon_linear"
+                    app:layout_constraintLeft_toRightOf="@id/calender_icon_linear"
+                    app:layout_constraintTop_toTopOf="@id/calender_icon_linear" />
+
                 <TextView
                     android:id="@+id/step_count_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/calender_icon"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:text="7500"
                     android:textSize="40sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/calender_icon_linear" />
+
+                <LinearLayout
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/step_count_label_background"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/step_count_text"
+                    app:layout_constraintTop_toTopOf="@id/step_count_text">
+
+                    <TextView
+                        android:id="@+id/km_step_count_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="2.5"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/km_step_count_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="KM"
+                        android:textColor="@color/lime_200"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/step_count_label_background"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    app:layout_constraintLeft_toRightOf="@id/step_count_text"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/step_count_text">
+
+                    <TextView
+                        android:id="@+id/kcal_step_count_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="650"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/kcal_step_count_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="KCAL"
+                        android:textColor="@color/lime_200"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_gym"
-                    app:layout_constraintTop_toBottomOf="@id/step_count_text"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_running_cardview"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@id/step_count_text"
+                    app:tint="@color/lime_200" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="23dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/tab_background">
 
             <LinearLayout
@@ -180,9 +297,10 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/step_count_barchart_viewPager2"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/uptop_linearlayout">
-
+        android:paddingBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@id/uptop_linearlayout"
+        app:layout_constraintBottom_toBottomOf="parent">
     </androidx.viewpager2.widget.ViewPager2>
 </androidx.constraintlayout.widget.ConstraintLayout>
