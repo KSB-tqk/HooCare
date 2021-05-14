@@ -53,5 +53,6 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+    implementation 'com.gelitenight.waveview:waveview:1.0.0'
     compile 'com.github.john990:WaveView:v0.9'
 }
