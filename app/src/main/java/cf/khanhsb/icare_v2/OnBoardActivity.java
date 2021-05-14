@@ -54,13 +54,13 @@ public class OnBoardActivity extends Activity {
         List<OnboardingItem> onboardingItems = new ArrayList<>();
         //1
         OnboardingItem itemFeature1 = new OnboardingItem();
-        itemFeature1.setImage(R.drawable.imageonboard1);
+        itemFeature1.setImage(R.drawable.onboard1);
         //2
         OnboardingItem itemFeature2 = new OnboardingItem();
-        itemFeature2.setImage(R.drawable.imageonboard2);
+        itemFeature2.setImage(R.drawable.onboard2);
         //3
         OnboardingItem itemFeature3 = new OnboardingItem();
-        itemFeature3.setImage(R.drawable.imageonboard3);
+        itemFeature3.setImage(R.drawable.onboard3);
         //
         onboardingItems.add(itemFeature1);
         onboardingItems.add(itemFeature2);

@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-        android:id="@+id/youtube_player_view_viewpager"
+    android:layout_height="match_parent">
+
+    <VideoView
+        android:id="@+id/video_view_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:focusable="false"
+        android:layout_centerInParent="true"
+        android:focusableInTouchMode="false"
+        android:clickable="false" />
+    <ProgressBar
+        android:id="@+id/progress_item_viewpager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gif_anim_view_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/gif_test_image_anim_exer_viewpager"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:src="@drawable/gif_test_image_anim_exer_viewpager" />
+</RelativeLayout>

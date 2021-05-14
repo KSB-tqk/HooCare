@@ -1,5 +1,6 @@
 package cf.khanhsb.icare_v2;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.Image;
@@ -19,8 +20,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubePlayerView;
 
-public class List_Data_Activity extends AppCompatActivity {
+public class List_Data_Activity extends YouTubeBaseActivity {
     private ImageView workoutImage, backButton, moreButton, favButton;
     private TextView workoutTitle, workoutTime, exerciseTitle, exerciseDurationValue,
             exerciseDurationText,animTitle,videoTitle,focusArea,workoutBigTitle,
@@ -29,6 +32,7 @@ public class List_Data_Activity extends AppCompatActivity {
     private ConstraintLayout bottomSheetContainer,selectedBackground;
     private ViewPager2 viewPager2;
     private AnimExerViewPagerAdapter animExerViewPagerAdapter;
+
 
     /**
      * animation exercise listview
@@ -54,11 +58,21 @@ public class List_Data_Activity extends AppCompatActivity {
             "20",
             "20",
             "20"};
-    private int[] gymListImage = {R.drawable.jumping_jack_list_data_item,
-            R.drawable.jumping_jack_list_data_item,
-            R.drawable.jumping_jack_list_data_item,
-            R.drawable.jumping_jack_list_data_item,
-            R.drawable.jumping_jack_list_data_item};
+    private String[] videoUri = {"https://firebasestorage.googleapis.com/v0/b/" +
+            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
+            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
+            ,"https://firebasestorage.googleapis.com/v0/b/" +
+                    "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
+                    "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
+            ,"https://firebasestorage.googleapis.com/v0/b/" +
+            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
+            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
+            ,"https://firebasestorage.googleapis.com/v0/b/" +
+            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
+            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
+            ,"https://firebasestorage.googleapis.com/v0/b/" +
+            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
+            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"};
     /**
      * animation exercise listview
      */
@@ -69,13 +83,24 @@ public class List_Data_Activity extends AppCompatActivity {
             R.drawable.gif_test_image_anim_exer_viewpager,
             R.drawable.gif_test_image_anim_exer_viewpager,
             R.drawable.gif_test_image_anim_exer_viewpager};
-    private String[] videoId = {"w0yjlVqfgyU",
-            "obc8bQWANvM",
-            "uYr7rhV0qpo",
-            "qclZKbBCyWA",
-            "HwLOdOmXcrI"};
+    private String[] videoId = {"https://firebasestorage.googleapis.com/v0/b/icare-v2.appspot." +
+            "com/o/RPReplay_Final1620553802.mp4?alt=media&token=" +
+            "07f04fe8-d6a8-4486-8d35-4b1bcb7d7f40"
+            ,"https://firebasestorage.googleapis.com/v0/b/icare-v2.appspot." +
+            "com/o/RPReplay_Final1620553802.mp4?alt=media&token=" +
+            "07f04fe8-d6a8-4486-8d35-4b1bcb7d7f40"
+            ,"https://firebasestorage.googleapis.com/v0/b/icare-v2.appspot." +
+            "com/o/RPReplay_Final1620553802.mp4?alt=media&token=" +
+            "07f04fe8-d6a8-4486-8d35-4b1bcb7d7f40"
+            ,"https://firebasestorage.googleapis.com/v0/b/icare-v2" +
+            ".appspot.com/o/How%20to%20Do-%20JUMPING%20JACKS" +
+            ".mp4?alt=media&token=59670c54-a15f-4281-b980-79f9adf5bd03"
+            ,"https://firebasestorage.googleapis.com/v0/b/icare-v2.appspot." +
+            "com/o/RPReplay_Final1620553802.mp4?alt=media&token=" +
+            "07f04fe8-d6a8-4486-8d35-4b1bcb7d7f40"};
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,14 +135,13 @@ public class List_Data_Activity extends AppCompatActivity {
         workoutTime.setText(intent.getStringExtra("workoutTime"));
         focusArea.setText(intent.getStringExtra("focusBodyPart"));
         workoutBigTitle.setText(intent.getStringExtra("focusBodyPart"));
-        exerciseCount.setText("("+String.valueOf(anim_exer_ListText.length)+")");
+        exerciseCount.setText("("+ anim_exer_ListText.length +")");
 
-        Lifecycle lifecycle = this.getLifecycle();
 
         /**setting up animation exercise listview*/
         listView = findViewById(R.id.list_view_list_data);
         AnimExerListViewAdapter animExerListViewAdapter = new AnimExerListViewAdapter(this,
-                R.layout.item_exercises_list_data, gymListImage, anim_exer_ListTitle, anim_exer_ListText);
+                R.layout.item_exercises_list_data, videoUri , anim_exer_ListTitle, anim_exer_ListText);
         listView.setAdapter(animExerListViewAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -130,7 +154,6 @@ public class List_Data_Activity extends AppCompatActivity {
                                 bottomSheetContainer,
                                 false
                         );
-
                 exerciseTitle = bottomSheetView.findViewById(R.id.title_animation_exercise);
                 exerciseDurationText = bottomSheetView.findViewById(R.id.text_animation_exercise);
                 exerciseDurationValue = bottomSheetView.findViewById(R.id.duration_value_text);
@@ -140,7 +163,9 @@ public class List_Data_Activity extends AppCompatActivity {
                 selectedBackground =  bottomSheetView.findViewById(R.id.tab_animation_view);
 
                 /**setting up viewpager in animaiton exercise*/
-                animExerViewPagerAdapter = new AnimExerViewPagerAdapter(gymViewPagerImage,videoId,lifecycle);
+                animExerViewPagerAdapter = new AnimExerViewPagerAdapter(gymViewPagerImage,videoId
+                        ,position
+                        ,bottomSheetView.getContext());
                 viewPager2 = bottomSheetView.findViewById(R.id.animation_exercise_viewPager);
                 viewPager2.setAdapter(animExerViewPagerAdapter);
 

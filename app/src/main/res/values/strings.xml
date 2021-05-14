@@ -80,7 +80,7 @@
     <string name="floating_image">floating image</string>
     <string name="walk_label">Walk</string>
     <string name="walk_icon">walk icon</string>
-
+    <string name="username">UserName</string>
     <string name="good_morning_label">Good Morning ,</string>
     <string name="workout_count">5 Workouts</string>
     <string name="beginner_label">Beginner</string>
@@ -150,4 +150,15 @@
     <string name="username4">Username4</string>
     <string name="_04">04</string>
     <string name="_76">76</string>
+    <string name="intermediate_label">Intermediate</string>
+    <string name="advanced_label">Advanced</string>
+    <string name="steps_label">STEPS</string>
+    <string name="_2000_ml">(~2000 ml)</string>
+    <string name="_8_cups">8 cups </string>
+    <string name="most_people_need">Most people need </string>
+    <string name="done">Done</string>
+    <string name="plus_button">plus button</string>
+    <string name="set_your_daily_goal">SET YOUR DAILY GOAL</string>
+    <string name="cups">Cups</string>
+    <string name="a_day">a day.</string>
 </resources>
