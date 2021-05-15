@@ -41,7 +41,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@id/blank_space"
+                        android:layout_toStartOf="@id/more_menu_stepcount"
                         android:layout_toEndOf="@id/button_backtohomefrag">
 
                         <TextView
@@ -59,7 +59,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <ImageView
-                        android:id="@+id/blank_space"
+                        android:id="@+id/more_menu_stepcount"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentEnd="true"

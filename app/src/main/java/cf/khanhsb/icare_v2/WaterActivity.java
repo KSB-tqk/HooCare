@@ -87,11 +87,8 @@ public class WaterActivity extends AppCompatActivity {
         drinkWater.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProgressBarAnimation animWaterProgress = new ProgressBarAnimation(progressBar,
-                        1,
-                        25);
-                animWaterProgress.setDuration(1000);
                 waterHasDrink += 25;
+                waveView.setProgress(waterHasDrink);
             }
         });
 
