@@ -130,9 +130,9 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                         btmNav.getMenu().findItem(R.id.nav_archie).setChecked(true);
                         toolBarTitle.setText(getString(R.string.ArchieveFragTitle));
-                        toolBarTitle.setTextColor(Color.WHITE);
-                        toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
-                        toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
+                        toolBarTitle.getBackground().setTint(Color.WHITE);
+                        toolBarTitle.setTextColor(getResources().getColor(R.color.lime_200));
+                        toolBarImageView.setColorFilter(Color.WHITE);
                         toolbar.setBackground(getDrawable(R.color.transparent));
                         break;
                     case 2:
