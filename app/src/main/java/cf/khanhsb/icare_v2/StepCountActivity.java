@@ -34,7 +34,6 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_step_count);
 
         /**assign variable*/
-        
         statusOfProgressBar = (TextView) findViewById(R.id.progressbar_status);
         day_tab = (TextView) findViewById(R.id.text_item1);
         week_tab = (TextView) findViewById(R.id.text_item2);

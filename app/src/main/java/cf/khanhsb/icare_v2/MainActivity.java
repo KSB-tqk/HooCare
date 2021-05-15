@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean isGymFragment = false;
     private FirebaseAuth mAuth;
     private SlidingRootNav slidingRootNav;
+    private LinearLayout logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +184,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mAuth = FirebaseAuth.getInstance();
+        logout = findViewById(R.id.linearlogout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                startActivity(new Intent(MainActivity.this,SigninActivity.class));
+                finish();
+            }
+        });
     }
 
 
@@ -204,15 +215,8 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_gym:
                             viewPager.setCurrentItem(3);
                             break;
-
                     }
                     return true;
                 }
             };
-    /*@Override
-    public void Logout(View view) {
-        mAuth.signOut();
-        startActivity(new Intent(MainActivity.this,SigninActivity.class));
-        finish();
-    }*/
 }
