@@ -3,6 +3,7 @@ package cf.khanhsb.icare_v2;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ public class WaterActivity extends AppCompatActivity {
     private AppCompatButton drinkWater;
     private ConstraintLayout bottomSheetContainer;
     private ProgressBar progressBar;
+    private TextView statusOfProgressBar, day_tab, week_tab, month_tab, select_background;
     private TextView numberOfCups_text_view, doneButton, dailyWaterGoal_text_view;
     private static final String realNumOfCup = "MyGoal";
 
@@ -42,6 +44,10 @@ public class WaterActivity extends AppCompatActivity {
         moreButton = findViewById(R.id.more_menu_waterfrag);
         bottomSheetContainer = findViewById(R.id.bottom_sheet_container_water_frag);
         dailyWaterGoal_text_view = findViewById(R.id.water_daily_goal_text);
+        day_tab = (TextView) findViewById(R.id.text_item1_water_act);
+        week_tab = (TextView) findViewById(R.id.text_item2_water_act);
+        month_tab = (TextView) findViewById(R.id.text_item3_water_act);
+        select_background = (TextView) findViewById(R.id.selected_background_tab_water_act);
 
         SharedPreferences sharedPreferences = getSharedPreferences(
                 realNumOfCup, MODE_PRIVATE);
@@ -100,7 +106,7 @@ public class WaterActivity extends AppCompatActivity {
                     numberOfCups_text_view.setText(String.valueOf(sharedPreferences.getInt("dailyWaterGoal", 0)));
                 }
                 progressBar.setMax(12000);
-                progressBar.setProgress(sharedPreferences.getInt("dailyWaterGoal", 0)*1000);
+                progressBar.setProgress(sharedPreferences.getInt("dailyWaterGoal", 0) * 1000);
 
                 plusButton.setOnClickListener(new OnClickListener() {
                     @Override
@@ -154,6 +160,41 @@ public class WaterActivity extends AppCompatActivity {
                 });
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
+            }
+        });
+
+        day_tab.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                select_background.animate().x(0).setDuration(200);
+                day_tab.setTextColor(Color.WHITE);
+                    /*verticalViewPager2.setCurrentItem(0);
+                    week_tab.setTextColor(def_color);
+                    month_tab.setTextColor(def_color);*/
+            }
+        });
+
+        week_tab.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int size = week_tab.getWidth();
+                select_background.animate().x(size).setDuration(200);
+                week_tab.setTextColor(Color.WHITE);
+                    /*verticalViewPager2.setCurrentItem(1);
+                    day_tab.setTextColor(def_color);
+                    month_tab.setTextColor(def_color);*/
+            }
+        });
+
+        month_tab.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int size0fMonthTab = month_tab.getWidth() * 2;
+                select_background.animate().x(size0fMonthTab).setDuration(200);
+                month_tab.setTextColor(Color.WHITE);
+                    /*verticalViewPager2.setCurrentItem(2);
+                    day_tab.setTextColor(def_color);
+                    week_tab.setTextColor(def_color);*/
             }
         });
     }

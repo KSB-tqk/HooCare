@@ -75,13 +75,13 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
 
         /**create bardata and add bardataset to bardata*/
         ArrayList<String> daylist = new ArrayList<String>() ;
-        daylist.add("mon");
-        daylist.add("tue");
-        daylist.add("wed");
-        daylist.add("thur");
-        daylist.add("fri");
-        daylist.add("sat");
-        daylist.add("sun");
+        daylist.add("Mon");
+        daylist.add("Tue");
+        daylist.add("Wed");
+        daylist.add("Thur");
+        daylist.add("Fri");
+        daylist.add("Sat");
+        daylist.add("Sun");
 
         //initialize testadapter
         adapter = new BarChartAdapter(dataValue,daylist);
