@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 
@@ -22,7 +24,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     //initialize variable
     private ArrayList<BarEntry> dataValue = new ArrayList<BarEntry>();
     private ProgressBar progressBar;
-    private ImageView backtohomefrag_button;
+    private ImageView backtohomefrag_button,more_menu_button;
     private TextView statusOfProgressBar, day_tab, week_tab, month_tab, select_background;
     private ColorStateList def_color;
     private ViewPager2 verticalViewPager2;
@@ -41,7 +43,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         select_background = (TextView) findViewById(R.id.selected_background_tab);
         backtohomefrag_button = (ImageView) findViewById(R.id.button_backtohomefrag);
         verticalViewPager2 = (ViewPager2) findViewById(R.id.step_count_barchart_viewPager2);
-
+        more_menu_button = (ImageView) findViewById(R.id.more_menu_stepcount);
 
 
         /**set tabview onclick listener*/
@@ -58,6 +60,21 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
                 Intent toMain = new Intent(StepCountActivity.this,MainActivity.class);
                 startActivity(toMain);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            }
+        });
+
+        more_menu_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
+                        StepCountActivity.this,
+                        R.style.BottomSheetDialogTheme);
+                View bottomSheetView = LayoutInflater.from(getApplicationContext())
+                        .inflate(
+                                R.layout.bottom_sheet_dialog_waterfrag,
+                                bottomSheetContainer,
+                                false
+                        );*/
             }
         });
 
