@@ -34,7 +34,6 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_step_count);
 
         /**assign variable*/
-        
         statusOfProgressBar = (TextView) findViewById(R.id.progressbar_status);
         day_tab = (TextView) findViewById(R.id.text_item1);
         week_tab = (TextView) findViewById(R.id.text_item2);
@@ -75,13 +74,13 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
 
         /**create bardata and add bardataset to bardata*/
         ArrayList<String> daylist = new ArrayList<String>() ;
-        daylist.add("mon");
-        daylist.add("tue");
-        daylist.add("wed");
-        daylist.add("thur");
-        daylist.add("fri");
-        daylist.add("sat");
-        daylist.add("sun");
+        daylist.add("Mon");
+        daylist.add("Tue");
+        daylist.add("Wed");
+        daylist.add("Thur");
+        daylist.add("Fri");
+        daylist.add("Sat");
+        daylist.add("Sun");
 
         //initialize testadapter
         adapter = new BarChartAdapter(dataValue,daylist);

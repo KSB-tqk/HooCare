@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 public class ArchieveFragment extends Fragment {
@@ -37,16 +38,23 @@ public class ArchieveFragment extends Fragment {
 
         dailyclaim_button=(Button) rootView.findViewById(R.id.dailyclaim_button);
         rankclaim_button=(Button) rootView.findViewById(R.id.rankclaim_button);
+
         rankclaim_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rankclaim_button.setBackgroundColor(Color.GRAY);
+                rankclaim_button.setText("Claimed");
+                rankclaim_button.setTextColor(Color.BLACK);
             }
         });
         dailyclaim_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 dailyclaim_button.setBackgroundColor(Color.GRAY);
+                dailyclaim_button.setText("Claimed");
+                dailyclaim_button.setTextColor(Color.BLACK);
             }
         });
 

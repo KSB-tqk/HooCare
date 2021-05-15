@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean isGymFragment = false;
     private FirebaseAuth mAuth;
     private SlidingRootNav slidingRootNav;
+    private LinearLayout logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,9 +131,9 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                         btmNav.getMenu().findItem(R.id.nav_archie).setChecked(true);
                         toolBarTitle.setText(getString(R.string.ArchieveFragTitle));
-                        toolBarTitle.setTextColor(Color.WHITE);
-                        toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
-                        toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
+                        toolBarTitle.getBackground().setTint(Color.WHITE);
+                        toolBarTitle.setTextColor(getResources().getColor(R.color.lime_200));
+                        toolBarImageView.setColorFilter(Color.WHITE);
                         toolbar.setBackground(getDrawable(R.color.transparent));
                         break;
                     case 2:
@@ -183,6 +184,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mAuth = FirebaseAuth.getInstance();
+        logout = findViewById(R.id.linearlogout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                startActivity(new Intent(MainActivity.this,SigninActivity.class));
+                finish();
+            }
+        });
     }
 
 
@@ -204,11 +215,11 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_gym:
                             viewPager.setCurrentItem(3);
                             break;
-
                     }
                     return true;
                 }
             };
+
     public void Logout(View view) {
         mAuth.signOut();
         startActivity(new Intent(MainActivity.this,SigninActivity.class));
