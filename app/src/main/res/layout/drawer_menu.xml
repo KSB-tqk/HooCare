@@ -168,13 +168,12 @@
 
         <Space
             android:layout_width="wrap_content"
-            android:layout_height="100dp"></Space>
+            android:layout_height="100dp"/>
 
         <LinearLayout
             android:id="@+id/linearlogout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="Logout">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -184,15 +183,15 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/nav_menu_logout_icon"></ImageView>
+                    android:src="@drawable/nav_menu_logout_icon"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
                     android:text="Log Out"
-                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"></TextView>
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

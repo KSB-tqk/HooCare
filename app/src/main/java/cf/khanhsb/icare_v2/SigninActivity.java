@@ -44,6 +44,7 @@ public class SigninActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SigninActivity.this,ResetPWActivity.class));
+                finish();
             }
         });
         //Move to sign up
@@ -51,6 +52,7 @@ public class SigninActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SigninActivity.this,SignupActivity.class));
+                finish();
             }
         });
 
