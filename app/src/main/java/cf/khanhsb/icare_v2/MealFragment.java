@@ -48,8 +48,8 @@ public class MealFragment extends Fragment {
         backgroundView = new ArrayList<Drawable>();
         titles.add("BreakFast");
         titles.add("Lunch");
-        titles.add("Dinner");
         titles.add("Snake");
+        titles.add("Dinner");
         detailOfMeals.add("Bread, \nDimsum, \nNoodle");
         detailOfMeals.add("Rice, \nMeat, \nEgg");
         detailOfMeals.add("Rice, \nMeat, \nVegetable");
@@ -58,14 +58,14 @@ public class MealFragment extends Fragment {
         kcalOfMeal.add("405");
         kcalOfMeal.add("615");
         kcalOfMeal.add("375");
-        icons.add(R.drawable.fire);
-        icons.add(R.drawable.fire);
-        icons.add(R.drawable.fire);
-        icons.add(R.drawable.fire);
+        icons.add(R.drawable.breakfast_meal_icon);
+        icons.add(R.drawable.lucnch_meal_icon);
+        icons.add(R.drawable.snake_meal_icon);
+        icons.add(R.drawable.dinner_meal_icon);
         backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_image));
-        backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_image));
-        backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_image));
-        backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_image));
+        backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_lunch));
+        backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_dinner));
+        backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_snake));
 
         mealPlanData = new MealPlanData(titles,detailOfMeals,kcalOfMeal,icons,backgroundView);
 
