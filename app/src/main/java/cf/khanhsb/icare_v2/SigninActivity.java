@@ -2,10 +2,12 @@ package cf.khanhsb.icare_v2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ public class SigninActivity extends AppCompatActivity {
     private TextView mHaveNoAccount;
     private Button signinButton;
     private TextView mForgotpass;
+    private RelativeLayout mProgressbarAuth;
     //
     private FirebaseAuth mAuth;
 
@@ -37,6 +40,7 @@ public class SigninActivity extends AppCompatActivity {
         mHaveNoAccount = findViewById(R.id.jumptosignup);
         signinButton = findViewById(R.id.btSignin);
         mForgotpass = findViewById(R.id.forgotpass);
+        mProgressbarAuth = findViewById(R.id.progressbarauth);
         //
         mAuth = FirebaseAuth.getInstance();
         //Move to resetpass
@@ -61,6 +65,14 @@ public class SigninActivity extends AppCompatActivity {
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mProgressbarAuth.setVisibility(View.VISIBLE);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgressbarAuth.setVisibility(View.INVISIBLE);
+                    }
+                }, 5000);
                 loginUser();
             }
         });

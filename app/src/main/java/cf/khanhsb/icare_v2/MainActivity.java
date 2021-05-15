@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mAuth = FirebaseAuth.getInstance();
         /**settting up bottom nav*/
         BottomNavigationView btmNav = findViewById(R.id.bottom_nav);
         btmNav.setBackground(null);
@@ -219,4 +219,10 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    public void Logout(View view) {
+        mAuth.signOut();
+        startActivity(new Intent(MainActivity.this,SigninActivity.class));
+        finish();
+    }
 }

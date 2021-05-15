@@ -3,10 +3,12 @@ package cf.khanhsb.icare_v2;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ public class SignupActivity extends Activity {
     private EditText mEmail, mPass, mName, mUsername;
     private TextView mHaveAccount;
     private Button signupButton;
+    private RelativeLayout mProgressbarAuth;
     //
     private FirebaseAuth mAuth;
     private FirebaseDatabase rootNode;
@@ -39,6 +42,7 @@ public class SignupActivity extends Activity {
         mUsername = findViewById(R.id.et_username);
         mHaveAccount = findViewById(R.id.jumptosignin);
         signupButton = findViewById(R.id.btSignup);
+        mProgressbarAuth = findViewById(R.id.progressbarauth1);
         //
         mAuth = FirebaseAuth.getInstance();
         //Already have account
@@ -53,6 +57,14 @@ public class SignupActivity extends Activity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mProgressbarAuth.setVisibility(View.VISIBLE);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgressbarAuth.setVisibility(View.INVISIBLE);
+                    }
+                }, 5000);
                 createUser();
             }
         });

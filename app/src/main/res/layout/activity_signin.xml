@@ -9,15 +9,33 @@
     tools:context=".SignupActivity"
     android:background="@drawable/signin">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="176dp"
         android:layout_marginBottom="25dp"
         android:fontFamily="cursive"
         android:paddingVertical="70dp"
         android:textAlignment="center"
         android:textColor="#000"
-        android:textSize="30dp" />
+        android:textSize="30dp">
+
+        <RelativeLayout
+            android:id="@+id/progressbarauth"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/whitecircle"
+            android:elevation="8dp"
+            android:visibility="invisible">
+
+            <ProgressBar
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 
     <EditText
         android:layout_width="match_parent"
