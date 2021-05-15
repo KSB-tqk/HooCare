@@ -1,16 +1,18 @@
 package cf.khanhsb.icare_v2;
 
+import android.app.AppComponentFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 
 public class ArchieveFragment extends Fragment {
@@ -21,7 +23,6 @@ public class ArchieveFragment extends Fragment {
     public ArchieveFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
