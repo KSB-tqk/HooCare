@@ -13,11 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ICare_v2">
         <activity android:name=".SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".List_Data_Activity" />
         <activity android:name=".ResetPWActivity" />
@@ -27,7 +23,13 @@
         <activity android:name=".OnBoardActivity">
         </activity>
         <activity android:name=".WaterActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

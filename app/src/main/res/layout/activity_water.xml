@@ -214,7 +214,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:progress="50"
+                app:progress="0"
                 app:wave_height="large"
                 app:wave_hz="normal"
                 app:wave_length="middle" />

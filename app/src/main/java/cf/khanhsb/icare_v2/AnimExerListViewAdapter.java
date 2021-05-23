@@ -65,7 +65,6 @@ public class AnimExerListViewAdapter extends BaseAdapter {
         holder.exerciseTitle.setText(title[position]);
         holder.videoView.requestFocus();
         holder.videoView.setVideoURI(Uri.parse(videoUri[position]));
-        holder.videoView.start();
         holder.videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -75,7 +74,7 @@ public class AnimExerListViewAdapter extends BaseAdapter {
         holder.videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                holder.frameLayout.setVisibility(View.VISIBLE);
+                mp.setLooping(true);
             }
         });
         holder.videoView.start();
