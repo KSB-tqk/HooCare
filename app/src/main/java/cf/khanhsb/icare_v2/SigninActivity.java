@@ -89,7 +89,9 @@ public class SigninActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(SigninActivity.this,MainActivity.class));
+                                Intent intent = new Intent(SigninActivity.this,MainActivity.class);
+                                intent.putExtra("userEmail",email);
+                                startActivity(intent);
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {

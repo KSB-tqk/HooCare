@@ -56,7 +56,7 @@
     <string name="next_workout">Next workout</string>
     <string name="classic_workouts_label">Classic Workouts</string>
     <string name="for_today_label">For Today</string>
-    <string name="step_num_label">7500</string>
+    <string name="step_num_label">0</string>
     <string name="step_text_label">steps</string>
     <string name="calories_label">Calories</string>
     <string name="fire_icon">Fire icon</string>
@@ -160,4 +160,8 @@
     <string name="cups">Cups</string>
     <string name="a_day">a day.</string>
     <string name="_8">8</string>
+    <string name="set_up_goal">SET A GOAL</string>
+    <string name="_12_november">12 November</string>
+    <string name="recommend">Recommend</string>
+    <string name="custom">Custom</string>
 </resources>

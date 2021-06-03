@@ -65,6 +65,9 @@ public class WaterActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(
                 realNumOfCup, MODE_PRIVATE);
 
+        Intent infoIntent = getIntent();
+        String userEmail = infoIntent.getStringExtra("userEmail");
+
         int dailyWaterGoal = sharedPreferences.getInt("dailyWaterGoal", 0);
         if (dailyWaterGoal == 0) {
             dailyWaterGoal_text_view.setText("Set up your goal");
@@ -79,6 +82,7 @@ public class WaterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent toMain = new Intent(WaterActivity.this, MainActivity.class);
+                toMain.putExtra("userEmail",userEmail);
                 startActivity(toMain);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }

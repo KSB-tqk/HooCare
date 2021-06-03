@@ -6,8 +6,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
-    public ViewPagerAdapter(@NonNull FragmentManager fm) {
+
+    private String userEmail;
+    public ViewPagerAdapter(@NonNull FragmentManager fm,String email) {
         super(fm);
+        this.userEmail = email;
     }
 
     @NonNull
@@ -15,7 +18,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new HomeFragment();
+                return new HomeFragment(userEmail);
             case 1:
                 return new ArchieveFragment();
             case 2:
