@@ -73,9 +73,13 @@ public class MainActivity extends AppCompatActivity {
         toolBarTitle = findViewById(R.id.tool_bar_title);
         toolBarImageView = findViewById(R.id.nav_menu_icon);
 
+        /**getting intent*/
+        Intent intent = getIntent();
+        String userEmail = intent.getStringExtra("userEmail");
+
         /**setting up viewpager*/
         viewPager = findViewById(R.id.view_pager);
-        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),userEmail);
         viewPager.setAdapter(mViewPagerAdapter);
 
         /**setting up nav drawer*/
@@ -99,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView openNavMenuButton = (ImageView) findViewById(R.id.nav_menu_icon);
 
         /**sliding between fragment and activity*/
-        Intent intent = getIntent();
         int fragmentPosition = intent.getIntExtra("fragmentPosition",0);
         viewPager.setCurrentItem(fragmentPosition);
         if(fragmentPosition==3){

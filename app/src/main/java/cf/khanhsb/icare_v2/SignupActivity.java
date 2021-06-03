@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -16,11 +17,17 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends Activity {
     private EditText mEmail, mPass, mName, mUsername;
@@ -30,6 +37,7 @@ public class SignupActivity extends Activity {
     //
     private FirebaseAuth mAuth;
     private FirebaseDatabase rootNode;
+    private FirebaseFirestore firestore;
     DatabaseReference reference;
 
     @Override
@@ -45,6 +53,7 @@ public class SignupActivity extends Activity {
         mProgressbarAuth = findViewById(R.id.progressbarauth1);
         //
         mAuth = FirebaseAuth.getInstance();
+
         //Already have account
         mHaveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +92,9 @@ public class SignupActivity extends Activity {
         reference.child(username).setValue(helperClass);
         //..................
 
+        //Set up firestore
+        firestore = FirebaseFirestore.getInstance();
+
 
         if(!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             if(!pass.isEmpty()){
@@ -90,7 +102,35 @@ public class SignupActivity extends Activity {
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                // Save user data to firestore
+                                Map<String, Object> user = new HashMap<>();
+                                user.put("name", name);
+                                user.put("email", email);
+                                user.put("weight","empty");
+                                user.put("height","empty");
+                                user.put("step_goal","empty");
+                                user.put("drink_goal","empty");
+                                user.put("calories_burn_goal","empty");
+                                user.put("sleep_goal","empty");
+                                user.put("on_screen_goal","empty");
+                                firestore.collection("users").document(email)
+                                        .set(user)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(SignupActivity.this, "Fail to save data to Firestore", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                 Toast.makeText(SignupActivity.this, "Sign Up Successfully !!", Toast.LENGTH_SHORT).show();
+                                //..........
+
                                 startActivity(new Intent(SignupActivity.this,SigninActivity.class));
                                 finish();
                             }

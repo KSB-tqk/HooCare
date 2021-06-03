@@ -146,9 +146,10 @@
                             android:indeterminateOnly="false"
                             android:progressDrawable="@drawable/circle"
                             tools:ignore="MissingConstraints"
-                            tools:progress="75" />
+                            tools:progress="0" />
 
                         <LinearLayout
+                            android:id="@+id/progressBar_homefrag_linear"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -164,6 +165,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/step_num_label"
+                                android:textSize="30sp"
+                                android:textStyle="bold"
                                 android:textColor="@color/white" />
 
                             <TextView
@@ -172,6 +175,34 @@
                                 android:text="@string/step_text_label"
                                 android:textColor="#d9d9d9" />
                         </LinearLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/setup_steps_constraint"
+                            android:layout_width="137dp"
+                            android:layout_height="136dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/progressBar_homefrag"
+                            app:layout_constraintStart_toStartOf="@+id/progressBar_homefrag"
+                            app:layout_constraintTop_toTopOf="@+id/progressBar_homefrag">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/set_up_goal"
+                                android:gravity="center"
+                                android:layout_marginBottom="5dp"
+                                android:textStyle="bold"
+                                android:textSize="15sp"
+                                android:background="@drawable/cardview_background_gradient"
+                                android:backgroundTint="@color/white"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp"
+                                android:textColor="@color/lime_100"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
