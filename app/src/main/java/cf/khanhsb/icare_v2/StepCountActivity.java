@@ -3,6 +3,7 @@ package cf.khanhsb.icare_v2;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.shawnlin.numberpicker.NumberPicker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,11 +31,13 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     private ArrayList<BarEntry> dataValue = new ArrayList<BarEntry>();
     private ProgressBar progressBar;
     private ImageView backtohomefrag_button, more_menu_button;
-    private TextView statusOfProgressBar, day_tab, week_tab, month_tab, select_background, date_time_text;
+    private TextView statusOfProgressBar, day_tab, week_tab, month_tab,
+            select_background, date_time_text,doneButtonSetGoal,recommendTitle,customTitle;
     private ColorStateList def_color;
-    private ConstraintLayout bottomSheetContainer;
-    private ViewPager2 verticalViewPager2;
-    BarChartAdapter adapter;
+    private ConstraintLayout bottomSheetContainer,selectedBackground;
+    private ViewPager2 verticalViewPager2, setGoalViewPager2;
+    private BarChartAdapter adapter;
+    private StepCountViewPagerAdapter stepCountViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
 
         Intent infoIntent = getIntent();
         String userEmail = infoIntent.getStringExtra("userEmail");
+        String step_goal = infoIntent.getStringExtra("step_goal");
 
         /**back button on the toolbar click event*/
         backtohomefrag_button.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +99,62 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
                                 bottomSheetContainer,
                                 false
                         );
+                setGoalViewPager2 = (ViewPager2) bottomSheetView
+                        .findViewById(R.id.step_count_set_goal_viewPager);
+                doneButtonSetGoal = bottomSheetView.findViewById(R.id.close_button_step_goal_set_up);
+                recommendTitle = bottomSheetView.findViewById(R.id.recommend_title);
+                customTitle = bottomSheetView.findViewById(R.id.custom_title);
+                selectedBackground =  bottomSheetView.findViewById(R.id.tab_animation_view_step_count);
+
+                stepCountViewPagerAdapter = new StepCountViewPagerAdapter(step_goal);
+                setGoalViewPager2.setAdapter(stepCountViewPagerAdapter);
+
+                setGoalViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        super.onPageSelected(position);
+                        if(position == 1){
+                            int size = customTitle.getWidth();
+                            customTitle.setTextColor(getResources().getColor(R.color.black));
+                            recommendTitle.setTextColor(Color.parseColor("#7E7E7E"));
+                            selectedBackground.animate().x(size).setDuration(200);
+                        }
+                        else {
+                            customTitle.setTextColor(Color.parseColor("#7E7E7E"));
+                            recommendTitle.setTextColor(getResources().getColor(R.color.black));
+                            selectedBackground.animate().x(0).setDuration(200);
+                        }
+                    }
+                });
+
+                customTitle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int size = customTitle.getWidth();
+                        customTitle.setTextColor(getResources().getColor(R.color.black));
+                        recommendTitle.setTextColor(Color.parseColor("#7E7E7E"));
+                        selectedBackground.animate().x(size).setDuration(200);
+                        setGoalViewPager2.setCurrentItem(1);
+                    }
+                });
+
+                recommendTitle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        customTitle.setTextColor(Color.parseColor("#7E7E7E"));
+                        recommendTitle.setTextColor(getResources().getColor(R.color.black));
+                        selectedBackground.animate().x(0).setDuration(200);
+                        setGoalViewPager2.setCurrentItem(0);
+                    }
+                });
+
+                doneButtonSetGoal.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetDialog.dismiss();
+                    }
+                });
+
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
             }

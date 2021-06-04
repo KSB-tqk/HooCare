@@ -103,7 +103,7 @@ public class HomeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), WaterActivity.class);
                 intent.putExtra("userEmail",userEmail);
                 startActivity(intent);
-                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 
@@ -114,7 +114,7 @@ public class HomeFragment extends Fragment {
                 toStepData.putExtra("userEmail",userEmail);
                 toStepData.putExtra("step_goal", step_goal);
                 startActivity(toStepData);
-                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 
