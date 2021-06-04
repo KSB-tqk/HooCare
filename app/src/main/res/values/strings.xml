@@ -164,4 +164,9 @@
     <string name="_12_november">12 November</string>
     <string name="recommend">Recommend</string>
     <string name="custom">Custom</string>
+    <string name="steps_day">steps/day</string>
+    <string name="_5000">5000</string>
+    <string name="_8000">8000</string>
+    <string name="_15000">15000</string>
+    <string name="_2500">2500</string>
 </resources>
