@@ -39,6 +39,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     private BarChartAdapter adapter;
     private StepCountViewPagerAdapter stepCountViewPagerAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
