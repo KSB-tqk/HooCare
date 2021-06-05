@@ -12,12 +12,13 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ba_cons_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:layout_margin="15dp"
             android:background="@drawable/cardview_background_gradient"
-            android:backgroundTint="@color/lime_200"
+            android:backgroundTint="#F3F2F2"
             android:orientation="vertical">
 
             <TextView
@@ -28,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:text="Become active"
                 android:layout_marginStart="25dp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -41,24 +42,28 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/ba_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_2500"
-                    android:textColor="@color/white"
+                    android:textColor="@color/lime_100"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/ba_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="@string/steps_day"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/ba_image"
+                android:visibility="gone"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:src="@drawable/check_icon_set_up_goal_stepcount"
@@ -70,6 +75,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/kf_cons_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -99,6 +105,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/kf_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_5000"
@@ -107,6 +114,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/kf_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -117,6 +125,8 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/kf_image"
+                android:visibility="gone"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:src="@drawable/check_icon_set_up_goal_stepcount"
@@ -127,6 +137,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bm_cons_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -138,7 +149,7 @@
             <TextView
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:id="@+id/boost_metabolism_title"
+                android:id="@+id/bm_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Boost metabolism"
@@ -148,14 +159,15 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                app:layout_constraintLeft_toLeftOf="@id/boost_metabolism_title"
-                app:layout_constraintTop_toBottomOf="@id/boost_metabolism_title"
+                app:layout_constraintLeft_toLeftOf="@id/bm_title"
+                app:layout_constraintTop_toBottomOf="@id/bm_title"
                 android:id="@+id/bm_linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/bm_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_8000"
@@ -164,6 +176,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/bm_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -174,6 +187,8 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/bm_image"
+                android:visibility="gone"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:src="@drawable/check_icon_set_up_goal_stepcount"
@@ -184,6 +199,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lw_cons_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -213,6 +229,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/lw_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_15000"
@@ -221,6 +238,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/lw_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -230,6 +248,8 @@
                     android:textStyle="bold" />
             </LinearLayout>
             <ImageView
+                android:id="@+id/lw_image"
+                android:visibility="gone"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:src="@drawable/check_icon_set_up_goal_stepcount"
