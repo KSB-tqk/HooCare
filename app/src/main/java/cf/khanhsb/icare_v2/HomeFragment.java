@@ -2,6 +2,7 @@ package cf.khanhsb.icare_v2;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,8 @@ import org.w3c.dom.Text;
 
 import java.util.Objects;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class HomeFragment extends Fragment {
     private LinearLayout waterCardview,stepCardView,caloCardView,sleepCardView,trainingCardView,progressBar_text;
@@ -37,7 +40,10 @@ public class HomeFragment extends Fragment {
     private FirebaseFirestore firestore;
     private String step_goal;
     private TextView statusOfProgressBar;
+    private DocumentReference docRef;
     private int numberOfStep;
+    private static final String tempEmail = "tempEmail";
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -66,8 +72,18 @@ public class HomeFragment extends Fragment {
         setupStepGoal = (ConstraintLayout) rootView.findViewById(R.id.setup_steps_constraint);
         statusOfProgressBar = (TextView) rootView.findViewById(R.id.status_of_progressbar_homefrag);
 
+        SharedPreferences sharedPreferences = this.getActivity().
+                getSharedPreferences(tempEmail,MODE_PRIVATE);
+
+
         firestore = FirebaseFirestore.getInstance();
-        DocumentReference docRef = firestore.collection("users").document(userEmail);
+        if(userEmail == null){
+            String theTempEmail = sharedPreferences.getString("Email","");
+            docRef = firestore.collection("users").document(theTempEmail);
+        }
+        else {
+            docRef = firestore.collection("users").document(userEmail);
+        }
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

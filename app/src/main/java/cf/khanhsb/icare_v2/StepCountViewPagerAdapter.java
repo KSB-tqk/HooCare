@@ -45,7 +45,7 @@ public class StepCountViewPagerAdapter extends RecyclerView.Adapter<StepCountVie
 
             if(!step_goal.equals("empty")) {
                 switch (step_goal) {
-                    case "2000":
+                    case "2500":
                         setUpBA(holder,true);
 
                 }
@@ -75,7 +75,7 @@ public class StepCountViewPagerAdapter extends RecyclerView.Adapter<StepCountVie
             holder.baImage.setVisibility(View.VISIBLE);
             Drawable constaintDrawable = holder.baConstaint.getBackground();
             constaintDrawable = DrawableCompat.wrap(constaintDrawable);
-            DrawableCompat.setTint(constaintDrawable,R.color.lime_200);
+            DrawableCompat.setTint(constaintDrawable,Color.parseColor("#58C892"));
         }
         else {
             holder.baText.setTextColor(Color.BLACK);
@@ -83,7 +83,7 @@ public class StepCountViewPagerAdapter extends RecyclerView.Adapter<StepCountVie
             holder.baTitle.setTextColor(Color.BLACK);
             Drawable constaintDrawable = holder.baConstaint.getBackground();
             constaintDrawable = DrawableCompat.wrap(constaintDrawable);
-            DrawableCompat.setTint(constaintDrawable,R.color.lime_100);
+            DrawableCompat.setTint(constaintDrawable,Color.parseColor("#F3F2F2"));
             holder.baImage.setVisibility(View.GONE);
         }
     }

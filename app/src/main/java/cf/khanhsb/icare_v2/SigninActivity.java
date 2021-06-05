@@ -1,6 +1,7 @@
 package cf.khanhsb.icare_v2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Patterns;
@@ -27,6 +28,7 @@ public class SigninActivity extends AppCompatActivity {
     private Button signinButton;
     private TextView mForgotpass;
     private RelativeLayout mProgressbarAuth;
+    private static final String tempEmail = "tempEmail";
     //
     private FirebaseAuth mAuth;
 
@@ -60,7 +62,6 @@ public class SigninActivity extends AppCompatActivity {
             }
         });
 
-
         //Move to sign after sign up
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +82,8 @@ public class SigninActivity extends AppCompatActivity {
     private void loginUser(){
         String email = mEmail.getText().toString();
         String pass = mPass.getText().toString();
+        SharedPreferences sharedPreferences = getSharedPreferences(
+                tempEmail, MODE_PRIVATE);
 
         if(!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             if(!pass.isEmpty()){
@@ -91,6 +94,10 @@ public class SigninActivity extends AppCompatActivity {
                                 Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(SigninActivity.this,MainActivity.class);
                                 intent.putExtra("userEmail",email);
+                                SharedPreferences.Editor editor;
+                                editor = sharedPreferences.edit();
+                                editor.putString("Email", email);
+                                editor.apply();
                                 startActivity(intent);
                                 finish();
                             }
