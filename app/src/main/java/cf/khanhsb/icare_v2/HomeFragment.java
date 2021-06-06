@@ -93,12 +93,13 @@ public class HomeFragment extends Fragment {
                         step_goal = document.getString("step_goal");
                         Log.i("LOGGER","Here it is "+document.getString("step_goal"));
                         if("empty".equals(step_goal)) {
-                            statusOfProgressBar.setText("0");
+                            statusOfProgressBar.setText("");
+                            setupStepGoal.setVisibility(View.VISIBLE);
                         }
                         else {
                             setupStepGoal.setVisibility(View.GONE);
-                            statusOfProgressBar.setText(step_goal);
-                            numberOfStep = Integer.parseInt(step_goal);
+                            statusOfProgressBar.setText("/"+step_goal);
+                            numberOfStep = Integer.parseInt("0");
                         }
                         progressBar.setMax(10000);
                         ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 0, numberOfStep);

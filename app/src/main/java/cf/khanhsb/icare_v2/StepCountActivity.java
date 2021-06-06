@@ -1,6 +1,7 @@
 package cf.khanhsb.icare_v2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -38,6 +39,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     private ViewPager2 verticalViewPager2, setGoalViewPager2;
     private BarChartAdapter adapter;
     private StepCountViewPagerAdapter stepCountViewPagerAdapter;
+    private static final String tempEmail = "tempEmail";
 
 
     @Override
@@ -77,6 +79,8 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         String userEmail = infoIntent.getStringExtra("userEmail");
         String step_goal = infoIntent.getStringExtra("step_goal");
 
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail,MODE_PRIVATE);
+
         /**back button on the toolbar click event*/
         backtohomefrag_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +111,9 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
                 customTitle = bottomSheetView.findViewById(R.id.custom_title);
                 selectedBackground =  bottomSheetView.findViewById(R.id.tab_animation_view_step_count);
 
-                stepCountViewPagerAdapter = new StepCountViewPagerAdapter(step_goal);
+                String theTempEmail = sharedPreferences.getString("Email","");
+
+                stepCountViewPagerAdapter = new StepCountViewPagerAdapter(step_goal,theTempEmail);
                 setGoalViewPager2.setAdapter(stepCountViewPagerAdapter);
 
                 setGoalViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
