@@ -6,13 +6,17 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,7 +24,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.john.waveview.WaveView;
 
 import java.util.ArrayList;
@@ -38,7 +47,10 @@ public class WaterActivity extends AppCompatActivity {
     private ColorStateList def_color;
     private TextView statusOfProgressBar, day_tab, week_tab, month_tab, select_background;
     private TextView numberOfCups_text_view, doneButton, dailyWaterGoal_text_view;
-    private static final String realNumOfCup = "MyGoal";
+    private FirebaseFirestore firestore;
+    private DocumentReference docRef;
+    private SeekBar seekBar;
+    private static final String tempEmail = "tempEmail";
     private ViewPager2 verticalViewPager2;
     BarChartAdapter adapter;
 
@@ -62,37 +74,79 @@ public class WaterActivity extends AppCompatActivity {
         verticalViewPager2 = (ViewPager2) findViewById(R.id.water_barchart_viewPager2);
         def_color = week_tab.getTextColors();
 
-        SharedPreferences sharedPreferences = getSharedPreferences(
-                realNumOfCup, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
 
-        Intent infoIntent = getIntent();
-        String userEmail = infoIntent.getStringExtra("userEmail");
+        firestore = FirebaseFirestore.getInstance();
+        docRef = firestore.collection("users").document(theTempEmail);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String temp = document.getString("drink_goal");
+                        assert temp != null;
+                        if (temp.equals("empty")) {
+                            dailyWaterGoal_text_view.setText("Set up your goal");
+                        } else {
+                            numOfCup = Integer.parseInt(temp);
+                            dailyWaterGoal_text_view.setText("of " + (numOfCup * 250 / 1000) + "L goal");
+                        }
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
 
-        int dailyWaterGoal = sharedPreferences.getInt("dailyWaterGoal", 0);
-        if (dailyWaterGoal == 0) {
-            dailyWaterGoal_text_view.setText("Set up your goal");
-        } else {
-            dailyWaterGoal_text_view.setText("of " +
-                    String.valueOf(sharedPreferences.
-                            getInt("dailyWaterGoal", 0) * 250 / 1000) +
-                    "L goal");
-        }
+        seekBar = (SeekBar) findViewById(R.id.seek_bar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                waveView.setProgress(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         backButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent toMain = new Intent(WaterActivity.this, MainActivity.class);
-                toMain.putExtra("userEmail",userEmail);
                 startActivity(toMain);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
 
+        final Handler handler = new Handler();
+
+
         drinkWater.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                waterHasDrink += 25;
-                waveView.setProgress(waterHasDrink);
+                for(int i = 0;i < 25;i++){
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
+                                    0,
+                                    25);
+                            anim.setDuration(1000);
+                            waveView.setAnimation(anim);
+                        }
+                    }, 300);
+                }
             }
         });
 
@@ -114,32 +168,37 @@ public class WaterActivity extends AppCompatActivity {
                 numberOfCups_text_view = (TextView) bottomSheetView.findViewById(R.id.num_of_cup_progress);
                 doneButton = (TextView) bottomSheetView.findViewById(R.id.close_button_animation_exercise);
 
-                if (!sharedPreferences.contains("dailyWaterGoal")) {
-                    numberOfCups_text_view.setText("8");
-                } else {
-                    numberOfCups_text_view.setText(String.valueOf(sharedPreferences.getInt("dailyWaterGoal", 0)));
-                }
                 progressBar.setMax(12000);
-                progressBar.setProgress(sharedPreferences.getInt("dailyWaterGoal", 0) * 1000);
+                progressBar.setProgress(numOfCup * 1000);
+                numberOfCups_text_view.setText(String.valueOf(numOfCup));
 
                 plusButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         numOfCup = Integer.parseInt(numberOfCups_text_view.getText().toString());
+                        if(numOfCup == 11) {
+                            plusButton.setVisibility(View.GONE);
+                        }
                         if (numOfCup < 12) {
                             numOfCup += 1;
+                            if(numOfCup == 5){
+                                minusButton.setVisibility(View.VISIBLE);
+                            }
                             numberOfCups_text_view.setText(String.valueOf(numOfCup));
+
+                            //progress bar animation
                             float progress = Float.parseFloat(String.valueOf(numOfCup)) * 1000;
                             ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
                                     progress - 1000,
                                     progress);
                             anim.setDuration(1000);
                             progressBar.startAnimation(anim);
-                            SharedPreferences.Editor editor;
-                            editor = sharedPreferences.edit();
-                            editor.putInt("dailyWaterGoal", numOfCup);
-                            editor.apply();
+
                             dailyWaterGoal_text_view.setText("of " + numOfCup * 250 / 1000 + "L goal");
+
+                            //update value
+                            firestore.collection("users").document(theTempEmail).
+                                    update("drink_goal", String.valueOf(numOfCup));
                         }
                     }
                 });
@@ -148,20 +207,29 @@ public class WaterActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         numOfCup = Integer.parseInt(numberOfCups_text_view.getText().toString());
+                        if(numOfCup == 5){
+                            minusButton.setVisibility(View.GONE);
+                        }
                         if (numOfCup > 4) {
                             numOfCup -= 1;
+                            if(numOfCup == 11){
+                                plusButton.setVisibility(View.VISIBLE);
+                            }
                             numberOfCups_text_view.setText(String.valueOf(numOfCup));
+
+                            //progress bar animation
                             float progress = Float.parseFloat(String.valueOf(numOfCup)) * 1000;
                             ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
                                     progress + 1000,
                                     progress);
                             anim.setDuration(1000);
                             progressBar.startAnimation(anim);
-                            SharedPreferences.Editor editor;
-                            editor = sharedPreferences.edit();
-                            editor.putInt("dailyWaterGoal", numOfCup);
-                            editor.apply();
+
                             dailyWaterGoal_text_view.setText("of " + numOfCup * 250 / 1000 + "L goal");
+
+                            //update value
+                            firestore.collection("users").document(theTempEmail).
+                                    update("drink_goal", String.valueOf(numOfCup));
                         }
                     }
                 });
@@ -182,9 +250,9 @@ public class WaterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 select_background.animate().x(0).setDuration(200);
                 day_tab.setTextColor(Color.WHITE);
-                    verticalViewPager2.setCurrentItem(0);
-                    week_tab.setTextColor(def_color);
-                    month_tab.setTextColor(def_color);
+                verticalViewPager2.setCurrentItem(0);
+                week_tab.setTextColor(def_color);
+                month_tab.setTextColor(def_color);
             }
         });
 
@@ -194,9 +262,9 @@ public class WaterActivity extends AppCompatActivity {
                 int size = week_tab.getWidth();
                 select_background.animate().x(size).setDuration(200);
                 week_tab.setTextColor(Color.WHITE);
-                    verticalViewPager2.setCurrentItem(1);
-                    day_tab.setTextColor(def_color);
-                    month_tab.setTextColor(def_color);
+                verticalViewPager2.setCurrentItem(1);
+                day_tab.setTextColor(def_color);
+                month_tab.setTextColor(def_color);
             }
         });
 
@@ -206,9 +274,9 @@ public class WaterActivity extends AppCompatActivity {
                 int size0fMonthTab = month_tab.getWidth() * 2;
                 select_background.animate().x(size0fMonthTab).setDuration(200);
                 month_tab.setTextColor(Color.WHITE);
-                    verticalViewPager2.setCurrentItem(2);
-                    day_tab.setTextColor(def_color);
-                    week_tab.setTextColor(def_color);
+                verticalViewPager2.setCurrentItem(2);
+                day_tab.setTextColor(def_color);
+                week_tab.setTextColor(def_color);
             }
         });
 
@@ -234,7 +302,7 @@ public class WaterActivity extends AppCompatActivity {
         daylist.add("Sun");
 
         //initialize testadapter
-        adapter = new BarChartAdapter(dataValue,daylist);
+        adapter = new BarChartAdapter(dataValue, daylist);
         //setting adapter on to the viewpager2
         verticalViewPager2.setUserInputEnabled(false);
         verticalViewPager2.setAdapter(adapter);

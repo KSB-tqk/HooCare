@@ -228,6 +228,18 @@
                 app:layout_constraintRight_toRightOf="@id/wave_view_water"
                 app:layout_constraintTop_toTopOf="@id/wave_view_water" />
 
+            <SeekBar
+                android:id="@+id/seek_bar"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintLeft_toLeftOf="@id/wave_view_water"
+                app:layout_constraintRight_toRightOf="@id/wave_view_water"
+                app:layout_constraintTop_toTopOf="@id/wave_view_water"
+                android:progress="80" />
+
             <Space
                 android:layout_width="20dp"
                 android:layout_height="10dp"
