@@ -132,6 +132,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/more_cup_linear"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/step_count_label_background"
@@ -184,6 +185,17 @@
                     android:text="more to go"
                     android:textSize="15sp" />
             </LinearLayout>
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/minus_water_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/minus_drink_water_circular_icon_unchecked"
+                app:layout_constraintTop_toTopOf="@id/drink_water_button"
+                app:layout_constraintRight_toLeftOf="@id/drink_water_button"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@id/drink_water_button" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/drink_water_button"
