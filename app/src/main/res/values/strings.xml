@@ -68,7 +68,7 @@
     <string name="sleep_time_currency_label">hours</string>
     <string name="water_label">Water</string>
     <string name="water_icon">water_icon</string>
-    <string name="water_num_label">0.55</string>
+    <string name="water_num_label">0</string>
     <string name="water_text_label">liters</string>
     <string name="cup_of_water">cup of water</string>
     <string name="training">Training</string>
