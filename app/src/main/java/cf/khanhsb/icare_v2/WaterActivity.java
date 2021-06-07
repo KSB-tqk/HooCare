@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +21,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.github.mikephil.charting.data.BarDataSet;
@@ -103,7 +101,8 @@ public class WaterActivity extends AppCompatActivity {
                             minusWaterButton.setVisibility(View.GONE);
                         } else {
                             numOfCup = Integer.parseInt(temp);
-                            dailyWaterGoal_text_view.setText("of " + (numOfCup * 250 / 1000) + "L goal");
+                            float amountOfWater = Float.parseFloat(String.valueOf(numOfCup));
+                            dailyWaterGoal_text_view.setText("of " + (amountOfWater * 250 / 1000) + "L goal");
                             waterHaveToDrink = numOfCup * 250;
                             minusWaterButton.setVisibility(View.VISIBLE);
                         }
@@ -143,8 +142,13 @@ public class WaterActivity extends AppCompatActivity {
                             minusWaterButton.setVisibility(View.VISIBLE);
 
                             waterHaveToDrink = numOfCup * 250;
-                            String numOfCupHasToDrink = String.valueOf((waterHaveToDrink / 250) - (waterHadDrink / 250));
-                            waterCupCountText.setText(numOfCupHasToDrink);
+                            if(waterHadDrink <= waterHaveToDrink) {
+                                String numOfCupHasToDrink = String.valueOf((waterHaveToDrink / 250) - (waterHadDrink / 250));
+                                waterCupCountText.setText(numOfCupHasToDrink);
+                            }
+                            else {
+                                waterCupCountText.setText("0");
+                            }
                             float hasDrink = waterHadDrink, haveToDrink = waterHaveToDrink, ans = hasDrink / haveToDrink * 100;
                             waveView.setProgress((int) ans);
                         }
@@ -212,7 +216,8 @@ public class WaterActivity extends AppCompatActivity {
                                 anim.setDuration(1000);
                                 progressBar.startAnimation(anim);
 
-                                dailyWaterGoal_text_view.setText("of " + numOfCup * 250 / 1000 + "L goal");
+                                float amountOfWater = Float.parseFloat(String.valueOf(numOfCup));
+                                dailyWaterGoal_text_view.setText("of " + (amountOfWater * 250 / 1000) + "L goal");
 
                                 //update value
                                 waterHaveToDrink = numOfCup * 250;
@@ -244,7 +249,8 @@ public class WaterActivity extends AppCompatActivity {
                                 anim.setDuration(1000);
                                 progressBar.startAnimation(anim);
 
-                                dailyWaterGoal_text_view.setText("of " + numOfCup * 250 / 1000 + "L goal");
+                                float amountOfWater = Float.parseFloat(String.valueOf(numOfCup));
+                                dailyWaterGoal_text_view.setText("of " + (amountOfWater * 250 / 1000) + "L goal");
 
                                 //update value
                                 waterHaveToDrink = numOfCup * 250;
@@ -270,31 +276,27 @@ public class WaterActivity extends AppCompatActivity {
                     bottomSheetDialog.setContentView(bottomSheetView);
                     bottomSheetDialog.show();
                 } else {
-                    if (Integer.parseInt(waterCountText.getText().toString()) < waterHaveToDrink) {
-                        if (waterHadDrink == (waterHaveToDrink - 250)) {
-                            drinkWater.setText("completed");
-                            Drawable constaintDrawable = drinkWater.getBackground();
-                            constaintDrawable = DrawableCompat.wrap(constaintDrawable);
-                            DrawableCompat.setTint(constaintDrawable, Color.parseColor("#58C892"));
-                        }
-                        waterHadDrink += waterHaveToDrink / numOfCup;
+                    waterHadDrink += waterHaveToDrink / numOfCup;
 
-                        LocalDate today = LocalDate.now();
-                        LocalDate monday = today.with(previousOrSame(MONDAY));
+                    LocalDate today = LocalDate.now();
+                    LocalDate monday = today.with(previousOrSame(MONDAY));
 
-                        firestore.collection("daily").
-                                document("week-of-" + monday.toString()).
-                                collection(today.toString()).
-                                document(theTempEmail).
-                                update("drink", String.valueOf(waterHadDrink));
+                    firestore.collection("daily").
+                            document("week-of-" + monday.toString()).
+                            collection(today.toString()).
+                            document(theTempEmail).
+                            update("drink", String.valueOf(waterHadDrink));
 
-                        waterCountText.setText(String.valueOf(waterHadDrink));
-                        float hasDrink = waterHadDrink, haveToDrink = waterHaveToDrink, ans = hasDrink / haveToDrink * 100;
+                    waterCountText.setText(String.valueOf(waterHadDrink));
+                    float hasDrink = waterHadDrink, haveToDrink = waterHaveToDrink, ans = hasDrink / haveToDrink * 100;
 
-                        waveView.setProgress((int) ans);
-
+                    waveView.setProgress((int) ans);
+                    if(waterHadDrink <= waterHaveToDrink) {
                         String numOfCupHasToDrink = String.valueOf((waterHaveToDrink / 250) - (waterHadDrink / 250));
                         waterCupCountText.setText(numOfCupHasToDrink);
+                    }
+                    else {
+                        waterCupCountText.setText("0");
                     }
                 }
             }
@@ -305,9 +307,7 @@ public class WaterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int tempWaterAmount = Integer.parseInt(waterCountText.getText().toString());
                 if (tempWaterAmount > 0) {
-                    if (tempWaterAmount == waterHaveToDrink) {
-                        drinkWater.setText("drink");
-                    } else if (tempWaterAmount == (waterHaveToDrink - (waterHaveToDrink - 250))) {
+                    if (tempWaterAmount == (waterHaveToDrink - (waterHaveToDrink - 250))) {
                         minusWaterButton.setVisibility(View.GONE);
                     }
                     waterHadDrink -= waterHaveToDrink / numOfCup;
@@ -326,8 +326,13 @@ public class WaterActivity extends AppCompatActivity {
 
                     waveView.setProgress((int) ans);
 
-                    String numOfCupHasToDrink = String.valueOf((waterHaveToDrink / 250) - (waterHadDrink / 250));
-                    waterCupCountText.setText(numOfCupHasToDrink);
+                    if(waterHadDrink <= waterHaveToDrink) {
+                        String numOfCupHasToDrink = String.valueOf((waterHaveToDrink / 250) - (waterHadDrink / 250));
+                        waterCupCountText.setText(numOfCupHasToDrink);
+                    }
+                    else {
+                        waterCupCountText.setText("0");
+                    }
                 }
             }
         });
@@ -376,7 +381,8 @@ public class WaterActivity extends AppCompatActivity {
                             anim.setDuration(1000);
                             progressBar.startAnimation(anim);
 
-                            dailyWaterGoal_text_view.setText("of " + numOfCup * 250 / 1000 + "L goal");
+                            float amountOfWater = Float.parseFloat(String.valueOf(numOfCup));
+                            dailyWaterGoal_text_view.setText("of " + (amountOfWater * 250 / 1000) + "L goal");
 
                             //update value
                             waterHaveToDrink = numOfCup * 250;
@@ -408,7 +414,8 @@ public class WaterActivity extends AppCompatActivity {
                             anim.setDuration(1000);
                             progressBar.startAnimation(anim);
 
-                            dailyWaterGoal_text_view.setText("of " + numOfCup * 250 / 1000 + "L goal");
+                            float amountOfWater = Float.parseFloat(String.valueOf(numOfCup));
+                            dailyWaterGoal_text_view.setText("of " + (amountOfWater * 250 / 1000) + "L goal");
 
                             //update value
                             waterHaveToDrink = numOfCup * 250;
@@ -421,6 +428,15 @@ public class WaterActivity extends AppCompatActivity {
                 doneButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        float hasDrink = waterHadDrink, haveToDrink = waterHaveToDrink, ans = hasDrink / haveToDrink * 100;
+                        waveView.setProgress((int) ans);
+                        if(waterHadDrink <= waterHaveToDrink) {
+                            String numOfCupHasToDrink = String.valueOf((waterHaveToDrink / 250) - (waterHadDrink / 250));
+                            waterCupCountText.setText(numOfCupHasToDrink);
+                        }
+                        else {
+                            waterCupCountText.setText("0");
+                        }
                         bottomSheetDialog.dismiss();
                     }
                 });

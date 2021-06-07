@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -18,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,21 +27,21 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
-
-import java.util.Objects;
+import java.time.LocalDate;
+import static java.time.DayOfWeek.MONDAY;
 
 import static android.content.Context.MODE_PRIVATE;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 
 public class HomeFragment extends Fragment {
     private LinearLayout waterCardview,stepCardView,caloCardView,sleepCardView,trainingCardView,progressBar_text;
     private ProgressBar progressBar;
-    private ConstraintLayout setupStepGoal;
+    private ConstraintLayout setupStepGoal,setupWaterGoal;
     private String userEmail;
     private FirebaseFirestore firestore;
-    private String step_goal;
-    private TextView statusOfProgressBar;
+    private String step_goal,drink_goal;
+    private TextView statusOfProgressBar,numOfWater;
     private DocumentReference docRef;
     private int numberOfStep;
     private static final String tempEmail = "tempEmail";
@@ -57,6 +58,7 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,14 +74,16 @@ public class HomeFragment extends Fragment {
         progressBar_text = (LinearLayout) rootView.findViewById(R.id.progressBar_homefrag_linear);
         setupStepGoal = (ConstraintLayout) rootView.findViewById(R.id.setup_steps_constraint);
         statusOfProgressBar = (TextView) rootView.findViewById(R.id.status_of_progressbar_homefrag);
+        setupWaterGoal = (ConstraintLayout) rootView.findViewById(R.id.setup_water_constraint);
+        numOfWater = (TextView) rootView.findViewById(R.id.num_of_water);
 
         SharedPreferences sharedPreferences = this.getActivity().
                 getSharedPreferences(tempEmail,MODE_PRIVATE);
-
+        String theTempEmail = sharedPreferences.getString("Email","");
 
         firestore = FirebaseFirestore.getInstance();
         if(userEmail == null){
-            String theTempEmail = sharedPreferences.getString("Email","");
+
             docRef = firestore.collection("users").document(theTempEmail);
         }
         else {
@@ -107,6 +111,41 @@ public class HomeFragment extends Fragment {
                         ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 0, numberOfStep);
                         anim.setDuration(3000);
                         progressBar.startAnimation(anim);
+
+                        drink_goal = document.getString("drink_goal");
+                        if("empty".equals(drink_goal)){
+                            setupWaterGoal.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            setupWaterGoal.setVisibility(View.GONE);
+                        }
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
+
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String temp = document.getString("drink");
+                        assert temp != null;
+                        if(!temp.equals("empty")) {
+                            float waterHadDrink = Float.parseFloat(temp)/1000;
+                            numOfWater.setText(String.valueOf(waterHadDrink));
+                        }
                     } else {
                         Log.d("LOGGER", "No such document");
                     }
