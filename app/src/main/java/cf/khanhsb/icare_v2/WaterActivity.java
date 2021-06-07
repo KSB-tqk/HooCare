@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,9 +19,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.github.mikephil.charting.data.BarDataSet;
@@ -32,21 +36,27 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.john.waveview.WaveView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.DayOfWeek.SUNDAY;
+import static java.time.temporal.TemporalAdjusters.nextOrSame;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 public class WaterActivity extends AppCompatActivity {
 
     private ArrayList<BarEntry> dataValue = new ArrayList<BarEntry>();
-    private int waterHasDrink = 0;
-    private int numOfCup = 8;
+    private int waterHadDrink = 0, numOfCup = 8,waterHaveToDrink = 0;
     private WaveView waveView;
     private ImageView backButton, moreButton, plusButton, minusButton;
     private AppCompatButton drinkWater;
     private ConstraintLayout bottomSheetContainer;
     private ProgressBar progressBar;
     private ColorStateList def_color;
-    private TextView statusOfProgressBar, day_tab, week_tab, month_tab, select_background;
-    private TextView numberOfCups_text_view, doneButton, dailyWaterGoal_text_view;
+    private TextView statusOfProgressBar, day_tab, week_tab, month_tab, select_background,
+            numberOfCups_text_view, doneButton, dailyWaterGoal_text_view,waterCupDailyGoal,
+            waterCountText;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private SeekBar seekBar;
@@ -54,6 +64,7 @@ public class WaterActivity extends AppCompatActivity {
     private ViewPager2 verticalViewPager2;
     BarChartAdapter adapter;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +77,8 @@ public class WaterActivity extends AppCompatActivity {
         moreButton = findViewById(R.id.more_menu_waterfrag);
         bottomSheetContainer = findViewById(R.id.bottom_sheet_container_water_frag);
         dailyWaterGoal_text_view = findViewById(R.id.water_daily_goal_text);
+        waterCupDailyGoal = findViewById(R.id.water_cup_daily_goal_text);
+        waterCountText = findViewById(R.id.water_count_text);
 
         day_tab = (TextView) findViewById(R.id.text_item1_water_act);
         week_tab = (TextView) findViewById(R.id.text_item2_water_act);
@@ -92,6 +105,7 @@ public class WaterActivity extends AppCompatActivity {
                         } else {
                             numOfCup = Integer.parseInt(temp);
                             dailyWaterGoal_text_view.setText("of " + (numOfCup * 250 / 1000) + "L goal");
+                            waterHaveToDrink = numOfCup * 250;
                         }
                     } else {
                         Log.d("LOGGER", "No such document");
@@ -102,21 +116,37 @@ public class WaterActivity extends AppCompatActivity {
             }
         });
 
-        seekBar = (SeekBar) findViewById(R.id.seek_bar);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                waveView.setProgress(progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String waterHadDrinkOnDataBase = document.getString("drink");
+                        waterHadDrink = Integer.parseInt(waterHadDrinkOnDataBase);
+                        if(waterHadDrink == 0){
+                            drinkWater.setText("Set a Goal");
+                            waterCupDailyGoal.setVisibility(View.GONE);
+                            dailyWaterGoal_text_view.setVisibility(View.GONE);
+                        }
+                        else {
+                            waterCupDailyGoal.setVisibility(View.VISIBLE);
+                            dailyWaterGoal_text_view.setVisibility(View.VISIBLE);
+                            drinkWater.setText("drink");
+                            waterCountText.setText(String.valueOf(waterHadDrink));
+                        }
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
             }
         });
 
@@ -135,17 +165,126 @@ public class WaterActivity extends AppCompatActivity {
         drinkWater.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(int i = 0;i < 25;i++){
-                    handler.postDelayed(new Runnable() {
+                if(drinkWater.getText().equals("Set a Goal")) {
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
+                            WaterActivity.this,
+                            R.style.BottomSheetDialogTheme);
+                    View bottomSheetView = LayoutInflater.from(getApplicationContext())
+                            .inflate(
+                                    R.layout.bottom_sheet_dialog_waterfrag,
+                                    bottomSheetContainer,
+                                    false
+                            );
+                    plusButton = (ImageView) bottomSheetView.findViewById(R.id.plus_button_water_menu);
+                    minusButton = (ImageView) bottomSheetView.findViewById(R.id.minus_button_water_menu);
+                    progressBar = (ProgressBar) bottomSheetView.findViewById(R.id.progressbar_water);
+                    numberOfCups_text_view = (TextView) bottomSheetView.findViewById(R.id.num_of_cup_progress);
+                    doneButton = (TextView) bottomSheetView.findViewById(R.id.close_button_animation_exercise);
+
+                    progressBar.setMax(12000);
+                    progressBar.setProgress(numOfCup * 1000);
+                    numberOfCups_text_view.setText(String.valueOf(numOfCup));
+
+                    plusButton.setOnClickListener(new OnClickListener() {
                         @Override
-                        public void run() {
-                            ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
-                                    0,
-                                    25);
-                            anim.setDuration(1000);
-                            waveView.setAnimation(anim);
+                        public void onClick(View v) {
+                            numOfCup = Integer.parseInt(numberOfCups_text_view.getText().toString());
+                            if (numOfCup == 11) {
+                                plusButton.setVisibility(View.GONE);
+                            }
+                            if (numOfCup < 12) {
+                                numOfCup += 1;
+                                if (numOfCup == 5) {
+                                    minusButton.setVisibility(View.VISIBLE);
+                                }
+                                numberOfCups_text_view.setText(String.valueOf(numOfCup));
+
+                                //progress bar animation
+                                float progress = Float.parseFloat(String.valueOf(numOfCup)) * 1000;
+                                ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
+                                        progress - 1000,
+                                        progress);
+                                anim.setDuration(1000);
+                                progressBar.startAnimation(anim);
+
+                                dailyWaterGoal_text_view.setText("of " + numOfCup * 250 / 1000 + "L goal");
+
+                                //update value
+                                waterHaveToDrink = numOfCup * 250;
+                                firestore.collection("users").document(theTempEmail).
+                                        update("drink_goal", String.valueOf(numOfCup));
+                            }
                         }
-                    }, 300);
+                    });
+
+                    minusButton.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            numOfCup = Integer.parseInt(numberOfCups_text_view.getText().toString());
+                            if (numOfCup == 5) {
+                                minusButton.setVisibility(View.GONE);
+                            }
+                            if (numOfCup > 4) {
+                                numOfCup -= 1;
+                                if (numOfCup == 11) {
+                                    plusButton.setVisibility(View.VISIBLE);
+                                }
+                                numberOfCups_text_view.setText(String.valueOf(numOfCup));
+
+                                //progress bar animation
+                                float progress = Float.parseFloat(String.valueOf(numOfCup)) * 1000;
+                                ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
+                                        progress + 1000,
+                                        progress);
+                                anim.setDuration(1000);
+                                progressBar.startAnimation(anim);
+
+                                dailyWaterGoal_text_view.setText("of " + numOfCup * 250 / 1000 + "L goal");
+
+                                //update value
+                                waterHaveToDrink = numOfCup * 250;
+                                firestore.collection("users").document(theTempEmail).
+                                        update("drink_goal", String.valueOf(numOfCup));
+                            }
+                        }
+                    });
+
+                    doneButton.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            waterCupDailyGoal.setVisibility(View.VISIBLE);
+                            dailyWaterGoal_text_view.setVisibility(View.VISIBLE);
+                            drinkWater.setText("drink");
+                            bottomSheetDialog.dismiss();
+                        }
+                    });
+                    bottomSheetDialog.setContentView(bottomSheetView);
+                    bottomSheetDialog.show();
+                }
+                else {
+                    if(Integer.parseInt(waterCountText.getText().toString()) < waterHaveToDrink) {
+                        waterHadDrink += waterHaveToDrink / numOfCup;
+
+                        LocalDate today = LocalDate.now();
+                        LocalDate monday = today.with(previousOrSame(MONDAY));
+
+                        firestore.collection("daily").
+                                document("week-of-" + monday.toString()).
+                                collection(today.toString()).
+                                document(theTempEmail).
+                                update("drink", String.valueOf(waterHadDrink));
+
+                        waterCountText.setText(String.valueOf(waterHadDrink));
+                        float hasDrink = waterHadDrink, haveToDrink = waterHaveToDrink, ans = hasDrink / haveToDrink * 100;
+
+                        waveView.setProgress((int) ans);
+                    }
+                    else if(Integer.parseInt(waterCountText.getText().toString()) == waterHaveToDrink){
+                        drinkWater.setText("completed");
+                        Drawable constaintDrawable = drinkWater.getBackground();
+                        constaintDrawable = DrawableCompat.wrap(constaintDrawable);
+                        DrawableCompat.setTint(constaintDrawable,Color.parseColor("#58C892"));
+                    }
                 }
             }
         });
@@ -176,12 +315,12 @@ public class WaterActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         numOfCup = Integer.parseInt(numberOfCups_text_view.getText().toString());
-                        if(numOfCup == 11) {
+                        if (numOfCup == 11) {
                             plusButton.setVisibility(View.GONE);
                         }
                         if (numOfCup < 12) {
                             numOfCup += 1;
-                            if(numOfCup == 5){
+                            if (numOfCup == 5) {
                                 minusButton.setVisibility(View.VISIBLE);
                             }
                             numberOfCups_text_view.setText(String.valueOf(numOfCup));
@@ -197,6 +336,7 @@ public class WaterActivity extends AppCompatActivity {
                             dailyWaterGoal_text_view.setText("of " + numOfCup * 250 / 1000 + "L goal");
 
                             //update value
+                            waterHaveToDrink = numOfCup * 250;
                             firestore.collection("users").document(theTempEmail).
                                     update("drink_goal", String.valueOf(numOfCup));
                         }
@@ -207,12 +347,12 @@ public class WaterActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         numOfCup = Integer.parseInt(numberOfCups_text_view.getText().toString());
-                        if(numOfCup == 5){
+                        if (numOfCup == 5) {
                             minusButton.setVisibility(View.GONE);
                         }
                         if (numOfCup > 4) {
                             numOfCup -= 1;
-                            if(numOfCup == 11){
+                            if (numOfCup == 11) {
                                 plusButton.setVisibility(View.VISIBLE);
                             }
                             numberOfCups_text_view.setText(String.valueOf(numOfCup));
@@ -228,6 +368,7 @@ public class WaterActivity extends AppCompatActivity {
                             dailyWaterGoal_text_view.setText("of " + numOfCup * 250 / 1000 + "L goal");
 
                             //update value
+                            waterHaveToDrink = numOfCup * 250;
                             firestore.collection("users").document(theTempEmail).
                                     update("drink_goal", String.valueOf(numOfCup));
                         }

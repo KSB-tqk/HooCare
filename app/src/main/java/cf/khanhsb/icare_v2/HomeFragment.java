@@ -1,5 +1,6 @@
 package cf.khanhsb.icare_v2;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -85,6 +86,7 @@ public class HomeFragment extends Fragment {
             docRef = firestore.collection("users").document(userEmail);
         }
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
