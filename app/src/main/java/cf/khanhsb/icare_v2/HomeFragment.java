@@ -1,18 +1,10 @@
 package cf.khanhsb.icare_v2;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,20 +25,20 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
-import static java.time.DayOfWeek.MONDAY;
 
 import static android.content.Context.MODE_PRIVATE;
+import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 
 public class HomeFragment extends Fragment {
-    private LinearLayout waterCardview,stepCardView,caloCardView,sleepCardView,trainingCardView,progressBar_text;
+    private LinearLayout waterCardview, stepCardView, caloCardView, sleepCardView, trainingCardView, progressBar_text;
     private ProgressBar progressBar;
-    private ConstraintLayout setupStepGoal,setupWaterGoal;
+    private ConstraintLayout setupStepGoal, setupWaterGoal;
     private String userEmail;
     private FirebaseFirestore firestore;
-    private String step_goal,drink_goal;
-    private TextView statusOfProgressBar,numOfWater;
+    private String step_goal, drink_goal;
+    private TextView statusOfProgressBar, numOfWater;
     private DocumentReference docRef;
     private int numberOfStep;
     private static final String tempEmail = "tempEmail";
@@ -49,10 +46,11 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
-    public HomeFragment(String userEmail){
+
+    public HomeFragment(String userEmail) {
         this.userEmail = userEmail;
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,15 +76,14 @@ public class HomeFragment extends Fragment {
         numOfWater = (TextView) rootView.findViewById(R.id.num_of_water);
 
         SharedPreferences sharedPreferences = this.getActivity().
-                getSharedPreferences(tempEmail,MODE_PRIVATE);
-        String theTempEmail = sharedPreferences.getString("Email","");
+                getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
 
         firestore = FirebaseFirestore.getInstance();
-        if(userEmail == null){
+        if (userEmail == null) {
 
             docRef = firestore.collection("users").document(theTempEmail);
-        }
-        else {
+        } else {
             docRef = firestore.collection("users").document(userEmail);
         }
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -97,14 +94,13 @@ public class HomeFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
                         step_goal = document.getString("step_goal");
-                        Log.i("LOGGER","Here it is "+document.getString("step_goal"));
-                        if("empty".equals(step_goal)) {
+                        Log.i("LOGGER", "Here it is " + document.getString("step_goal"));
+                        if ("empty".equals(step_goal)) {
                             statusOfProgressBar.setText("");
                             setupStepGoal.setVisibility(View.VISIBLE);
-                        }
-                        else {
+                        } else {
                             setupStepGoal.setVisibility(View.GONE);
-                            statusOfProgressBar.setText("/"+step_goal);
+                            statusOfProgressBar.setText("/" + step_goal);
                             numberOfStep = Integer.parseInt("0");
                         }
                         progressBar.setMax(10000);
@@ -113,10 +109,9 @@ public class HomeFragment extends Fragment {
                         progressBar.startAnimation(anim);
 
                         drink_goal = document.getString("drink_goal");
-                        if("empty".equals(drink_goal)){
+                        if ("empty".equals(drink_goal)) {
                             setupWaterGoal.setVisibility(View.VISIBLE);
-                        }
-                        else {
+                        } else {
                             setupWaterGoal.setVisibility(View.GONE);
                         }
                     } else {
@@ -141,9 +136,8 @@ public class HomeFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
                         String temp = document.getString("drink");
-                        assert temp != null;
-                        if(!temp.equals("empty")) {
-                            float waterHadDrink = Float.parseFloat(temp)/1000;
+                        if (!temp.equals("empty")) {
+                            float waterHadDrink = Float.parseFloat(temp) / 1000;
                             numOfWater.setText(String.valueOf(waterHadDrink));
                         }
                     } else {
@@ -159,7 +153,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), WaterActivity.class);
-                intent.putExtra("userEmail",userEmail);
+                intent.putExtra("userEmail", userEmail);
                 startActivity(intent);
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
@@ -168,15 +162,31 @@ public class HomeFragment extends Fragment {
         stepCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toStepData = new Intent(getActivity(),StepCountActivity.class);
-                toStepData.putExtra("userEmail",userEmail);
+                Intent toStepData = new Intent(getActivity(), StepCountActivity.class);
+                toStepData.putExtra("userEmail", userEmail);
                 toStepData.putExtra("step_goal", step_goal);
                 startActivity(toStepData);
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 
+        caloCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).replaceFragment(2);
+            }
+        });
+
+        trainingCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).replaceFragment(3);
+            }
+        });
+
+
+
         return rootView;
     }
-    
+
 }

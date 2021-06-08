@@ -228,4 +228,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this,SigninActivity.class));
         finish();
     }
+
+    public void replaceFragment(int fragmentPos){
+        viewPager.setCurrentItem(fragmentPos);
+    }
 }
