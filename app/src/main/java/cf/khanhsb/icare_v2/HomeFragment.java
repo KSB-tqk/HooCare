@@ -141,7 +141,6 @@ public class HomeFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
                         String temp = document.getString("drink");
-                        assert temp != null;
                         if(!temp.equals("empty")) {
                             float waterHadDrink = Float.parseFloat(temp)/1000;
                             numOfWater.setText(String.valueOf(waterHadDrink));
