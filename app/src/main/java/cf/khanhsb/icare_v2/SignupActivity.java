@@ -114,6 +114,7 @@ public class SignupActivity extends Activity {
                                 user.put("calories_burn_goal","empty");
                                 user.put("sleep_goal","empty");
                                 user.put("on_screen_goal","empty");
+                                user.put("health_point","empty");
                                 firestore.collection("users").document(email)
                                         .set(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
