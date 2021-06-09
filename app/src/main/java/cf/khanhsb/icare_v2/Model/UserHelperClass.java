@@ -1,4 +1,4 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Model;
 
 public class UserHelperClass {
     String mName, mUsername, mEmail, mPassword;

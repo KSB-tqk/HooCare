@@ -1,17 +1,13 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Adapter;
 
-import android.annotation.SuppressLint;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.shawnlin.numberpicker.NumberPicker;
 
-import pl.droidsonroids.gif.GifImageView;
+import cf.khanhsb.icare_v2.R;
 
 public class StepCountViewPagerAdapter extends RecyclerView.Adapter<StepCountViewPagerAdapter.ViewHolder>{
 

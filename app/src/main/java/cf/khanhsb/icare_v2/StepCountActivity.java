@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -20,11 +19,13 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.shawnlin.numberpicker.NumberPicker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import cf.khanhsb.icare_v2.Adapter.BarChartAdapter;
+import cf.khanhsb.icare_v2.Adapter.StepCountViewPagerAdapter;
 
 public class StepCountActivity extends AppCompatActivity implements View.OnClickListener {
 

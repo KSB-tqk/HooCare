@@ -36,6 +36,9 @@ import com.john.waveview.WaveView;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import cf.khanhsb.icare_v2.Adapter.BarChartAdapter;
+import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
+
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 

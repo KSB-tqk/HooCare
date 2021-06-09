@@ -16,6 +16,9 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import cf.khanhsb.icare_v2.Adapter.OnboardingAdapter;
+import cf.khanhsb.icare_v2.Model.OnboardingItem;
+
 public class OnBoardActivity extends Activity {
     private OnboardingAdapter onboardingAdapter;
     private LinearLayout layoutOnboardingIndicators;

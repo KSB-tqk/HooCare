@@ -1,4 +1,4 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,6 +15,11 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
+
+import cf.khanhsb.icare_v2.Adapter.GymListViewAdapter;
+import cf.khanhsb.icare_v2.List_Data_Activity;
+import cf.khanhsb.icare_v2.Model.NonScrollListView;
+import cf.khanhsb.icare_v2.R;
 
 public class GymFragment extends Fragment {
     private FloatingActionButton viewButtonExercises;
@@ -78,7 +83,7 @@ public class GymFragment extends Fragment {
                 intent.putExtra("workoutTime",gymListTime[position]);
                 intent.putExtra("focusBodyPart",focusBodyPart[position]);
                 startActivity(intent);
-                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 
@@ -98,7 +103,7 @@ public class GymFragment extends Fragment {
                 intent.putExtra("workoutTime",gymListTime[position]);
                 intent.putExtra("focusBodyPart",focusBodyPart[position]);
                 startActivity(intent);
-                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 
@@ -118,7 +123,7 @@ public class GymFragment extends Fragment {
                 intent.putExtra("workoutTime",gymListTime[position]);
                 intent.putExtra("focusBodyPart",focusBodyPart[position]);
                 startActivity(intent);
-                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 

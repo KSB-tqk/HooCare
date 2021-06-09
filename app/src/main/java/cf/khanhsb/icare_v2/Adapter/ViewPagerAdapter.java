@@ -1,9 +1,14 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import cf.khanhsb.icare_v2.Fragment.ArchieveFragment;
+import cf.khanhsb.icare_v2.Fragment.GymFragment;
+import cf.khanhsb.icare_v2.Fragment.HomeFragment;
+import cf.khanhsb.icare_v2.Fragment.MealFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 

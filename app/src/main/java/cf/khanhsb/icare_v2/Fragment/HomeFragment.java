@@ -1,10 +1,12 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
+
+import cf.khanhsb.icare_v2.MainActivity;
+import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
+import cf.khanhsb.icare_v2.R;
+import cf.khanhsb.icare_v2.StepCountActivity;
+import cf.khanhsb.icare_v2.WaterActivity;
 
 import static android.content.Context.MODE_PRIVATE;
 import static java.time.DayOfWeek.MONDAY;
@@ -129,25 +137,33 @@ public class HomeFragment extends Fragment {
                 document("week-of-" + monday.toString()).
                 collection(today.toString()).
                 document(theTempEmail);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-                        String temp = document.getString("drink");
-                        if (!temp.equals("empty")) {
-                            float waterHadDrink = Float.parseFloat(temp) / 1000;
-                            numOfWater.setText(String.valueOf(waterHadDrink));
+            public void run() {
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null) {
+                                String temp = document.getString("drink");
+                                if (!"empty".equals(temp)) {
+                                    float waterHadDrink = Float.parseFloat(temp) / 1000;
+                                    numOfWater.setText(String.valueOf(waterHadDrink));
+                                }
+                            } else {
+                                Log.d("LOGGER", "No such document");
+                            }
+                        } else {
+                            Log.d("LOGGER", "get failed with ", task.getException());
                         }
-                    } else {
-                        Log.d("LOGGER", "No such document");
                     }
-                } else {
-                    Log.d("LOGGER", "get failed with ", task.getException());
-                }
+                });
             }
-        });
+        }, 100);
+
 
         waterCardview.setOnClickListener(new View.OnClickListener() {
             @Override

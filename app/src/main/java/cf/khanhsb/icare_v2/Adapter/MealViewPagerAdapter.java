@@ -1,4 +1,4 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import cf.khanhsb.icare_v2.Model.MealPlanData;
+import cf.khanhsb.icare_v2.R;
 
 public class MealViewPagerAdapter extends RecyclerView.Adapter {
     //initialize variable

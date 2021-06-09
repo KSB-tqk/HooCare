@@ -1,4 +1,4 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Model;
 
 import android.view.View;
 import android.view.animation.Animation;
