@@ -145,9 +145,12 @@ public class WaterActivity extends AppCompatActivity {
                             minusWaterButton.setVisibility(View.VISIBLE);
 
                             waterHaveToDrink = numOfCup * 250;
-                            if(waterHadDrink <= waterHaveToDrink) {
+                            if(waterHadDrink <= waterHaveToDrink && waterHadDrink!= 0) {
                                 String numOfCupHasToDrink = String.valueOf((waterHaveToDrink / 250) - (waterHadDrink / 250));
                                 waterCupCountText.setText(numOfCupHasToDrink);
+                            }
+                            else if(waterHadDrink == 0){
+                                waterCupCountText.setText(String.valueOf(numOfCup));
                             }
                             else {
                                 waterCupCountText.setText("0");

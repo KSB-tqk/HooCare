@@ -32,6 +32,7 @@ import cf.khanhsb.icare_v2.MainActivity;
 import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
 import cf.khanhsb.icare_v2.R;
 import cf.khanhsb.icare_v2.StepCountActivity;
+import cf.khanhsb.icare_v2.UsageStatisticActivity;
 import cf.khanhsb.icare_v2.WaterActivity;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -40,7 +41,8 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 
 public class HomeFragment extends Fragment {
-    private LinearLayout waterCardview, stepCardView, caloCardView, sleepCardView, trainingCardView, progressBar_text;
+    private LinearLayout waterCardview, stepCardView, caloCardView,
+            sleepCardView, trainingCardView, progressBar_text,timeOnScreenCardView;
     private ProgressBar progressBar;
     private ConstraintLayout setupStepGoal, setupWaterGoal;
     private String userEmail;
@@ -76,6 +78,7 @@ public class HomeFragment extends Fragment {
         caloCardView = (LinearLayout) rootView.findViewById(R.id.calo_card_view_linear);
         sleepCardView = (LinearLayout) rootView.findViewById(R.id.sleep_card_view_linear);
         trainingCardView = (LinearLayout) rootView.findViewById(R.id.training_card_view_linear);
+        timeOnScreenCardView = (LinearLayout) rootView.findViewById(R.id.time_on_screen_card_view_linear);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar_homefrag);
         progressBar_text = (LinearLayout) rootView.findViewById(R.id.progressBar_homefrag_linear);
         setupStepGoal = (ConstraintLayout) rootView.findViewById(R.id.setup_steps_constraint);
@@ -200,7 +203,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
+        timeOnScreenCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toUsageStatistic = new Intent(getActivity(), UsageStatisticActivity.class);
+                startActivity(toUsageStatistic);
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
+            }
+        });
 
         return rootView;
     }
