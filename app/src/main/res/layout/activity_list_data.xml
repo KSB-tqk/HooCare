@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
     tools:context=".List_Data_Activity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -45,8 +46,7 @@
                         android:id="@+id/back_button_list_data"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:src="@drawable/back_arrow_icon_list_data" />
+                        android:src="@drawable/back_image_button_anim" />
 
                     <TextView
                         android:id="@+id/gym_list_workout_text"
@@ -65,7 +65,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentEnd="true"
-                        android:src="@drawable/more_icon_list_data" />
+                        android:src="@drawable/more_image_button_anim" />
 
                     <ImageView
                         android:id="@+id/fav_icon"
@@ -266,13 +266,13 @@
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <cf.khanhsb.icare_v2.NonScrollListView
+            <cf.khanhsb.icare_v2.Model.NonScrollListView
                 android:id="@+id/list_view_list_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/exercises_title_list_data_linear">
 
-            </cf.khanhsb.icare_v2.NonScrollListView>
+            </cf.khanhsb.icare_v2.Model.NonScrollListView>
 
 
         </RelativeLayout>

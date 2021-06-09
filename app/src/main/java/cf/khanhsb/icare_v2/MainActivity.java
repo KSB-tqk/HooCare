@@ -1,50 +1,29 @@
 package cf.khanhsb.icare_v2;
 
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+
+import cf.khanhsb.icare_v2.Adapter.ViewPagerAdapter;
+import cf.khanhsb.icare_v2.Fragment.MealFragment;
 
 public class MainActivity extends AppCompatActivity {
     private TextView username,toolBarTitle;
@@ -55,12 +34,13 @@ public class MainActivity extends AppCompatActivity {
     private Boolean isGymFragment = false;
     private FirebaseAuth mAuth;
     private SlidingRootNav slidingRootNav;
+    private LinearLayout logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mAuth = FirebaseAuth.getInstance();
         /**settting up bottom nav*/
         BottomNavigationView btmNav = findViewById(R.id.bottom_nav);
         btmNav.setBackground(null);
@@ -72,9 +52,13 @@ public class MainActivity extends AppCompatActivity {
         toolBarTitle = findViewById(R.id.tool_bar_title);
         toolBarImageView = findViewById(R.id.nav_menu_icon);
 
+        /**getting intent*/
+        Intent intent = getIntent();
+        String userEmail = intent.getStringExtra("userEmail");
+
         /**setting up viewpager*/
         viewPager = findViewById(R.id.view_pager);
-        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),userEmail);
         viewPager.setAdapter(mViewPagerAdapter);
 
         /**setting up nav drawer*/
@@ -98,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView openNavMenuButton = (ImageView) findViewById(R.id.nav_menu_icon);
 
         /**sliding between fragment and activity*/
-        Intent intent = getIntent();
         int fragmentPosition = intent.getIntExtra("fragmentPosition",0);
         viewPager.setCurrentItem(fragmentPosition);
         if(fragmentPosition==3){
@@ -130,9 +113,9 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                         btmNav.getMenu().findItem(R.id.nav_archie).setChecked(true);
                         toolBarTitle.setText(getString(R.string.ArchieveFragTitle));
-                        toolBarTitle.setTextColor(Color.WHITE);
-                        toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
-                        toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
+                        toolBarTitle.getBackground().setTint(Color.WHITE);
+                        toolBarTitle.setTextColor(getResources().getColor(R.color.lime_200));
+                        toolBarImageView.setColorFilter(Color.WHITE);
                         toolbar.setBackground(getDrawable(R.color.transparent));
                         break;
                     case 2:
@@ -167,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
         closeNavMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,6 +166,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mAuth = FirebaseAuth.getInstance();
+        logout = findViewById(R.id.linearlogout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                startActivity(new Intent(MainActivity.this,SigninActivity.class));
+                finish();
+            }
+        });
     }
 
 
@@ -205,15 +197,18 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_gym:
                             viewPager.setCurrentItem(3);
                             break;
-
                     }
                     return true;
                 }
             };
-    /*@Override
+
     public void Logout(View view) {
         mAuth.signOut();
         startActivity(new Intent(MainActivity.this,SigninActivity.class));
         finish();
-    }*/
+    }
+
+    public void replaceFragment(int fragmentPos){
+        viewPager.setCurrentItem(fragmentPos);
+    }
 }
