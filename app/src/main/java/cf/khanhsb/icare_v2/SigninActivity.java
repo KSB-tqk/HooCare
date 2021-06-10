@@ -131,6 +131,15 @@ public class SigninActivity extends AppCompatActivity {
                                             assert document != null;
                                             if (document.exists()) {
                                                 Log.d("LOGGER", "got the document");
+                                                Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                                                intent.putExtra("userEmail", email);
+                                                SharedPreferences.Editor editor;
+                                                editor = sharedPreferences.edit();
+                                                editor.putString("Email", email);
+                                                editor.apply();
+                                                startActivity(intent);
+                                                finish();
                                             } else {
                                                 //check if goal exist or not
                                                 docRef = firestore.collection("users").document(email);
@@ -162,6 +171,16 @@ public class SigninActivity extends AppCompatActivity {
                                                                         document("week-of-" + monday.toString()).
                                                                         collection(today.toString()).
                                                                         document(email).set(dailyGoal);
+
+                                                                Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                                                                Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                                                                intent.putExtra("userEmail", email);
+                                                                SharedPreferences.Editor editor;
+                                                                editor = sharedPreferences.edit();
+                                                                editor.putString("Email", email);
+                                                                editor.apply();
+                                                                startActivity(intent);
+                                                                finish();
                                                             } else {
                                                                 Log.d("LOGGER", "No such document");
                                                             }
@@ -176,15 +195,6 @@ public class SigninActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
-                                Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                                intent.putExtra("userEmail", email);
-                                SharedPreferences.Editor editor;
-                                editor = sharedPreferences.edit();
-                                editor.putString("Email", email);
-                                editor.apply();
-                                startActivity(intent);
-                                finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
