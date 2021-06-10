@@ -90,6 +90,9 @@ public class WaterActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
         String theTempEmail = sharedPreferences.getString("Email", "");
 
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+
         firestore = FirebaseFirestore.getInstance();
         docRef = firestore.collection("users").document(theTempEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -109,6 +112,54 @@ public class WaterActivity extends AppCompatActivity {
                             waterHaveToDrink = numOfCup * 250;
                             minusWaterButton.setVisibility(View.VISIBLE);
                         }
+
+                        docRef = firestore.collection("daily").
+                                document("week-of-" + monday.toString()).
+                                collection(today.toString()).
+                                document(theTempEmail);
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document != null) {
+                                        String waterHadDrinkOnDataBase = document.getString("drink");
+                                        assert waterHadDrinkOnDataBase != null;
+                                        if (waterHadDrinkOnDataBase.equals("empty")) {
+                                            drinkWater.setText("Set a Goal");
+                                            waterCupDailyGoal.setVisibility(View.GONE);
+                                            dailyWaterGoal_text_view.setVisibility(View.GONE);
+                                        } else {
+                                            waterHadDrink = Integer.parseInt(waterHadDrinkOnDataBase);
+                                            waterCupDailyGoal.setVisibility(View.VISIBLE);
+                                            dailyWaterGoal_text_view.setVisibility(View.VISIBLE);
+                                            drinkWater.setText("drink");
+                                            waterCountText.setText(String.valueOf(waterHadDrink));
+                                            minusWaterButton.setVisibility(View.VISIBLE);
+
+                                            float hadDrink = waterHadDrink, haveToDrink = waterHaveToDrink;
+
+                                            if(waterHadDrink <= waterHaveToDrink && waterHadDrink!= 0) {
+                                                String numOfCupHasToDrink = String.valueOf((int) Math.floor((double) ((haveToDrink / 250) - (hadDrink / 250))));
+                                                waterCupCountText.setText(numOfCupHasToDrink);
+                                            }
+                                            else if(waterHadDrink == 0){
+                                                waterCupCountText.setText(String.valueOf(numOfCup));
+                                            }
+                                            else {
+                                                waterCupCountText.setText("0");
+                                            }
+                                            float ans = hadDrink / haveToDrink * 100;
+                                            waveView.setProgress((int) ans);
+                                        }
+                                    } else {
+                                        Log.d("LOGGER", "No such document");
+                                    }
+                                } else {
+                                    Log.d("LOGGER", "get failed with ", task.getException());
+                                }
+                            }
+                        });
                     } else {
                         Log.d("LOGGER", "No such document");
                     }
@@ -118,51 +169,7 @@ public class WaterActivity extends AppCompatActivity {
             }
         });
 
-        LocalDate today = LocalDate.now();
-        LocalDate monday = today.with(previousOrSame(MONDAY));
-        docRef = firestore.collection("daily").
-                document("week-of-" + monday.toString()).
-                collection(today.toString()).
-                document(theTempEmail);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-                        String waterHadDrinkOnDataBase = document.getString("drink");
-                        assert waterHadDrinkOnDataBase != null;
-                        if (waterHadDrinkOnDataBase.equals("empty")) {
-                            drinkWater.setText("Set a Goal");
-                            waterCupDailyGoal.setVisibility(View.GONE);
-                            dailyWaterGoal_text_view.setVisibility(View.GONE);
-                        } else {
-                            waterHadDrink = Integer.parseInt(waterHadDrinkOnDataBase);
-                            waterCupDailyGoal.setVisibility(View.VISIBLE);
-                            dailyWaterGoal_text_view.setVisibility(View.VISIBLE);
-                            drinkWater.setText("drink");
-                            waterCountText.setText(String.valueOf(waterHadDrink));
-                            minusWaterButton.setVisibility(View.VISIBLE);
 
-                            waterHaveToDrink = numOfCup * 250;
-                            if(waterHadDrink <= waterHaveToDrink) {
-                                String numOfCupHasToDrink = String.valueOf((waterHaveToDrink / 250) - (waterHadDrink / 250));
-                                waterCupCountText.setText(numOfCupHasToDrink);
-                            }
-                            else {
-                                waterCupCountText.setText("0");
-                            }
-                            float hasDrink = waterHadDrink, haveToDrink = waterHaveToDrink, ans = hasDrink / haveToDrink * 100;
-                            waveView.setProgress((int) ans);
-                        }
-                    } else {
-                        Log.d("LOGGER", "No such document");
-                    }
-                } else {
-                    Log.d("LOGGER", "get failed with ", task.getException());
-                }
-            }
-        });
 
         backButton.setOnClickListener(new OnClickListener() {
             @Override
