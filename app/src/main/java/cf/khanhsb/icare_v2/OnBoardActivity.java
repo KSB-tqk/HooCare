@@ -47,7 +47,7 @@ public class OnBoardActivity extends Activity {
                 if (onboardingViewPager.getCurrentItem()+1 < onboardingAdapter.getItemCount()){
                     onboardingViewPager.setCurrentItem(onboardingViewPager.getCurrentItem()+1);
                 }else{
-                    startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+                    startActivity(new Intent(getApplicationContext(), SplashScreenActivity2.class));
                     finish();
                 }
             }

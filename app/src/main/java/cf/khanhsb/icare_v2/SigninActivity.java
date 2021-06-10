@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -53,13 +54,12 @@ public class SigninActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-        //
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mEmail = findViewById(R.id.et_email_signin);
         mPass = findViewById(R.id.et_password_signin);
         mHaveNoAccount = findViewById(R.id.jumptosignup);
         signinButton = findViewById(R.id.btSignin);
         mForgotpass = findViewById(R.id.forgotpass);
-        mProgressbarAuth = findViewById(R.id.progressbarauth);
         //
         mAuth = FirebaseAuth.getInstance();
         //Move to resetpass
@@ -83,14 +83,6 @@ public class SigninActivity extends AppCompatActivity {
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mProgressbarAuth.setVisibility(View.VISIBLE);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mProgressbarAuth.setVisibility(View.INVISIBLE);
-                    }
-                }, 5000);
                 loginUser();
             }
         });

@@ -5,97 +5,93 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".SigninActivity"
     android:orientation="vertical"
-    tools:context=".SignupActivity"
-    android:background="@drawable/signin">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="176dp"
-        android:layout_marginBottom="25dp"
-        android:fontFamily="cursive"
-        android:paddingVertical="70dp"
-        android:textAlignment="center"
-        android:textColor="#000"
-        android:textSize="30dp">
-
-        <RelativeLayout
-            android:id="@+id/progressbarauth"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/whitecircle"
-            android:elevation="8dp"
-            android:visibility="invisible">
-
-            <ProgressBar
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerInParent="true" />
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginBottom="30dp"
-        android:id="@+id/et_email_signin"
-        android:hint="Email"
-        android:fontFamily="sans-serif"
-        android:textColorHint="@color/cardview_light_background"
-
-        />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:id="@+id/et_password_signin"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:fontFamily="sans-serif"
-        android:textColorHint="@color/cardview_light_background"
-        android:layout_marginBottom="30dp"
-        />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:text="SIGN IN"
-        android:layout_marginBottom="25dp"
-        android:background="@drawable/login_button_bg"
-        android:textColor="#fafafa"
-        android:id="@+id/btSignin"
-        />
+    android:background="@color/white"
+    android:padding="20dp">
+    <ImageView
+        android:id="@+id/applogo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:transitionName="logo_image"
+        android:src="@drawable/hoocarelogin"/>
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/logomessege"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Forgot your password ?"
-        android:id="@+id/forgotpass"
-        android:textAlignment="center"
-        />
-
+        android:text="Hello there,\nWelcome Back"
+        android:textSize="50sp"
+        android:transitionName="logo_text"
+        android:textColor="@color/lime_200"
+        android:paddingBottom="10dp"
+        android:fontFamily="@font/momcakebold"/>
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign In to continue"
+        android:textSize="25sp"
+        android:fontFamily="@font/momcakethin"/>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Not having an account yet ? Sign up."
-        android:id="@+id/jumptosignup"
-        android:textAlignment="center"/>
-    <Button
-        android:id="@+id/btGoogleAtSignin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginBottom="25dp"
         android:layout_marginTop="20dp"
-        android:drawableLeft="@drawable/icon_google"
-        android:text="SIGN IN WITH GOOGLE"
-        android:background="@drawable/login_button_bg"
-        android:textColor="#fafafa"
-        android:textColorHighlight="#EC2727"
-        app:iconTint="#F80808" />
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Email">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_email_signin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+            android:layout_margin="5dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="Password">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_password_signin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/forgotpass"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:text="Forgot Password ?"
+            android:textColor="@color/black"
+            android:layout_gravity="right"
+            android:elevation="0dp"/>
+        <Button
+            android:id="@+id/btSignin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Let's go"
+            android:background="@drawable/button_bg"
+            android:textColor="#fff"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+        <Button
+            android:id="@+id/jumptosignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="5dp"
+            android:background="#00000000"
+            android:elevation="0dp"
+            android:textColor="@color/black"
+            android:text="New User ? SIGN UP"
+            />
+    </LinearLayout>
 </LinearLayout>

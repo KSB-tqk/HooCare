@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimary">@color/lime_200</item>
+    <item name="colorPrimaryDark">@color/white</item>
+    <item name="colorAccent">@color/black</item>
+
+    <item name="android:windowContentTransitions">true</item>
+</style>
+</resources>
