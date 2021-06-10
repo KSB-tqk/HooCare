@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +40,7 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 public class HomeFragment extends Fragment {
     private LinearLayout waterCardview, stepCardView, caloCardView,
-            sleepCardView, trainingCardView, progressBar_text,timeOnScreenCardView;
+            sleepCardView, trainingCardView, progressBar_text, timeOnScreenCardView;
     private ProgressBar progressBar;
     private ConstraintLayout setupStepGoal, setupWaterGoal;
     private String userEmail;
@@ -141,31 +139,25 @@ public class HomeFragment extends Fragment {
                 collection(today.toString()).
                 document(theTempEmail);
 
-        final Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(new Runnable() {
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void run() {
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null) {
-                                String temp = document.getString("drink");
-                                if (!"empty".equals(temp)) {
-                                    float waterHadDrink = Float.parseFloat(temp) / 1000;
-                                    numOfWater.setText(String.valueOf(waterHadDrink));
-                                }
-                            } else {
-                                Log.d("LOGGER", "No such document");
-                            }
-                        } else {
-                            Log.d("LOGGER", "get failed with ", task.getException());
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String temp = document.getString("drink");
+                        if (!"empty".equals(temp)) {
+                            float waterHadDrink = Float.parseFloat(temp) / 1000;
+                            numOfWater.setText(String.valueOf(waterHadDrink));
                         }
+                    } else {
+                        Log.d("LOGGER", "No such document");
                     }
-                });
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
             }
-        }, 100);
+        });
 
 
         waterCardview.setOnClickListener(new View.OnClickListener() {
@@ -192,14 +184,14 @@ public class HomeFragment extends Fragment {
         caloCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).replaceFragment(2);
+                ((MainActivity) getActivity()).replaceFragment(2);
             }
         });
 
         trainingCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).replaceFragment(3);
+                ((MainActivity) getActivity()).replaceFragment(3);
             }
         });
 
