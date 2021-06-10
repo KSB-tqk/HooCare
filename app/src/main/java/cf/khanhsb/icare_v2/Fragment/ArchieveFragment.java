@@ -1,18 +1,18 @@
 package cf.khanhsb.icare_v2.Fragment;
 
-import android.app.AppComponentFactory;
+
 import android.graphics.Color;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import cf.khanhsb.icare_v2.R;
 
@@ -20,7 +20,7 @@ import cf.khanhsb.icare_v2.R;
 public class ArchieveFragment extends Fragment {
     private Button dailyclaim_button;
             Button rankclaim_button;
-
+            TextView view_leaderboard;
 
     public ArchieveFragment() {
         // Required empty public constructor
@@ -41,6 +41,7 @@ public class ArchieveFragment extends Fragment {
 
         dailyclaim_button=(Button) rootView.findViewById(R.id.dailyclaim_button);
         rankclaim_button=(Button) rootView.findViewById(R.id.rankclaim_button);
+
 
         rankclaim_button.setOnClickListener(new View.OnClickListener() {
             @Override
