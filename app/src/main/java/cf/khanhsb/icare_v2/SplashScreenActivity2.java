@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.Transaction;
 
 public class SplashScreenActivity2 extends AppCompatActivity {
-    private static int SPLASH_SCREEN = 5000;
+    private static int SPLASH_SCREEN = 3000;
     Animation topAnim, bottomAnim;
     ImageView image;
     TextView logo, slogan;
