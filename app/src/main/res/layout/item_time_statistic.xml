@@ -1,42 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/time_usage_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="20dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.cardview.widget.CardView
-        android:id="@+id/body_part_icon_cardview"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        app:cardUseCompatPadding="true"
-        tools:ignore="MissingConstraints">
-        <ImageView
-            android:id="@+id/app_icon_image_view"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/workout_real_pic_item_list_icon"/>
-    </androidx.cardview.widget.CardView>
+    android:layout_margin="20dp">
+
+    <ImageView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/app_icon_image_view"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/workout_real_pic_item_list_icon" />
+
     <TextView
         android:id="@+id/app_name_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/body_part_icon_cardview"
-        app:layout_constraintTop_toTopOf="@id/body_part_icon_cardview"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:text="Abs - Beginner"
         android:textColor="@color/black"
+        android:textSize="14sp"
         android:textStyle="bold"
-        android:textSize="14sp"/>
+        app:layout_constraintStart_toEndOf="@id/app_icon_image_view"
+        app:layout_constraintTop_toTopOf="@id/app_icon_image_view" />
+
+    <ProgressBar
+        android:id="@+id/progressbar_time_usage"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:layout_gravity="center"
+        android:indeterminateOnly="false"
+        android:progress="100"
+        android:progressDrawable="@drawable/app_usage_statistic_progressbar"
+        app:layout_constraintBottom_toBottomOf="@id/app_usage_time"
+        app:layout_constraintLeft_toLeftOf="@id/app_name_title"
+        app:layout_constraintTop_toTopOf="@id/app_usage_time" />
+
     <TextView
         android:id="@+id/app_usage_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:textSize="13sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
         android:text="15 mins"
-        app:layout_constraintTop_toBottomOf="@id/app_name_title"
-        app:layout_constraintStart_toStartOf="@id/app_name_title"/>
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/progressbar_time_usage"
+        app:layout_constraintTop_toBottomOf="@id/app_name_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -144,6 +145,13 @@ public class UsageStatisticActivity extends AppCompatActivity {
             }
 
             smallInfoList = new ArrayList<>(map.values());
+
+            AppUsageInfo[] tempInfoList = new AppUsageInfo[smallInfoList.size()];
+            for(int i = 0;i < smallInfoList.size();i++) {
+                tempInfoList[i] = smallInfoList.get(i);
+            }
+            Arrays.sort(tempInfoList);
+
             ArrayList<String> appNameList = new ArrayList<>();
             ArrayList<String> appUsageTimeList = new ArrayList<>();
             ArrayList<Drawable> appIconList = new ArrayList<>();
