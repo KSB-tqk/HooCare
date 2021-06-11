@@ -156,22 +156,11 @@ public class UsageStatisticActivity extends AppCompatActivity {
             // Concatenating data to show in a text view. You may do according to your requirement
             for (AppUsageInfo appUsageInfo : smallInfoList)
             {
-                tempTimeToHour = TimeUnit.MILLISECONDS.toHours(appUsageInfo.timeInForeground);
-                tempTimeToMins = TimeUnit.MILLISECONDS.toMinutes(appUsageInfo.timeInForeground);
-                tempTimeToSec = TimeUnit.MILLISECONDS.toSeconds(appUsageInfo.timeInForeground);
-
                 appName = getAppNameFromPackage(appUsageInfo.packageName,this);
                 if(appName != null){
                     appNameList.add(appName);
 
-                    if(tempTimeToMins > 0) {
-                        long realSec = appUsageInfo.timeInForeground - (tempTimeToMins*1000*60);
-                        tempTimeToSec = TimeUnit.MILLISECONDS.toSeconds(realSec);
-                        appUsageTimeList.add(String.valueOf(tempTimeToMins) + "m " + String.valueOf(tempTimeToSec) +"s");
-                    }
-                    else {
-                        appUsageTimeList.add(String.valueOf(tempTimeToSec));
-                    }
+                    appUsageTimeList.add(getTimeUsage(appUsageInfo.timeInForeground));
 
                     try {
                         appIcon = getPackageManager().getApplicationIcon(appUsageInfo.packageName);
@@ -183,23 +172,20 @@ public class UsageStatisticActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    othersAppTotalTime += appUsageInfo.timeInForeground;
+                    if(appUsageInfo.packageName.equals("com.android.camera2")){
+                        appNameList.add("Camera");
+                        appIconList.add(getAppIcon(appUsageInfo.packageName));
+                        appUsageTimeList.add(getTimeUsage(appUsageInfo.timeInForeground));
+                    }
+                    else {
+                        othersAppTotalTime += appUsageInfo.timeInForeground;
+                    }
                 }
             }
 
             appNameList.add("Other App");
             appIconList.add(getDrawable(R.drawable.other_app_icon));
-            tempTimeToMins = TimeUnit.MILLISECONDS.toMinutes(othersAppTotalTime);
-            tempTimeToSec = TimeUnit.MILLISECONDS.toSeconds(othersAppTotalTime);
-
-            if(tempTimeToMins>0) {
-                long realSec = othersAppTotalTime - (tempTimeToMins*1000*60);
-                tempTimeToSec = TimeUnit.MILLISECONDS.toSeconds(realSec);
-                appUsageTimeList.add(String.valueOf(tempTimeToMins) + "m " + String.valueOf(tempTimeToSec) +"s");
-            }
-            else {
-                appUsageTimeList.add(String.valueOf(tempTimeToSec));
-            }
+            appUsageTimeList.add(getTimeUsage(othersAppTotalTime));
 
             listView = (NonScrollListView) findViewById(R.id.list_view_usage_statistic);
             UsageStatisticListViewAdapter listViewAdapter = new UsageStatisticListViewAdapter(this,
@@ -226,5 +212,42 @@ public class UsageStatisticActivity extends AppCompatActivity {
             }
         }
         return null;
+    }
+
+    private String getTimeUsage(long timeUsageInMilliSec){
+        String ans = "";
+        long timeToHour,timeToMins,timeToSec;
+        timeToHour = TimeUnit.MILLISECONDS.toHours(timeUsageInMilliSec);
+        timeToMins = TimeUnit.MILLISECONDS.toMinutes(timeUsageInMilliSec);
+        timeToSec = TimeUnit.MILLISECONDS.toSeconds(timeUsageInMilliSec);
+
+        if(timeToHour > 0) {
+            long realMins = timeUsageInMilliSec - (timeToHour*1000*60*60);
+            timeToMins = TimeUnit.MILLISECONDS.toSeconds(realMins);
+            ans = String.valueOf(timeToHour) + "h " + String.valueOf(timeToMins) + "m ";
+        }
+        else {
+            if(timeToMins > 0) {
+                long realSecs = timeUsageInMilliSec - (timeToMins*1000*60 + timeToHour*1000*60*60);
+                timeToSec = TimeUnit.MILLISECONDS.toSeconds(realSecs);
+                ans = String.valueOf(timeToMins) + "m " + String.valueOf(timeToSec) + "s ";
+            }
+            else {
+                ans = String.valueOf(timeToSec) + "s ";
+            }
+        }
+
+        return ans;
+    }
+
+    private Drawable getAppIcon(String packageName){
+        Drawable icon;
+        try {
+            icon = getPackageManager().getApplicationIcon(packageName);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.w(TAG, String.format("App Icon is not found for %s",packageName));
+            icon = getDrawable(R.drawable.ic_launcher_foreground);
+        }
+        return icon;
     }
 }
