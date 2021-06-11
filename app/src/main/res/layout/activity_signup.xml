@@ -7,38 +7,45 @@
     android:layout_height="match_parent"
     tools:context=".SignupActivity"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@drawable/hehehe"
     android:padding="20dp">
     <ImageView
         android:id="@+id/applogo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="20dp"
         android:transitionName="logo_image"
-        android:src="@drawable/hoocarelogin"/>
+        android:src="@drawable/logoinlogin"/>
     <TextView
         android:id="@+id/logomessege"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Let's get started"
         android:textSize="50sp"
+        android:layout_gravity="center"
         android:transitionName="logo_text"
-        android:textColor="@color/lime_200"
+        android:textColor="@color/white"
         android:paddingBottom="10dp"
         android:fontFamily="@font/momcakebold"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up to continue"
-        android:textSize="25sp"
-        android:fontFamily="@font/momcakethin"/>
+
 
     <LinearLayout
         android:layout_width="374dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
+        android:padding="20dp"
+        android:background="@drawable/button_bg"
         android:orientation="vertical">
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textSize="30dp"
+            android:fontFamily="@font/momcakebold"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:textColor="@color/lime_200"/>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
