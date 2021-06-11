@@ -15,6 +15,10 @@
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.HooCare.MediumComponent.Rounded</item>
         <item name="fab_addButtonColorNormal">@style/MyFabStyle</item>
     </style>
+    <style name="GoogleButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">#F42A2A</item>
+        <item name="rippleColor">#ffffff</item>
+    </style>
     <style name="MyFabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="backgroundTint">@color/lime_200</item>
         <item name="rippleColor">#ffffff</item>
@@ -32,5 +36,18 @@
         <item name="android:background">@android:color/transparent</item>
         <item name="behavior_peekHeight">700dp</item>
     </style>
+    <style name="buttonView" parent ="Widget.MaterialComponents.Button">
+        <item name="materialThemeOverlay">@style/CustomButtonThemeOverlay</item>
+    </style>
 
+    <style name="CustomButtonThemeOverlay">
+        <item name="colorPrimary">@color/googlecolor</item>
+    </style>
+    <style name="buttonView1" parent ="Widget.MaterialComponents.Button">
+        <item name="materialThemeOverlay">@style/CustomButtonThemeOverlay1</item>
+    </style>
+
+    <style name="CustomButtonThemeOverlay1">
+        <item name="colorPrimary">@color/facebookcolor</item>
+    </style>
 </resources>
