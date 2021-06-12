@@ -204,7 +204,7 @@ public class UsageStatisticActivity extends AppCompatActivity {
                 }
                 totalTime += appUsageInfo.timeInForeground;
             }
-            totalTime += 1000*60*60*4;
+            //totalTime += 1000*60*60*4;
             //set value for big total time text
             String eyeCondition;
             String tempTime = getTimeUsage(totalTime);
