@@ -2,9 +2,9 @@ package cf.khanhsb.icare_v2;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -31,7 +31,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -40,6 +39,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+
+import cf.khanhsb.icare_v2.SignupActivity;
 
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
@@ -107,7 +108,6 @@ public class SigninActivity extends AppCompatActivity {
         });
 
 
-
         //Move to sign after sign up
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +122,8 @@ public class SigninActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -129,22 +131,31 @@ public class SigninActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             Exception exception = task.getException();
-            if(task.isSuccessful()){
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d("SigninActivity", "firebaseAuthWithGoogle:" + account.getId());
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w("SigninActivity", "Google sign in failed", e);
-            }
-        }else {
+            if (task.isSuccessful()) {
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    Log.d("SigninActivity", "firebaseAuthWithGoogle:" + account.getId());
+                    firebaseAuthWithGoogle(account.getIdToken());
+
+                    GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+                    if (acct != null) {
+                        String googleEmail = acct.getEmail();
+                        String userName = acct.getDisplayName();
+                        CreateUserOnFirebase(googleEmail,userName);
+                        SetUpFirebase(googleEmail);
+                    }
+                } catch (ApiException e) {
+                    // Google Sign In failed, update UI appropriately
+                    Log.w("SigninActivity", "Google sign in failed", e);
+                }
+            } else {
                 Log.w("SigninActivity", exception.toString());
             }
-    }}
+        }
+    }
 
-    //////////
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -154,9 +165,6 @@ public class SigninActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("SigninActivity", "signInWithCredential:success");
-                            Intent intent = new Intent(SigninActivity.this,MainActivity.class);
-                            startActivity(intent);
-                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("SigninActivity", "signInWithCredential:failure", task.getException());
@@ -170,99 +178,13 @@ public class SigninActivity extends AppCompatActivity {
         String email = mEmail.getText().toString();
         String pass = mPass.getText().toString();
 
-        //set up shareRef
-        SharedPreferences sharedPreferences = getSharedPreferences(
-                tempEmail, MODE_PRIVATE);
-
-        //set up database date
-        LocalDate today = LocalDate.now();
-        LocalDate monday = today.with(previousOrSame(MONDAY));
-
-        //set up firestore
-        firestore = FirebaseFirestore.getInstance();
-        docRef = firestore.collection("daily").
-                document("week-of-" + monday.toString()).
-                collection(today.toString()).
-                document(email);
-
         if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             if (!pass.isEmpty()) {
                 mAuth.signInWithEmailAndPassword(email, pass)
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            DocumentSnapshot document = task.getResult();
-                                            assert document != null;
-                                            if (document.exists()) {
-                                                Log.d("LOGGER", "got the document");
-                                                Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                                                intent.putExtra("userEmail", email);
-                                                SharedPreferences.Editor editor;
-                                                editor = sharedPreferences.edit();
-                                                editor.putString("Email", email);
-                                                editor.apply();
-                                                startActivity(intent);
-                                                finish();
-                                            } else {
-                                                //check if goal exist or not
-                                                docRef = firestore.collection("users").document(email);
-                                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            DocumentSnapshot document = task.getResult();
-                                                            if (document != null) {
-                                                                String temp = document.getString("drink_goal");
-                                                                assert temp != null;
-
-                                                                //create dailyData
-                                                                docRef = firestore.collection("daily").
-                                                                        document("week-of-" + monday.toString()).
-                                                                        collection(today.toString()).
-                                                                        document(email);
-                                                                Map<String, Object> dailyGoal = new HashMap<>();
-
-                                                                if (temp.equals("empty")) {
-                                                                    dailyGoal.put("drink", "empty");
-                                                                } else {
-                                                                    dailyGoal.put("drink", "0");
-                                                                }
-
-                                                                //update data to firestore
-                                                                firestore = FirebaseFirestore.getInstance();
-                                                                firestore.collection("daily").
-                                                                        document("week-of-" + monday.toString()).
-                                                                        collection(today.toString()).
-                                                                        document(email).set(dailyGoal);
-
-                                                                Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
-                                                                Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                                                                intent.putExtra("userEmail", email);
-                                                                SharedPreferences.Editor editor;
-                                                                editor = sharedPreferences.edit();
-                                                                editor.putString("Email", email);
-                                                                editor.apply();
-                                                                startActivity(intent);
-                                                                finish();
-                                                            } else {
-                                                                Log.d("LOGGER", "No such document");
-                                                            }
-                                                        } else {
-                                                            Log.d("LOGGER", "get failed with ", task.getException());
-                                                        }
-                                                    }
-                                                });
-                                            }
-                                        } else {
-                                            Log.d("LOGGER", "get failed with ", task.getException());
-                                        }
-                                    }
-                                });
+                                SetUpFirebase(email);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -278,5 +200,126 @@ public class SigninActivity extends AppCompatActivity {
         } else {
             mEmail.setError("Please enter correct email");
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void SetUpFirebase(String userEmail) {
+        //set up shareRef
+        SharedPreferences sharedPreferences = getSharedPreferences(
+                tempEmail, MODE_PRIVATE);
+
+        //set up database date
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+
+        //set up firestore
+        firestore = FirebaseFirestore.getInstance();
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(userEmail);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    assert document != null;
+                    if (document.exists()) {
+                        Log.d("LOGGER", "got the document");
+                        Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                        intent.putExtra("userEmail", userEmail);
+                        SharedPreferences.Editor editor;
+                        editor = sharedPreferences.edit();
+                        editor.putString("Email", userEmail);
+                        editor.apply();
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        //check if goal exist or not
+                        docRef = firestore.collection("users").document(userEmail);
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document != null) {
+                                        String temp = document.getString("drink_goal");
+                                        //create dailyData
+                                        docRef = firestore.collection("daily").
+                                                document("week-of-" + monday.toString()).
+                                                collection(today.toString()).
+                                                document(userEmail);
+                                        Map<String, Object> dailyGoal = new HashMap<>();
+
+                                        if (temp.equals("empty")) {
+                                            dailyGoal.put("drink", "empty");
+                                        } else {
+                                            dailyGoal.put("drink", "0");
+                                        }
+
+                                        //update data to firestore
+                                        firestore = FirebaseFirestore.getInstance();
+                                        firestore.collection("daily").
+                                                document("week-of-" + monday.toString()).
+                                                collection(today.toString()).
+                                                document(userEmail).set(dailyGoal);
+
+                                        Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                                        intent.putExtra("userEmail", userEmail);
+                                        SharedPreferences.Editor editor;
+                                        editor = sharedPreferences.edit();
+                                        editor.putString("Email", userEmail);
+                                        editor.apply();
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Log.d("LOGGER", "No such document");
+                                    }
+                                } else {
+                                    Log.d("LOGGER", "get failed with ", task.getException());
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void CreateUserOnFirebase(String userEmail, String userName) {
+        //Set up firestore
+        firestore = FirebaseFirestore.getInstance();
+
+        // Save user data to firestore
+        Map<String, Object> user = new HashMap<>();
+        user.put("name", userName);
+        user.put("email", userEmail);
+        user.put("weight", "empty");
+        user.put("height", "empty");
+        user.put("step_goal", "empty");
+        user.put("drink_goal", "empty");
+        user.put("calories_burn_goal", "empty");
+        user.put("sleep_goal", "empty");
+        user.put("on_screen_goal", "empty");
+        user.put("health_point", "empty");
+        firestore.collection("users").document(userEmail)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(SigninActivity.this, "Fail to save data to Firestore", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
