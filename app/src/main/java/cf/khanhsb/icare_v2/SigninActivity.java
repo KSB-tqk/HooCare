@@ -161,7 +161,6 @@ public class SigninActivity extends AppCompatActivity {
 
     }
 
-//////////////////////////////////////
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)

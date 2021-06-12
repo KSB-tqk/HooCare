@@ -64,8 +64,6 @@ public class SignupActivity extends Activity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 createUser();
             }
         });
