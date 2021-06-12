@@ -9,14 +9,14 @@
 
     <ImageView
         android:id="@+id/imageViewSplash"
-        android:layout_width="409dp"
-        android:layout_height="395dp"
-        android:layout_marginTop="160dp"
-        android:paddingLeft="30dp"
-        android:transitionName="logo_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="196dp"
+        android:paddingLeft="20dp"
         android:src="@drawable/hoocarelogo"
+        android:transitionName="logo_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,17 +24,17 @@
         android:id="@+id/textViewSplash"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/momcakebold"
         android:text="TAKING CARE"
         android:textAlignment="center"
         android:textSize="55sp"
         android:transitionName="logo_text"
-        android:fontFamily="@font/momcakebold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewSplash"
-        app:layout_constraintVertical_bias="0.321" />
+        app:layout_constraintVertical_bias="0.595" />
 
     <TextView
         android:id="@+id/textViewSplash2"
