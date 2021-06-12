@@ -37,11 +37,14 @@
         <item name="behavior_peekHeight">700dp</item>
     </style>
     <style name="buttonView" parent ="Widget.MaterialComponents.Button">
-        <item name="materialThemeOverlay">@style/CustomButtonThemeOverlay</item>
+        <item name="android:background">@drawable/button_bg</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
     <style name="CustomButtonThemeOverlay">
-        <item name="colorPrimary">@color/googlecolor</item>
+        <item name="colorPrimary">#ED3C3C</item>
     </style>
     <style name="buttonView1" parent ="Widget.MaterialComponents.Button">
         <item name="materialThemeOverlay">@style/CustomButtonThemeOverlay1</item>
