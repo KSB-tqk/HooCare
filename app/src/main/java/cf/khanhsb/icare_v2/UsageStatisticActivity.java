@@ -10,19 +10,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.collection.LLRBBlackValueNode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +50,8 @@ public class UsageStatisticActivity extends AppCompatActivity {
     private Button mOpenUsageSettingButton;
     private NonScrollListView listView;
     private ImageView backButton,moreButton;
+    private LinearLayout eyeConditionBox;
+    private TextView totalTextView,dateTimeTextView,eyeConditionTextView;
 
     @Override
     protected void onResume() {
@@ -59,6 +69,10 @@ public class UsageStatisticActivity extends AppCompatActivity {
         mOpenUsageSettingButton = findViewById(R.id.open_button);
         backButton = findViewById(R.id.button_backtohomefrag_time_statistic);
         moreButton = findViewById(R.id.more_menu_time_statistic);
+        totalTextView = findViewById(R.id.total_time_text);
+        dateTimeTextView = findViewById(R.id.date_time_statistic);
+        eyeConditionTextView = findViewById(R.id.eye_condition);
+        eyeConditionBox = findViewById(R.id.eye_condition_linear);
 
         mOpenUsageSettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,11 +172,10 @@ public class UsageStatisticActivity extends AppCompatActivity {
 
             Drawable appIcon;
             String appName;
-            String appUsageTime;
-            Long tempTimeToHour,tempTimeToMins,tempTimeToSec,othersAppTotalTime = 0L,totalTime = 0L;
+            Long othersAppTotalTime = 0L,totalTime = 0L;
 
             // Concatenating data to show in a text view. You may do according to your requirement
-            for (AppUsageInfo appUsageInfo : smallInfoList)
+            for (AppUsageInfo appUsageInfo : tempInfoList)
             {
                 appName = getAppNameFromPackage(appUsageInfo.packageName,this);
                 if(appName != null){
@@ -189,7 +202,62 @@ public class UsageStatisticActivity extends AppCompatActivity {
                         othersAppTotalTime += appUsageInfo.timeInForeground;
                     }
                 }
+                totalTime += appUsageInfo.timeInForeground;
             }
+            totalTime += 1000*60*60*4;
+            //set value for big total time text
+            String eyeCondition;
+            String tempTime = getTimeUsage(totalTime);
+            totalTextView.setText(tempTime);
+            if(tempTime.contains("h")){
+                String[] splitTime = tempTime.split("h");
+                int tempHour = Integer.parseInt(splitTime[0]);
+                if(tempHour < 3){
+                    eyeCondition = "Ok";
+                    eyeConditionTextView.setText(eyeCondition);
+                    eyeConditionTextView.setTextColor(Color.GREEN);
+                    GradientDrawable drawable = (GradientDrawable) eyeConditionBox.getBackground();
+                    drawable.setStroke(8, Color.GREEN);
+                }
+                else if(tempHour < 4){
+                    eyeCondition = "Medium";
+                    eyeConditionTextView.setText(eyeCondition);
+                    eyeConditionTextView.setTextColor(Color.YELLOW);
+                    GradientDrawable drawable = (GradientDrawable) eyeConditionBox.getBackground();
+                    drawable.setStroke(8, Color.YELLOW);
+                }
+                else if(tempHour < 6){
+                    eyeCondition = "High";
+                    eyeConditionTextView.setText(eyeCondition);
+                    eyeConditionTextView.setTextColor(Color.RED);
+                    GradientDrawable drawable = (GradientDrawable) eyeConditionBox.getBackground();
+                    drawable.setStroke(8, Color.RED);
+                }
+                else {
+                    eyeCondition = "Very High";
+                    eyeConditionTextView.setText(eyeCondition);
+                    eyeConditionTextView.setTextColor(Color.RED);
+                    GradientDrawable drawable = (GradientDrawable) eyeConditionBox.getBackground();
+                    drawable.setStroke(8, Color.RED);
+                }
+            }
+            else {
+                eyeCondition = "Ok";
+                eyeConditionTextView.setText(eyeCondition);
+                eyeConditionTextView.setTextColor(Color.GREEN);
+                GradientDrawable drawable = (GradientDrawable) eyeConditionBox.getBackground();
+                drawable.setStroke(8, Color.GREEN);
+            }
+            //set view for eye condition box
+
+            //set value for datetime text
+            Date calendar = Calendar.getInstance().getTime();
+            System.out.println("Current time => " + calendar);
+            String day = (String) DateFormat.format("dd", calendar); // 20
+            String monthString = (String) DateFormat.format("MMM", calendar); // Jun
+            String today = day + " " + monthString;
+
+            dateTimeTextView.setText("Today, " + today);
 
             appNameList.add("Other App");
             appIconList.add(getDrawable(R.drawable.other_app_icon));
@@ -231,7 +299,7 @@ public class UsageStatisticActivity extends AppCompatActivity {
 
         if(timeToHour > 0) {
             long realMins = timeUsageInMilliSec - (timeToHour*1000*60*60);
-            timeToMins = TimeUnit.MILLISECONDS.toSeconds(realMins);
+            timeToMins = TimeUnit.MILLISECONDS.toMinutes(realMins);
             ans = String.valueOf(timeToHour) + "h " + String.valueOf(timeToMins) + "m ";
         }
         else {

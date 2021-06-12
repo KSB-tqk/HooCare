@@ -15,12 +15,14 @@ public class AppUsageInfo implements Comparable<AppUsageInfo>{
 
     @Override
     public int compareTo(AppUsageInfo compareAppUsageInfo) {
-        int compareQuantity = 10,thisQuantity = 100;
         if(compareAppUsageInfo.timeInForeground > this.timeInForeground) {
-            return (int)this.timeInForeground - compareQuantity;
+            return 1;
+        }
+        else if(compareAppUsageInfo.timeInForeground < this.timeInForeground){
+            return -1;
         }
         else {
-            return (int)this.timeInForeground - compareQuantity;
+            return 0;
         }
     }
 }
