@@ -8,6 +8,7 @@ import android.app.usage.UsageEvents;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
@@ -25,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.collection.LLRBBlackValueNode;
 
 import java.util.ArrayList;
@@ -50,15 +52,34 @@ public class UsageStatisticActivity extends AppCompatActivity {
     private Button mOpenUsageSettingButton;
     private NonScrollListView listView;
     private ImageView backButton,moreButton;
-    private LinearLayout eyeConditionBox;
+    private LinearLayout eyeConditionBox,setUpTimeUsageLinear;
     private TextView totalTextView,dateTimeTextView,eyeConditionTextView;
+    private MaterialCardView totalTimeUsageCardView;
+    private static final String allowUsageAccess = "allowUsageAccess";
 
     @Override
     protected void onResume() {
         super.onResume();
         long end_time = System.currentTimeMillis();
         long start_time = end_time - (1000*60*60);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(allowUsageAccess, MODE_PRIVATE);
+
         getUsageStatistics(start_time, end_time);
+
+        String allowUsage = sharedPreferences.getString("allowUsage", "");
+
+        if(!allowUsage.equals("")){
+            setUpTimeUsageLinear.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            totalTimeUsageCardView.setVisibility(View.VISIBLE);
+        }
+        else {
+            setUpTimeUsageLinear.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+            totalTimeUsageCardView.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -73,6 +94,23 @@ public class UsageStatisticActivity extends AppCompatActivity {
         dateTimeTextView = findViewById(R.id.date_time_statistic);
         eyeConditionTextView = findViewById(R.id.eye_condition);
         eyeConditionBox = findViewById(R.id.eye_condition_linear);
+        setUpTimeUsageLinear = findViewById(R.id.setup_time_usage_linear);
+        totalTimeUsageCardView = findViewById(R.id.total_time_OS_card_view);
+        listView = (NonScrollListView) findViewById(R.id.list_view_usage_statistic);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(allowUsageAccess, MODE_PRIVATE);
+
+        String allowUsage = sharedPreferences.getString("allowUsage", "");
+        if(!allowUsage.equals("")){
+            setUpTimeUsageLinear.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            totalTimeUsageCardView.setVisibility(View.VISIBLE);
+        }
+        else {
+            setUpTimeUsageLinear.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+            totalTimeUsageCardView.setVisibility(View.GONE);
+        }
 
         mOpenUsageSettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +197,14 @@ public class UsageStatisticActivity extends AppCompatActivity {
             }
 
             smallInfoList = new ArrayList<>(map.values());
+
+            if(smallInfoList.size()>0) {
+                SharedPreferences sharedPreferences = getSharedPreferences(allowUsageAccess, MODE_PRIVATE);
+                SharedPreferences.Editor editor;
+                editor = sharedPreferences.edit();
+                editor.putString("allowUsage", "true");
+                editor.apply();
+            }
 
             AppUsageInfo[] tempInfoList = new AppUsageInfo[smallInfoList.size()];
             for(int i = 0;i < smallInfoList.size();i++) {
