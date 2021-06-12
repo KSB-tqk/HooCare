@@ -1,4 +1,4 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Model;
 
 import android.content.Context;
 import android.util.AttributeSet;

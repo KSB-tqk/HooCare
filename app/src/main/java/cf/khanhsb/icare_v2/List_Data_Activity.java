@@ -3,7 +3,6 @@ package cf.khanhsb.icare_v2;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +11,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubePlayerView;
+
+import cf.khanhsb.icare_v2.Adapter.AnimExerListViewAdapter;
+import cf.khanhsb.icare_v2.Adapter.AnimExerViewPagerAdapter;
+import cf.khanhsb.icare_v2.Model.NonScrollListView;
 
 public class List_Data_Activity extends YouTubeBaseActivity {
     private ImageView workoutImage, backButton, moreButton, favButton;

@@ -104,7 +104,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textSize="30sp"
+                        android:textSize="25sp"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -116,7 +116,7 @@
                         android:layout_marginStart="5dp"
                         android:text="ML"
                         android:textColor="@color/lime_200"
-                        android:textSize="18sp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -132,6 +132,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/more_cup_linear"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/step_count_label_background"
@@ -157,8 +158,8 @@
                         android:id="@+id/water_cup_count_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3"
-                        android:textSize="30sp"
+                        android:text="0"
+                        android:textSize="25sp"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -170,7 +171,7 @@
                         android:layout_marginStart="5dp"
                         android:text="Cups"
                         android:textColor="@color/lime_200"
-                        android:textSize="18sp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -185,6 +186,17 @@
                     android:textSize="15sp" />
             </LinearLayout>
 
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/minus_water_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/minus_drink_water_circular_icon_unchecked"
+                app:layout_constraintTop_toTopOf="@id/drink_water_button"
+                app:layout_constraintRight_toLeftOf="@id/drink_water_button"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@id/drink_water_button" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/drink_water_button"
                 android:layout_width="wrap_content"
@@ -196,6 +208,7 @@
                 android:paddingRight="20dp"
                 android:paddingBottom="10dp"
                 android:text="Drink"
+                android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -214,7 +227,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:progress="50"
+                app:progress="0"
                 app:wave_height="large"
                 app:wave_hz="normal"
                 app:wave_length="middle" />
@@ -227,6 +240,18 @@
                 app:layout_constraintLeft_toLeftOf="@id/wave_view_water"
                 app:layout_constraintRight_toRightOf="@id/wave_view_water"
                 app:layout_constraintTop_toTopOf="@id/wave_view_water" />
+
+            <SeekBar
+                android:id="@+id/seek_bar"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintLeft_toLeftOf="@id/wave_view_water"
+                app:layout_constraintRight_toRightOf="@id/wave_view_water"
+                app:layout_constraintTop_toTopOf="@id/wave_view_water"
+                android:progress="80" />
 
             <Space
                 android:layout_width="20dp"

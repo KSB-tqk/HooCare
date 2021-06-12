@@ -1,4 +1,4 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
+
+import cf.khanhsb.icare_v2.R;
 
 public class BarChartAdapter extends RecyclerView.Adapter<BarChartAdapter.ViewHolder>{
     //initialize variable

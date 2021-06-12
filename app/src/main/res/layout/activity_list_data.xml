@@ -266,13 +266,13 @@
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <cf.khanhsb.icare_v2.NonScrollListView
+            <cf.khanhsb.icare_v2.Model.NonScrollListView
                 android:id="@+id/list_view_list_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/exercises_title_list_data_linear">
 
-            </cf.khanhsb.icare_v2.NonScrollListView>
+            </cf.khanhsb.icare_v2.Model.NonScrollListView>
 
 
         </RelativeLayout>

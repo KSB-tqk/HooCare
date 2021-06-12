@@ -55,11 +55,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/displaynamemenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:gravity="top"
-                    android:text="UserName"
                     android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                     android:textColor="@color/white"/>
 
@@ -95,6 +95,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/gotoprofile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/nav_menu_item_background"
@@ -177,13 +178,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:paddingLeft="25dp">
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/nav_menu_logout_icon"/>
+                    android:src="@drawable/nav_menu_logout_icon" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -191,7 +192,7 @@
                     android:layout_gravity="center"
                     android:paddingStart="10dp"
                     android:text="Log Out"
-                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"/>
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

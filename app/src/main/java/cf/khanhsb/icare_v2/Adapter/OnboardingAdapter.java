@@ -1,6 +1,5 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Adapter;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import cf.khanhsb.icare_v2.Model.OnboardingItem;
+import cf.khanhsb.icare_v2.R;
 
 public class OnboardingAdapter extends RecyclerView.Adapter<OnboardingAdapter.OnboardingViewHolder> {
 

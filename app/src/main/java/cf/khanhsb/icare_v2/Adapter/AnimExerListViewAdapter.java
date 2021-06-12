@@ -1,20 +1,18 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import cf.khanhsb.icare_v2.R;
 
 public class AnimExerListViewAdapter extends BaseAdapter {
     private String[] title,textDetail,videoUri;
@@ -65,7 +63,6 @@ public class AnimExerListViewAdapter extends BaseAdapter {
         holder.exerciseTitle.setText(title[position]);
         holder.videoView.requestFocus();
         holder.videoView.setVideoURI(Uri.parse(videoUri[position]));
-        holder.videoView.start();
         holder.videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -75,7 +72,7 @@ public class AnimExerListViewAdapter extends BaseAdapter {
         holder.videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                holder.frameLayout.setVisibility(View.VISIBLE);
+                mp.setLooping(true);
             }
         });
         holder.videoView.start();

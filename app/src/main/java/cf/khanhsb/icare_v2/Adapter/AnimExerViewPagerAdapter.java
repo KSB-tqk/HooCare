@@ -1,23 +1,16 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Adapter;
 
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.MediaController;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
-
+import cf.khanhsb.icare_v2.R;
 import pl.droidsonroids.gif.GifImageView;
 
 public class AnimExerViewPagerAdapter extends

@@ -15,7 +15,7 @@
                     android:angle="180"
                     android:endColor="#CAD7FD"
                     android:startColor="#585DDB"
-                    android:useLevel="true"></gradient>
+                    android:useLevel="true"/>
             </shape>
         </scale>
     </item>

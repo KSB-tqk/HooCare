@@ -3,20 +3,20 @@
     <item
         android:title="Home"
         android:id="@+id/nav_home"
-        android:icon="@drawable/home_icon_selector"></item>
+        android:icon="@drawable/home_icon_selector"/>
     <item
         android:title="Archie"
         android:id="@+id/nav_archie"
-        android:icon="@drawable/medal_icon_selector"></item>
+        android:icon="@drawable/medal_icon_selector"/>
     <item
         android:title=""
-        android:id="@+id/fab"></item>
+        android:id="@+id/fab"/>
     <item
         android:title="Meal"
         android:id="@+id/nav_meal"
-        android:icon="@drawable/meal_icon_selector"></item>
+        android:icon="@drawable/meal_icon_selector"/>
     <item
         android:title="Exercies"
         android:id="@+id/nav_gym"
-        android:icon="@drawable/gym_icon_selector"></item>
+        android:icon="@drawable/gym_icon_selector"/>
 </menu>

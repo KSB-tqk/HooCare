@@ -1,4 +1,4 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Fragment;
 
 
 import android.graphics.Color;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import cf.khanhsb.icare_v2.R;
 
 
 public class ArchieveFragment extends Fragment {

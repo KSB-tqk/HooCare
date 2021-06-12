@@ -1,4 +1,4 @@
-package cf.khanhsb.icare_v2;
+package cf.khanhsb.icare_v2.Fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,6 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+
+import cf.khanhsb.icare_v2.Adapter.MealViewPagerAdapter;
+import cf.khanhsb.icare_v2.Model.MealPlanData;
+import cf.khanhsb.icare_v2.R;
 
 public class MealFragment extends Fragment {
 

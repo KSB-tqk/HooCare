@@ -1,50 +1,35 @@
 package cf.khanhsb.icare_v2;
 
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+
+import cf.khanhsb.icare_v2.Adapter.ViewPagerAdapter;
+import cf.khanhsb.icare_v2.Fragment.MealFragment;
 
 public class MainActivity extends AppCompatActivity {
     private TextView username,toolBarTitle;
@@ -56,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private SlidingRootNav slidingRootNav;
     private LinearLayout logout;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +59,13 @@ public class MainActivity extends AppCompatActivity {
         toolBarTitle = findViewById(R.id.tool_bar_title);
         toolBarImageView = findViewById(R.id.nav_menu_icon);
 
+        /**getting intent*/
+        Intent intent = getIntent();
+        String userEmail = intent.getStringExtra("userEmail");
+
         /**setting up viewpager*/
         viewPager = findViewById(R.id.view_pager);
-        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),userEmail);
         viewPager.setAdapter(mViewPagerAdapter);
 
         /**setting up nav drawer*/
@@ -99,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView openNavMenuButton = (ImageView) findViewById(R.id.nav_menu_icon);
 
         /**sliding between fragment and activity*/
-        Intent intent = getIntent();
         int fragmentPosition = intent.getIntExtra("fragmentPosition",0);
         viewPager.setCurrentItem(fragmentPosition);
         if(fragmentPosition==3){
@@ -185,11 +174,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();;
+        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
         logout = findViewById(R.id.linearlogout);
+        
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
+                //
+                mGoogleSignInClient.signOut();
                 startActivity(new Intent(MainActivity.this,SigninActivity.class));
                 finish();
             }
@@ -224,5 +221,9 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signOut();
         startActivity(new Intent(MainActivity.this,SigninActivity.class));
         finish();
+    }
+
+    public void replaceFragment(int fragmentPos){
+        viewPager.setCurrentItem(fragmentPos);
     }
 }

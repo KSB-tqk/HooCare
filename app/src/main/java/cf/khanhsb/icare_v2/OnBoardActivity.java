@@ -16,6 +16,9 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import cf.khanhsb.icare_v2.Adapter.OnboardingAdapter;
+import cf.khanhsb.icare_v2.Model.OnboardingItem;
+
 public class OnBoardActivity extends Activity {
     private OnboardingAdapter onboardingAdapter;
     private LinearLayout layoutOnboardingIndicators;
@@ -44,7 +47,7 @@ public class OnBoardActivity extends Activity {
                 if (onboardingViewPager.getCurrentItem()+1 < onboardingAdapter.getItemCount()){
                     onboardingViewPager.setCurrentItem(onboardingViewPager.getCurrentItem()+1);
                 }else{
-                    startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+                    startActivity(new Intent(getApplicationContext(), SplashScreenActivity2.class));
                     finish();
                 }
             }

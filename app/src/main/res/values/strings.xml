@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ICare_v2</string>
+    <string name="app_name">HooCare</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="HomeFragTitle">Summary</string>
@@ -56,7 +56,7 @@
     <string name="next_workout">Next workout</string>
     <string name="classic_workouts_label">Classic Workouts</string>
     <string name="for_today_label">For Today</string>
-    <string name="step_num_label">7500</string>
+    <string name="step_num_label">0</string>
     <string name="step_text_label">steps</string>
     <string name="calories_label">Calories</string>
     <string name="fire_icon">Fire icon</string>
@@ -68,7 +68,7 @@
     <string name="sleep_time_currency_label">hours</string>
     <string name="water_label">Water</string>
     <string name="water_icon">water_icon</string>
-    <string name="water_num_label">0.55</string>
+    <string name="water_num_label">0</string>
     <string name="water_text_label">liters</string>
     <string name="cup_of_water">cup of water</string>
     <string name="training">Training</string>
@@ -159,4 +159,16 @@
     <string name="set_your_daily_goal">SET YOUR DAILY GOAL</string>
     <string name="cups">Cups</string>
     <string name="a_day">a day.</string>
+    <string name="_8">8</string>
+    <string name="set_up_goal">SET A GOAL</string>
+    <string name="_12_november">12 November</string>
+    <string name="recommend">Recommend</string>
+    <string name="custom">Custom</string>
+    <string name="steps_day">steps/day</string>
+    <string name="_5000">5000</string>
+    <string name="_8000">8000</string>
+    <string name="_15000">15000</string>
+    <string name="_2500">2500</string>
+    <string name="time_onscreen">Time OnScreen</string>
+    <string name="recommanded_use_smartphone_less_3_hours_a_day">Recommanded: Only use smartphone less 3 hours/day</string>
 </resources>
