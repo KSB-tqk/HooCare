@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -186,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mAuth.signOut();
                 //
+                LoginManager.getInstance().logOut();
+                /////
                 mGoogleSignInClient.signOut();
                 startActivity(new Intent(MainActivity.this,SigninActivity.class));
                 finish();
