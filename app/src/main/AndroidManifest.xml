@@ -46,6 +46,11 @@
         <activity android:name=".StepCountActivity" />
         <activity android:name=".SigninActivity">
         </activity>
+        <activity android:name=".List_Data_Activity" />
+        <activity android:name=".ResetPWActivity" />
+        <activity android:name=".StepCountActivity" />
+        <activity android:name=".SigninActivity">
+        </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".OnBoardActivity"></activity>
         <activity android:name=".WaterActivity" />
