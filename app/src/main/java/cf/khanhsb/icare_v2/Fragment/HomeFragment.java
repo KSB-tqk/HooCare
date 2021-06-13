@@ -92,7 +92,6 @@ public class HomeFragment extends Fragment {
 
         firestore = FirebaseFirestore.getInstance();
         if (userEmail == null) {
-
             docRef = firestore.collection("users").document(theTempEmail);
         } else {
             docRef = firestore.collection("users").document(userEmail);
