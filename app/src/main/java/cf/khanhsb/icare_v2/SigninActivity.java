@@ -210,7 +210,20 @@ public class SigninActivity extends AppCompatActivity {
                         String googleEmail = acct.getEmail();
                         String userName = acct.getDisplayName();
                         CreateUserOnFirebase(googleEmail,userName);
-                        SetUpFirebase(googleEmail);
+                        //set up shareRef
+                        SharedPreferences sharedPreferences = getSharedPreferences(
+                                tempEmail, MODE_PRIVATE);
+
+                        Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+
+                        SharedPreferences.Editor editor;
+                        editor = sharedPreferences.edit();
+                        editor.putString("Email", googleEmail);
+                        editor.apply();
+
+                        startActivity(intent);
+                        finish();
                     }
                 } catch (ApiException e) {
                     // Google Sign In failed, update UI appropriately
@@ -251,7 +264,19 @@ public class SigninActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                SetUpFirebase(email);
+                                SharedPreferences sharedPreferences = getSharedPreferences(
+                                        tempEmail, MODE_PRIVATE);
+
+                                Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+
+                                SharedPreferences.Editor editor;
+                                editor = sharedPreferences.edit();
+                                editor.putString("Email", email);
+                                editor.apply();
+
+                                startActivity(intent);
+                                finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -267,95 +292,6 @@ public class SigninActivity extends AppCompatActivity {
         } else {
             mEmail.setError("Please enter correct email");
         }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void SetUpFirebase(String userEmail) {
-        //set up shareRef
-        SharedPreferences sharedPreferences = getSharedPreferences(
-                tempEmail, MODE_PRIVATE);
-
-        //set up database date
-        LocalDate today = LocalDate.now();
-        LocalDate monday = today.with(previousOrSame(MONDAY));
-
-        //set up firestore
-        firestore = FirebaseFirestore.getInstance();
-        docRef = firestore.collection("daily").
-                document("week-of-" + monday.toString()).
-                collection(today.toString()).
-                document(userEmail);
-
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    assert document != null;
-                    if (document.exists()) {
-                        Log.d("LOGGER", "got the document");
-                        Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                        intent.putExtra("userEmail", userEmail);
-                        SharedPreferences.Editor editor;
-                        editor = sharedPreferences.edit();
-                        editor.putString("Email", userEmail);
-                        editor.apply();
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        //check if goal exist or not
-                        docRef = firestore.collection("users").document(userEmail);
-                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document != null) {
-                                        String temp = document.getString("drink_goal");
-                                        //create dailyData
-                                        docRef = firestore.collection("daily").
-                                                document("week-of-" + monday.toString()).
-                                                collection(today.toString()).
-                                                document(userEmail);
-                                        Map<String, Object> dailyGoal = new HashMap<>();
-
-                                        if (temp.equals("empty")) {
-                                            dailyGoal.put("drink", "empty");
-                                        } else {
-                                            dailyGoal.put("drink", "0");
-                                        }
-
-                                        //update data to firestore
-                                        firestore = FirebaseFirestore.getInstance();
-                                        firestore.collection("daily").
-                                                document("week-of-" + monday.toString()).
-                                                collection(today.toString()).
-                                                document(userEmail).set(dailyGoal);
-
-                                        Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                                        intent.putExtra("userEmail", userEmail);
-                                        SharedPreferences.Editor editor;
-                                        editor = sharedPreferences.edit();
-                                        editor.putString("Email", userEmail);
-                                        editor.apply();
-                                        startActivity(intent);
-                                        finish();
-                                    } else {
-                                        Log.d("LOGGER", "No such document");
-                                    }
-                                } else {
-                                    Log.d("LOGGER", "get failed with ", task.getException());
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    Log.d("LOGGER", "get failed with ", task.getException());
-                }
-            }
-        });
     }
 
     private void CreateUserOnFirebase(String userEmail, String userName) {
