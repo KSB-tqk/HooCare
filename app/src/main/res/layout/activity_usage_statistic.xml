@@ -134,7 +134,7 @@
 
                 <LinearLayout
                     android:id="@+id/eye_condition_linear"
-                    android:layout_width="90dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/time_usage_eye_condition_box_background"
                     android:orientation="vertical"
@@ -151,7 +151,7 @@
                         android:layout_marginBottom="5dp"
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/time_onscreen_icon"
-                        android:src="@drawable/time_on_screen_img" />
+                        android:src="@drawable/eye_condition_icon" />
 
                     <TextView
                         android:id="@+id/eye_condition"

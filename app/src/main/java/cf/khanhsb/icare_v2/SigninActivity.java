@@ -23,6 +23,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -45,6 +47,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.FacebookSdk;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -170,9 +175,7 @@ public class SigninActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent facebookintent = new Intent(SigninActivity.this,MainActivity.class);
-                            startActivity(facebookintent);
-                            finish();
+                            result();
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(SigninActivity.this, "Authentication failed.",
@@ -181,6 +184,44 @@ public class SigninActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void result() {
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                String email,name;
+                try {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    email = object.getString("email");
+                    name = object.getString("name");
+
+                    CreateUserOnFirebase(email,name);
+                    //set up shareRef
+                    SharedPreferences sharedPreferences = getSharedPreferences(
+                            tempEmail, MODE_PRIVATE);
+
+                    Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+
+                    SharedPreferences.Editor editor;
+                    editor = sharedPreferences.edit();
+                    editor.putString("Email", email);
+                    editor.apply();
+
+                    startActivity(intent);
+                    finish();
+                }
+                catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Bundle bundle = new Bundle();
+        bundle.putString("fields","email , name");
+        request.setParameters(bundle);
+        request.executeAsync();
     }
 
 

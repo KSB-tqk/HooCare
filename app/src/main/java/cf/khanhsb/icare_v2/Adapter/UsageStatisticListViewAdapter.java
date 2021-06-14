@@ -2,17 +2,13 @@ package cf.khanhsb.icare_v2.Adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -28,17 +24,23 @@ public class UsageStatisticListViewAdapter extends BaseAdapter {
     private Holder holder;
     private ArrayList<String> appNameList, appUsageTimeList;
     private ArrayList<Drawable> appIconList;
+    private ArrayList<Long> appUsageTimeListInMilliSec;
+    private long otherAppTimeUsage;
 
     public UsageStatisticListViewAdapter(Context context, int resource,
                                          ArrayList<String> appNameList,
                                          ArrayList<String> appUsageTimeList,
-                                         ArrayList<Drawable> appIconList){
+                                         ArrayList<Drawable> appIconList,
+                                         ArrayList<Long> appUsageTimeListInMilliSec,
+                                         long otherAppTimeUsage) {
         super();
         this.context = context;
         this.resource = resource;
         this.appIconList = appIconList;
         this.appNameList = appNameList;
         this.appUsageTimeList = appUsageTimeList;
+        this.otherAppTimeUsage = otherAppTimeUsage;
+        this.appUsageTimeListInMilliSec = appUsageTimeListInMilliSec;
     }
 
     @Override
@@ -59,7 +61,7 @@ public class UsageStatisticListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        view = inflater.inflate(resource,parent,false);
+        view = inflater.inflate(resource, parent, false);
 
         holder = new UsageStatisticListViewAdapter.Holder();
         holder.appNameTextView = view.findViewById(R.id.app_name_title);
@@ -72,34 +74,21 @@ public class UsageStatisticListViewAdapter extends BaseAdapter {
         holder.appUsageTimeTextView.setText(appUsageTimeList.get(position));
         holder.appIconView.setImageDrawable(appIconList.get(position));
 
-//        if(position == 0) {
-//            float tempWidth = holder.container.getWidth();
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int)tempWidth/3, 10);
-//            holder.progressBar.setLayoutParams(params);
-//        }
-//        else {
-//            String tempString = appUsageTimeList.get(0);
-//            if(tempString.contains("h")){
-//                String[] splitString = appUsageTimeList.get(0).split("h");
-//                String min = splitString[1].substring(1,3);
-//                long timeInForeground = (Long.parseLong( min)*60*1000) + (Long.parseLong( splitString[0])*60*60*1000);
-//
-//                String[] splitPosString = appUsageTimeList.get(position).split("h");
-//                String minPos = splitPosString[1].substring(1,3);
-//                long timeInForegroundPos = (Long.parseLong(min)*60*1000) + (Long.parseLong( splitString[0])*60*60*1000);
-//
-//                if(timeInForeground > timeInForegroundPos) {
-//                    float progress = timeInForegroundPos / timeInForeground * 100;
-//                    holder.progressBar.setScaleX(progress);
-//                }
-//            }
-//        }
+        if (position == appIconList.size() - 1) {
+            holder.progressBar.setProgress(100);
+        } else {
+            float progress = (float) appUsageTimeListInMilliSec.get(position) / (float) otherAppTimeUsage * 100;
+            if (progress <= 5) {
+                holder.progressBar.setProgress(5);
+            } else {
+                holder.progressBar.setProgress((int) progress);
+            }
+        }
         return view;
     }
 
-    public class Holder
-    {
-        TextView appNameTextView,appUsageTimeTextView;
+    public class Holder {
+        TextView appNameTextView, appUsageTimeTextView;
         ImageView appIconView;
         ProgressBar progressBar;
         ConstraintLayout container;
