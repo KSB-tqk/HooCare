@@ -61,7 +61,7 @@ public class UsageStatisticActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         long end_time = System.currentTimeMillis();
-        long start_time = end_time - (1000*60*60);
+        long start_time = 0L;
 
         SharedPreferences sharedPreferences = getSharedPreferences(allowUsageAccess, MODE_PRIVATE);
 
