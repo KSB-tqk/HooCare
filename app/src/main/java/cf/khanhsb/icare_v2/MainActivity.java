@@ -13,15 +13,11 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.github.clans.fab.FloatingActionMenu;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -36,7 +32,6 @@ import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import cf.khanhsb.icare_v2.Adapter.ViewPagerAdapter;
 import cf.khanhsb.icare_v2.Fragment.MealFragment;
 
-
 public class MainActivity extends AppCompatActivity {
     private TextView username,toolBarTitle;
     private ViewPager viewPager;
@@ -48,9 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private SlidingRootNav slidingRootNav;
     private LinearLayout logout;
     private GoogleSignInClient mGoogleSignInClient;
-
-    FloatingActionMenu add_floatbtn;
-    FloatingActionButton set_weight_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         /**setting up viewpager*/
         viewPager = findViewById(R.id.view_pager);
-        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), userEmail);
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),userEmail);
         viewPager.setAdapter(mViewPagerAdapter);
 
         /**setting up nav drawer*/
@@ -98,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
         ImageView openNavMenuButton = (ImageView) findViewById(R.id.nav_menu_icon);
 
         /**sliding between fragment and activity*/
-        int fragmentPosition = intent.getIntExtra("fragmentPosition", 0);
+        int fragmentPosition = intent.getIntExtra("fragmentPosition",0);
         viewPager.setCurrentItem(fragmentPosition);
-        if (fragmentPosition == 3) {
+        if(fragmentPosition==3){
             btmNav.getMenu().findItem(R.id.nav_gym).setChecked(true);
             toolBarTitle.setText(getString(R.string.GymFragTitle));
             toolBarTitle.setTextColor(Color.WHITE);
@@ -144,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         MealFragment mealFragment = new MealFragment();
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.add(R.id.view_pager, mealFragment);
+                        fragmentTransaction.add(R.id.view_pager,mealFragment);
                         fragmentTransaction.commit();
                         break;
                     case 3:
@@ -163,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
 
 
         closeNavMenuButton.setOnClickListener(new View.OnClickListener() {
@@ -185,37 +178,22 @@ public class MainActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
-                .build();
-        ;
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+                .build();;
+        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
         logout = findViewById(R.id.linearlogout);
-
+        
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
                 //
+                LoginManager.getInstance().logOut();
+                /////
                 mGoogleSignInClient.signOut();
-                startActivity(new Intent(MainActivity.this, SigninActivity.class));
+                startActivity(new Intent(MainActivity.this,SigninActivity.class));
                 finish();
             }
         });
-
-        add_floatbtn = findViewById(R.id.add_floatbtn);
-        set_weight_btn = findViewById(R.id.set_weight_btn);
-
-        set_weight_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showToast("Clicked");
-                add_floatbtn.close(true);
-
-            }
-        });
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
 

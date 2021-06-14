@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -19,6 +22,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -26,10 +31,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import cf.khanhsb.icare_v2.MainActivity;
 import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
 import cf.khanhsb.icare_v2.R;
+import cf.khanhsb.icare_v2.SigninActivity;
 import cf.khanhsb.icare_v2.StepCountActivity;
 import cf.khanhsb.icare_v2.UsageStatisticActivity;
 import cf.khanhsb.icare_v2.WaterActivity;
@@ -90,77 +98,24 @@ public class HomeFragment extends Fragment {
                 getSharedPreferences(tempEmail, MODE_PRIVATE);
         String theTempEmail = sharedPreferences.getString("Email", "");
 
-        firestore = FirebaseFirestore.getInstance();
-        if (userEmail == null) {
+        waterCardview.setClickable(false);
+        stepCardView.setClickable(false);
 
-            docRef = firestore.collection("users").document(theTempEmail);
-        } else {
-            docRef = firestore.collection("users").document(userEmail);
-        }
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @SuppressLint("SetTextI18n")
+        Runnable homeBackGroundRunnable = new Runnable() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-                        step_goal = document.getString("step_goal");
-                        Log.i("LOGGER", "Here it is " + document.getString("step_goal"));
-                        if ("empty".equals(step_goal)) {
-                            statusOfProgressBar.setText("");
-                            setupStepGoal.setVisibility(View.VISIBLE);
-                        } else {
-                            setupStepGoal.setVisibility(View.GONE);
-                            statusOfProgressBar.setText("/" + step_goal);
-                            numberOfStep = Integer.parseInt("0");
-                        }
-                        progressBar.setMax(10000);
-                        ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 0, numberOfStep);
-                        anim.setDuration(3000);
-                        progressBar.startAnimation(anim);
-
-                        drink_goal = document.getString("drink_goal");
-                        if ("empty".equals(drink_goal)) {
-                            setupWaterGoal.setVisibility(View.VISIBLE);
-                        } else {
-                            setupWaterGoal.setVisibility(View.GONE);
-                        }
-                    } else {
-                        Log.d("LOGGER", "No such document");
-                    }
-                } else {
-                    Log.d("LOGGER", "get failed with ", task.getException());
+            public void run() {
+                try {
+                    SetUpFirebase(theTempEmail);
+                    waterCardview.setClickable(true);
+                    stepCardView.setClickable(true);
+                } catch(Exception err) {
+                    err.printStackTrace();
                 }
             }
-        });
-
-        LocalDate today = LocalDate.now();
-        LocalDate monday = today.with(previousOrSame(MONDAY));
-        docRef = firestore.collection("daily").
-                document("week-of-" + monday.toString()).
-                collection(today.toString()).
-                document(theTempEmail);
-
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-                        String temp = document.getString("drink");
-                        if (!"empty".equals(temp)) {
-                            float waterHadDrink = Float.parseFloat(temp) / 1000;
-                            numOfWater.setText(String.valueOf(waterHadDrink));
-                        }
-                    } else {
-                        Log.d("LOGGER", "No such document");
-                    }
-                } else {
-                    Log.d("LOGGER", "get failed with ", task.getException());
-                }
-            }
-        });
-
+        };
+        
+        Thread backgroundThread = new Thread(homeBackGroundRunnable);
+        backgroundThread.start();
 
         waterCardview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,6 +162,164 @@ public class HomeFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void SetUpFirebase(String userEmail) {
+        //set up shareRef
+        SharedPreferences sharedPreferences = this.getActivity().
+                getSharedPreferences(tempEmail, MODE_PRIVATE);
+
+        //set up database date
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+
+        //set up firestore
+        firestore = FirebaseFirestore.getInstance();
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(userEmail);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    assert document != null;
+                    if (document.exists()) {
+                        Log.d("LOGGER", "got the document");
+                        SharedPreferences.Editor editor;
+                        editor = sharedPreferences.edit();
+                        editor.putString("Email", userEmail);
+                        editor.apply();
+                        SetUpStepCountCard(userEmail);
+                        SetUpWaterCard(userEmail);
+                    } else {
+                        //check if goal exist or not
+                        docRef = firestore.collection("users").document(userEmail);
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document != null) {
+                                        String temp = document.getString("drink_goal");
+                                        //create dailyData
+                                        docRef = firestore.collection("daily").
+                                                document("week-of-" + monday.toString()).
+                                                collection(today.toString()).
+                                                document(userEmail);
+                                        Map<String, Object> dailyGoal = new HashMap<>();
+
+                                        if (temp.equals("empty")) {
+                                            dailyGoal.put("drink", "empty");
+                                        } else {
+                                            dailyGoal.put("drink", "0");
+                                        }
+
+                                        //update data to firestore
+                                        firestore = FirebaseFirestore.getInstance();
+                                        firestore.collection("daily").
+                                                document("week-of-" + monday.toString()).
+                                                collection(today.toString()).
+                                                document(userEmail).set(dailyGoal);
+
+                                        SharedPreferences.Editor editor;
+                                        editor = sharedPreferences.edit();
+                                        editor.putString("Email", userEmail);
+                                        editor.apply();
+                                        SetUpStepCountCard(userEmail);
+                                        SetUpWaterCard(userEmail);
+                                    } else {
+                                        Log.d("LOGGER", "No such document");
+                                    }
+                                } else {
+                                    Log.d("LOGGER", "get failed with ", task.getException());
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void SetUpStepCountCard(String theTempEmail) {
+        firestore = FirebaseFirestore.getInstance();
+        if (userEmail == null) {
+            docRef = firestore.collection("users").document(theTempEmail);
+        } else {
+            docRef = firestore.collection("users").document(userEmail);
+        }
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        step_goal = document.getString("step_goal");
+                        Log.i("LOGGER", "Here it is " + document.getString("step_goal"));
+                        if ("empty".equals(step_goal)) {
+                            statusOfProgressBar.setText("");
+                            setupStepGoal.setVisibility(View.VISIBLE);
+                        } else {
+                            setupStepGoal.setVisibility(View.GONE);
+                            statusOfProgressBar.setText("/" + step_goal);
+                            numberOfStep = Integer.parseInt("0");
+                        }
+                        progressBar.setMax(10000);
+                        ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 0, numberOfStep);
+                        anim.setDuration(3000);
+                        progressBar.startAnimation(anim);
+
+                        drink_goal = document.getString("drink_goal");
+                        if ("empty".equals(drink_goal)) {
+                            setupWaterGoal.setVisibility(View.VISIBLE);
+                        } else {
+                            setupWaterGoal.setVisibility(View.GONE);
+                        }
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void SetUpWaterCard(String theTempEmail) {
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String temp = document.getString("drink");
+                        if (!"empty".equals(temp)) {
+                            float waterHadDrink = Float.parseFloat(temp) / 1000;
+                            numOfWater.setText(String.valueOf(waterHadDrink));
+                        }
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
 }
