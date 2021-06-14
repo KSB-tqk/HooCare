@@ -215,6 +215,7 @@ public class UsageStatisticActivity extends AppCompatActivity {
             ArrayList<String> appNameList = new ArrayList<>();
             ArrayList<String> appUsageTimeList = new ArrayList<>();
             ArrayList<Drawable> appIconList = new ArrayList<>();
+            ArrayList<Long> appUsageTimeListInMilliSec = new ArrayList<>();
 
             Drawable appIcon;
             String appName;
@@ -228,6 +229,7 @@ public class UsageStatisticActivity extends AppCompatActivity {
                     appNameList.add(appName);
 
                     appUsageTimeList.add(getTimeUsage(appUsageInfo.timeInForeground));
+                    appUsageTimeListInMilliSec.add(appUsageInfo.timeInForeground);
 
                     try {
                         appIcon = getPackageManager().getApplicationIcon(appUsageInfo.packageName);
@@ -243,6 +245,7 @@ public class UsageStatisticActivity extends AppCompatActivity {
                         appNameList.add("Camera");
                         appIconList.add(getAppIcon(appUsageInfo.packageName));
                         appUsageTimeList.add(getTimeUsage(appUsageInfo.timeInForeground));
+                        appUsageTimeListInMilliSec.add(appUsageInfo.timeInForeground);
                     }
                     else {
                         othersAppTotalTime += appUsageInfo.timeInForeground;
@@ -250,8 +253,9 @@ public class UsageStatisticActivity extends AppCompatActivity {
                 }
                 totalTime += appUsageInfo.timeInForeground;
             }
-            //totalTime += 1000*60*60*4;
+
             //set value for big total time text
+            //set view for eye condition box
             String eyeCondition;
             String tempTime = getTimeUsage(totalTime);
             totalTextView.setText(tempTime);
@@ -261,30 +265,30 @@ public class UsageStatisticActivity extends AppCompatActivity {
                 if(tempHour < 3){
                     eyeCondition = "Ok";
                     eyeConditionTextView.setText(eyeCondition);
-                    eyeConditionTextView.setTextColor(Color.GREEN);
+                    eyeConditionTextView.setTextColor(Color.parseColor("#2FA678"));
                     GradientDrawable drawable = (GradientDrawable) eyeConditionBox.getBackground();
-                    drawable.setStroke(8, Color.GREEN);
+                    drawable.setStroke(8, Color.parseColor("#2FA678"));
                 }
                 else if(tempHour < 4){
                     eyeCondition = "Medium";
                     eyeConditionTextView.setText(eyeCondition);
-                    eyeConditionTextView.setTextColor(Color.YELLOW);
+                    eyeConditionTextView.setTextColor(Color.parseColor("#FCBF52"));
                     GradientDrawable drawable = (GradientDrawable) eyeConditionBox.getBackground();
-                    drawable.setStroke(8, Color.YELLOW);
+                    drawable.setStroke(8, Color.parseColor("#FCBF52"));
                 }
                 else if(tempHour < 6){
                     eyeCondition = "High";
                     eyeConditionTextView.setText(eyeCondition);
-                    eyeConditionTextView.setTextColor(Color.RED);
+                    eyeConditionTextView.setTextColor(Color.parseColor("#FC578A"));
                     GradientDrawable drawable = (GradientDrawable) eyeConditionBox.getBackground();
-                    drawable.setStroke(8, Color.RED);
+                    drawable.setStroke(8, Color.parseColor("#FC578A"));
                 }
                 else {
                     eyeCondition = "Very High";
                     eyeConditionTextView.setText(eyeCondition);
-                    eyeConditionTextView.setTextColor(Color.RED);
+                    eyeConditionTextView.setTextColor(Color.parseColor("#FC578A"));
                     GradientDrawable drawable = (GradientDrawable) eyeConditionBox.getBackground();
-                    drawable.setStroke(8, Color.RED);
+                    drawable.setStroke(8, Color.parseColor("#FC578A"));
                 }
             }
             else {
@@ -294,7 +298,6 @@ public class UsageStatisticActivity extends AppCompatActivity {
                 GradientDrawable drawable = (GradientDrawable) eyeConditionBox.getBackground();
                 drawable.setStroke(8, Color.GREEN);
             }
-            //set view for eye condition box
 
             //set value for datetime text
             Date calendar = Calendar.getInstance().getTime();
@@ -308,13 +311,16 @@ public class UsageStatisticActivity extends AppCompatActivity {
             appNameList.add("Other App");
             appIconList.add(getDrawable(R.drawable.other_app_icon));
             appUsageTimeList.add(getTimeUsage(othersAppTotalTime));
+            appUsageTimeListInMilliSec.add(othersAppTotalTime);
 
             listView = (NonScrollListView) findViewById(R.id.list_view_usage_statistic);
             UsageStatisticListViewAdapter listViewAdapter = new UsageStatisticListViewAdapter(this,
                     R.layout.item_time_statistic,
                     appNameList,
                     appUsageTimeList,
-                    appIconList);
+                    appIconList,
+                    appUsageTimeListInMilliSec,
+                    othersAppTotalTime);
             listView.setAdapter(listViewAdapter);
         } else {
             Toast.makeText(this, "Sorry...", Toast.LENGTH_SHORT).show();
