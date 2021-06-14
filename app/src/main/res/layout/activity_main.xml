@@ -70,15 +70,37 @@
 
             </com.google.android.material.bottomnavigation.BottomNavigationView>
         </com.google.android.material.bottomappbar.BottomAppBar>
-
+     <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         app:layout_anchorGravity="center_horizontal"
+         app:layout_anchor="@id/bottom_app_bar"
+         android:orientation="vertical"
+         android:layout_marginBottom="30dp">
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#58C892"
-            android:src="@drawable/ic_baseline_add"
-            app:layout_anchor="@id/bottom_app_bar"
-            app:layout_anchorGravity="center_horizontal"
-            android:contentDescription="@string/add_button" />
+            android:src="@drawable/ic_pencil"
+            android:contentDescription="@string/add_button"
+            android:visibility="invisible"
+            android:focusable="true"
+            android:clickable="true"
+            android:id="@+id/set_weight_btn"
+            android:layout_marginBottom="5dp"/>
+         <com.google.android.material.floatingactionbutton.FloatingActionButton
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:backgroundTint="#58C892"
+             android:src="@drawable/ic_baseline_add"
+             android:focusable="true"
+             android:clickable="true"
+             android:id="@+id/add_floatbtn"
+             android:contentDescription="@string/add_button" />
+
+
+     </LinearLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.cardview.widget.CardView>
 
