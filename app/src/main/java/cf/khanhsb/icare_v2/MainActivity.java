@@ -1,6 +1,7 @@
 package cf.khanhsb.icare_v2;
 
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -43,6 +44,21 @@ public class MainActivity extends AppCompatActivity {
     private SlidingRootNav slidingRootNav;
     private LinearLayout logout;
     private GoogleSignInClient mGoogleSignInClient;
+    private static final String sleepTime = "sleepTime";
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        long end_time = System.currentTimeMillis();
+        SharedPreferences sharedPreferences = getSharedPreferences(sleepTime, MODE_PRIVATE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        long start_time = System.currentTimeMillis();
+        SharedPreferences sharedPreferences = getSharedPreferences(sleepTime, MODE_PRIVATE);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

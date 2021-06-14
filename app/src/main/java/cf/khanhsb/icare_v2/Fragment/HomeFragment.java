@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -22,8 +19,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -37,7 +32,7 @@ import java.util.Map;
 import cf.khanhsb.icare_v2.MainActivity;
 import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
 import cf.khanhsb.icare_v2.R;
-import cf.khanhsb.icare_v2.SigninActivity;
+import cf.khanhsb.icare_v2.SleepTimeActivity;
 import cf.khanhsb.icare_v2.StepCountActivity;
 import cf.khanhsb.icare_v2.UsageStatisticActivity;
 import cf.khanhsb.icare_v2.WaterActivity;
@@ -157,6 +152,15 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent toUsageStatistic = new Intent(getActivity(), UsageStatisticActivity.class);
                 startActivity(toUsageStatistic);
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
+            }
+        });
+
+        sleepCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toSleepTime = new Intent(getActivity(), SleepTimeActivity.class);
+                startActivity(toSleepTime);
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });

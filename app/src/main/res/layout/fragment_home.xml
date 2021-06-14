@@ -228,6 +228,7 @@
                     android:id="@+id/calo_card_view_linear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -304,6 +305,7 @@
                     android:id="@+id/sleep_card_view_linear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -516,6 +518,7 @@
                     android:id="@+id/training_card_view_linear"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="?android:attr/selectableItemBackground"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -591,6 +594,7 @@
                     android:id="@+id/time_on_screen_card_view_linear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
                     android:orientation="vertical">
 
                     <LinearLayout
