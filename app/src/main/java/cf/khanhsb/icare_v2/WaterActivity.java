@@ -169,8 +169,6 @@ public class WaterActivity extends AppCompatActivity {
             }
         });
 
-
-
         backButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,6 +192,7 @@ public class WaterActivity extends AppCompatActivity {
                                     bottomSheetContainer,
                                     false
                             );
+
                     plusButton = (ImageView) bottomSheetView.findViewById(R.id.plus_button_water_menu);
                     minusButton = (ImageView) bottomSheetView.findViewById(R.id.minus_button_water_menu);
                     progressBar = (ProgressBar) bottomSheetView.findViewById(R.id.progressbar_water);
