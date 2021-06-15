@@ -23,7 +23,7 @@
                 android:layout_marginEnd="10dp">
 
                 <ImageView
-                    android:id="@+id/button_backtohomefrag"
+                    android:id="@+id/button_back_sleep_time"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
@@ -33,8 +33,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/more_menu_stepcount"
-                    android:layout_toEndOf="@id/button_backtohomefrag">
+                    android:layout_toStartOf="@id/more_menu_sleep_time"
+                    android:layout_toEndOf="@id/button_back_sleep_time">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -52,13 +52,12 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
-                    android:id="@+id/more_menu_stepcount"
+                    android:id="@+id/more_menu_sleep_time"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/more_image_button_anim"
-                    android:visibility="invisible" />
+                    android:src="@drawable/more_image_button_anim" />
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -172,34 +171,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-<!--    <com.bikcrum.circularrangeslider.CircularRangeSlider-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:axisColor="#00ffef"-->
-<!--        app:axisRadius="10dp"-->
-<!--        app:borderColor="#00ffef"-->
-<!--        app:borderWidth="5dp"-->
-<!--        app:circleColor="#4b4b4b"-->
-<!--        app:enabled="true"-->
-<!--        app:endIndex="3"-->
-<!--        app:hideLabel="false"-->
-<!--        app:labelColor="#00ffef"-->
-<!--        app:labelSize="20sp"-->
-<!--        app:labels="@array/labels"-->
-<!--        app:max="7"-->
-<!--        app:progress="1.5"-->
-<!--        app:progressColor="#ffffff"-->
-<!--        app:progressEnabled="true"-->
-<!--        app:sectorColor="#54fc888c"-->
-<!--        app:sliderColor="#ff0008"-->
-<!--        app:sliderLength="20dp"-->
-<!--        app:sliderWidth="8dp"-->
-<!--        app:startFrom="top"-->
-<!--        app:startIndex="1"-->
-<!--        app:startIndexStepColor="#00ffef"-->
-<!--        app:startIndexStepLength="20dp"-->
-<!--        app:startIndexStepWidth="8dp"-->
-<!--        app:stepLength="8dp">-->
 
-<!--    </com.bikcrum.circularrangeslider.CircularRangeSlider>-->
+
 </LinearLayout>

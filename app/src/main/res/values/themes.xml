@@ -53,4 +53,7 @@
     <style name="CustomButtonThemeOverlay1">
         <item name="colorPrimary">@color/facebookcolor</item>
     </style>
+    <style name="my_time_picker_style">
+        <item name="android:textSize">30sp</item>
+    </style>
 </resources>

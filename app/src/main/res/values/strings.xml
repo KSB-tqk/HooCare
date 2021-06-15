@@ -177,5 +177,11 @@
     <string name="enable_usage_access_in">Enable Usage Access in</string>
     <string name="sleep_time">Sleep Time</string>
     <string name="recommand_sleep_more_than_8_hours_day">Recommand sleep more than 8 hours/day</string>
+    <string name="hours">Hours</string>
+    <string name="set_your_sleep_time">Set your sleep time</string>
+    <string name="most_people_sleep">Most people sleep</string>
+    <string name="_8_hours">8 Hours</string>
+    <string name="bed_time">Bed Time</string>
+    <string name="wake_time">Wake Time</string>
 
 </resources>

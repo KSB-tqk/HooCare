@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet_container_sleep_time"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:background="@drawable/gym_fragment_rounded_corner_background">
+
+    <ImageView
+        android:id="@+id/grey_blank_view"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/grey_rounded_corner_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/title_sleep_more_option"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/set_your_sleep_time"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/grey_blank_view" />
+
+    <LinearLayout
+        android:id="@+id/number_of_cup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/progressbar_sleep_time"
+        app:layout_constraintLeft_toLeftOf="@id/progressbar_sleep_time"
+        app:layout_constraintRight_toRightOf="@id/progressbar_sleep_time"
+        app:layout_constraintTop_toTopOf="@id/progressbar_sleep_time">
+
+        <TextView
+            android:id="@+id/num_of_hours_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/_8"
+            android:textColor="@color/black"
+            android:textSize="60sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/hours"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressbar_sleep_time"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="30dp"
+        android:indeterminateOnly="false"
+        android:progress="60"
+        android:progressDrawable="@drawable/water_setup_daily_goal_progressbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_sleep_more_option"
+        tools:ignore="MissingConstraints">
+
+    </ProgressBar>
+
+    <TextView
+        android:id="@+id/close_button_sleep_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/cardview_background_gradient"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="@string/done"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/time_picker"/>
+
+    <ImageView
+        android:id="@+id/minus_button_sleep_menu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/minus_icon_anim"
+        app:layout_constraintBottom_toBottomOf="@id/progressbar_sleep_time"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/progressbar_sleep_time"
+        app:layout_constraintTop_toTopOf="@id/progressbar_sleep_time"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/plus_button_sleep_menu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/plus_icon_anim"
+        app:layout_constraintBottom_toBottomOf="@id/progressbar_sleep_time"
+        app:layout_constraintLeft_toRightOf="@id/progressbar_sleep_time"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/progressbar_sleep_time"
+        android:contentDescription="@string/plus_button" />
+
+    <LinearLayout
+        android:id="@+id/water_recommend_label_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressbar_sleep_time">
+
+        <TextView
+            android:id="@+id/water_recommend_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/most_people_sleep"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/_8_hours"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:textColor="@color/lime_100"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/water_recommend_label"
+            app:layout_constraintTop_toTopOf="@id/water_recommend_label" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/water_recommend_last_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/a_day"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/water_recommend_label_linear"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TimePicker
+        android:id="@+id/time_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleX="0.6"
+        android:scaleY="0.6"
+        android:theme="@style/my_time_picker_style"
+        android:timePickerMode="spinner"
+        app:layout_constraintRight_toRightOf="@id/water_recommend_last_label"
+        app:layout_constraintTop_toBottomOf="@id/water_recommend_last_label"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TimePicker
+        android:id="@+id/wake_time_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleX="0.6"
+        android:scaleY="0.6"
+        android:theme="@style/my_time_picker_style"
+        android:timePickerMode="spinner"
+        app:layout_constraintLeft_toLeftOf="@id/water_recommend_last_label"
+        app:layout_constraintTop_toBottomOf="@id/water_recommend_last_label"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bed_time"
+        android:padding="8dp"
+        android:textColor="@color/lime_100"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="@id/time_picker"
+        app:layout_constraintRight_toRightOf="@id/time_picker"
+        app:layout_constraintTop_toBottomOf="@id/grey_blank_view_small"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wake_time"
+        android:padding="8dp"
+        android:textColor="@color/lime_100"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="@id/wake_time_picker"
+        app:layout_constraintRight_toRightOf="@id/wake_time_picker"
+        app:layout_constraintTop_toBottomOf="@id/grey_blank_view_small"/>
+
+    <ImageView
+        android:id="@+id/grey_blank_view_small"
+        android:layout_width="150dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/cardview_background_gradient"
+        android:backgroundTint="@color/black"
+        tools:ignore="ContentDescription"
+        app:layout_constraintTop_toBottomOf="@id/water_recommend_last_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
