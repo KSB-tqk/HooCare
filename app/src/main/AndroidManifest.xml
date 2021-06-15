@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ICare_v2">
+        <receiver android:name=".Model.AlertReceiver"/>
         <activity android:name=".SleepTimeActivity"></activity>
         <activity android:name=".UsageStatisticActivity" />
         <activity android:name=".SplashScreenActivity2" />

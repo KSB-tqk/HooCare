@@ -41,7 +41,6 @@ import static android.content.Context.MODE_PRIVATE;
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
-
 public class HomeFragment extends Fragment {
     private LinearLayout waterCardview, stepCardView, caloCardView,
             sleepCardView, trainingCardView, progressBar_text, timeOnScreenCardView;
@@ -95,6 +94,7 @@ public class HomeFragment extends Fragment {
 
         waterCardview.setClickable(false);
         stepCardView.setClickable(false);
+        sleepCardView.setClickable(false);
 
         Runnable homeBackGroundRunnable = new Runnable() {
             @Override
@@ -103,6 +103,7 @@ public class HomeFragment extends Fragment {
                     SetUpFirebase(theTempEmail);
                     waterCardview.setClickable(true);
                     stepCardView.setClickable(true);
+                    sleepCardView.setClickable(true);
                 } catch(Exception err) {
                     err.printStackTrace();
                 }
@@ -209,6 +210,8 @@ public class HomeFragment extends Fragment {
                                     DocumentSnapshot document = task.getResult();
                                     if (document != null) {
                                         String temp = document.getString("drink_goal");
+                                        String time = document.getString("sleep_goal");
+
                                         //create dailyData
                                         docRef = firestore.collection("daily").
                                                 document("week-of-" + monday.toString()).
@@ -220,6 +223,12 @@ public class HomeFragment extends Fragment {
                                             dailyGoal.put("drink", "empty");
                                         } else {
                                             dailyGoal.put("drink", "0");
+                                        }
+
+                                        if (time.equals("empty")) {
+                                            dailyGoal.put("sleep_time", "empty");
+                                        } else {
+                                            dailyGoal.put("sleep_time", "0");
                                         }
 
                                         //update data to firestore
