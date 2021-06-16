@@ -170,9 +170,18 @@
     <string name="_15000">15000</string>
     <string name="_2500">2500</string>
     <string name="time_onscreen">Time OnScreen</string>
-    <string name="facebook_app_id">2936687149939835</string> <string name="fb_login_protocol_scheme">fb2936687149939835</string>
+    <string name="facebook_app_id">2936687149939835</string>
+    <string name="fb_login_protocol_scheme">fb2936687149939835</string>
     <string name="recommanded_use_smartphone_less_3_hours_a_day">Recommanded: Only use smartphone less 3 hours/day</string>
     <string name="setting_hoocare"><![CDATA[Setting -> HooCare]]></string>
     <string name="enable_usage_access_in">Enable Usage Access in</string>
+    <string name="sleep_time">Sleep Time</string>
+    <string name="recommand_sleep_more_than_8_hours_day">Recommand sleep more than 8 hours/day</string>
+    <string name="hours">Hours</string>
+    <string name="set_your_sleep_time">Set your sleep time</string>
+    <string name="most_people_sleep">Most people sleep</string>
+    <string name="_8_hours">8 Hours</string>
+    <string name="bed_time">Bed Time</string>
+    <string name="wake_time">Wake Time</string>
 
 </resources>

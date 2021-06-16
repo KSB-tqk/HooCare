@@ -79,7 +79,7 @@ public class StepCountViewPagerAdapter extends RecyclerView.Adapter<StepCountVie
                     setUpBm(holder,true);
                     setUpLw(holder,false);
                     setUpKf(holder,false);
-                    setUserStepGoalFirebase(userEmail,"5000");
+                    setUserStepGoalFirebase(userEmail,"8000");
                 }
             });
 
@@ -90,7 +90,7 @@ public class StepCountViewPagerAdapter extends RecyclerView.Adapter<StepCountVie
                     setUpBm(holder,false);
                     setUpLw(holder,false);
                     setUpKf(holder,true);
-                    setUserStepGoalFirebase(userEmail,"8000");
+                    setUserStepGoalFirebase(userEmail,"5000");
                 }
             });
 

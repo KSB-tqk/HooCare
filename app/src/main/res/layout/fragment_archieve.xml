@@ -480,7 +480,7 @@
                                     android:layout_width="125dp"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="5dp"
-                                    android:background="@drawable/button_background"
+                                    android:background="@drawable/button_bg_green"
                                     android:gravity="center"
                                     android:text="@string/world_wides"
                                     android:textColor="#ffffff"
@@ -522,7 +522,7 @@
                                 android:layout_width="125dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
-                                android:background="@drawable/button_background"
+                                android:background="@drawable/button_bg_green"
 
                                 android:gravity="center"
                                 android:textColor="#ffffff"

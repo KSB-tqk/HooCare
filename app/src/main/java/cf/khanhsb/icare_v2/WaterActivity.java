@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -45,7 +46,7 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 public class WaterActivity extends AppCompatActivity {
 
     private ArrayList<BarEntry> dataValue = new ArrayList<BarEntry>();
-    private int waterHadDrink = 0, numOfCup = 8, waterHaveToDrink = 0;
+    private int waterHadDrink = 0, numOfCup = 0, waterHaveToDrink = 0;
     private WaveView waveView;
     private ImageView backButton, moreButton, plusButton, minusButton, minusWaterButton;
     private AppCompatButton drinkWater;
@@ -169,8 +170,6 @@ public class WaterActivity extends AppCompatActivity {
             }
         });
 
-
-
         backButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,6 +193,7 @@ public class WaterActivity extends AppCompatActivity {
                                     bottomSheetContainer,
                                     false
                             );
+
                     plusButton = (ImageView) bottomSheetView.findViewById(R.id.plus_button_water_menu);
                     minusButton = (ImageView) bottomSheetView.findViewById(R.id.minus_button_water_menu);
                     progressBar = (ProgressBar) bottomSheetView.findViewById(R.id.progressbar_water);
@@ -273,19 +273,24 @@ public class WaterActivity extends AppCompatActivity {
                     doneButton.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            waterCupDailyGoal.setVisibility(View.VISIBLE);
-                            dailyWaterGoal_text_view.setVisibility(View.VISIBLE);
-                            drinkWater.setText("drink");
-                            firestore.collection("daily").
-                                    document("week-of-" + monday.toString()).
-                                    collection(today.toString()).
-                                    document(theTempEmail).update("drink", "0");
-                            bottomSheetDialog.dismiss();
+                            if(waterHaveToDrink != 0){
+                                waterCupDailyGoal.setVisibility(View.VISIBLE);
+                                dailyWaterGoal_text_view.setVisibility(View.VISIBLE);
+                                drinkWater.setText("drink");
+                                firestore.collection("daily").
+                                        document("week-of-" + monday.toString()).
+                                        collection(today.toString()).
+                                        document(theTempEmail).update("drink", "0");
+                                bottomSheetDialog.dismiss();
+                            } else {
+                                Toast.makeText(WaterActivity.this, "You must choose a goal", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                     bottomSheetDialog.setContentView(bottomSheetView);
                     bottomSheetDialog.show();
                 } else {
+
                     waterHadDrink += waterHaveToDrink / numOfCup;
 
                     LocalDate today = LocalDate.now();

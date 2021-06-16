@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -23,6 +24,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -46,12 +49,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.FacebookSdk;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import cf.khanhsb.icare_v2.SignupActivity;
+import io.grpc.okhttp.internal.framed.FrameReader;
 
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
@@ -69,16 +76,17 @@ public class SigninActivity extends AppCompatActivity {
     private DocumentReference docRef;
     private GoogleSignInClient mGoogleSignInClient;
     private boolean hadSetGoal = false;
-    //
+    //FaceBookAuthen Variables
     private Button btFacebook;
     CallbackManager mCallbackManager;
     private FirebaseAuth mAuth;
-
+    /////
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
+        mProgressbarAuth = findViewById(R.id.ProgressbarAuth);
         FacebookSdk.sdkInitialize(SigninActivity.this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         mEmail = findViewById(R.id.et_email_signin);
@@ -155,11 +163,20 @@ public class SigninActivity extends AppCompatActivity {
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginUser();
-            }
-        });
 
-    }
+                        loginUser();
+                        mProgressbarAuth.setVisibility(View.VISIBLE);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mProgressbarAuth.setVisibility(View.INVISIBLE);
+                            }
+                        }, 4000);
+                    }
+                }
+        );
+        }
+
 
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -170,9 +187,7 @@ public class SigninActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent facebookintent = new Intent(SigninActivity.this,MainActivity.class);
-                            startActivity(facebookintent);
-                            finish();
+                            result();
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(SigninActivity.this, "Authentication failed.",
@@ -181,6 +196,44 @@ public class SigninActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void result() {
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                String email,name;
+                try {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    email = object.getString("email");
+                    name = object.getString("name");
+
+                    CreateUserOnFirebase(email,name);
+                    //set up shareRef
+                    SharedPreferences sharedPreferences = getSharedPreferences(
+                            tempEmail, MODE_PRIVATE);
+
+                    Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+
+                    SharedPreferences.Editor editor;
+                    editor = sharedPreferences.edit();
+                    editor.putString("Email", email);
+                    editor.apply();
+
+                    startActivity(intent);
+                    finish();
+                }
+                catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Bundle bundle = new Bundle();
+        bundle.putString("fields","email , name");
+        request.setParameters(bundle);
+        request.executeAsync();
     }
 
 
@@ -281,7 +334,7 @@ public class SigninActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(SigninActivity.this, "Login Fail. Please Try Again !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SigninActivity.this,"Login Fail ! Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
@@ -310,6 +363,8 @@ public class SigninActivity extends AppCompatActivity {
         user.put("sleep_goal", "empty");
         user.put("on_screen_goal", "empty");
         user.put("health_point", "empty");
+        user.put("time_to_sleep","empty");
+        user.put("time_to_wake","empty");
         firestore.collection("users").document(userEmail)
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

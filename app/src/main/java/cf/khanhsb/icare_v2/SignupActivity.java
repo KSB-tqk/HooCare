@@ -3,6 +3,7 @@ package cf.khanhsb.icare_v2;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,7 @@ public class SignupActivity extends Activity {
     private EditText mEmail, mPass, mName, mUsername;
     private TextView mHaveAccount;
     private Button signupButton;
-    private RelativeLayout mProgressbarAuth;
+    private RelativeLayout mProgressbarAuth1;
     //
     private FirebaseAuth mAuth;
     private FirebaseDatabase rootNode;
@@ -49,6 +50,7 @@ public class SignupActivity extends Activity {
         mUsername = findViewById(R.id.et_username);
         mHaveAccount = findViewById(R.id.jumptosignin);
         signupButton = findViewById(R.id.btSignup);
+        mProgressbarAuth1 =findViewById(R.id.progress_bar_signup);
         //
         mAuth = FirebaseAuth.getInstance();
 
@@ -65,6 +67,13 @@ public class SignupActivity extends Activity {
             @Override
             public void onClick(View v) {
                 createUser();
+                mProgressbarAuth1.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgressbarAuth1.setVisibility(View.INVISIBLE);
+                    }
+                }, 4000);
             }
         });
     }
@@ -130,6 +139,8 @@ public class SignupActivity extends Activity {
         user.put("sleep_goal", "empty");
         user.put("on_screen_goal", "empty");
         user.put("health_point", "empty");
+        user.put("time_to_sleep","empty");
+        user.put("time_to_wake","empty");
         firestore.collection("users").document(userEmail)
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

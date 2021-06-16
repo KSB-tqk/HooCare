@@ -228,6 +228,7 @@
                     android:id="@+id/calo_card_view_linear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -304,6 +305,7 @@
                     android:id="@+id/sleep_card_view_linear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -342,10 +344,11 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/sleep_time_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/sleep_time_label"
+                        android:text="0"
                         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                         android:textColor="@color/black"
                         android:textStyle="bold">
@@ -516,6 +519,7 @@
                     android:id="@+id/training_card_view_linear"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="?android:attr/selectableItemBackground"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -591,6 +595,7 @@
                     android:id="@+id/time_on_screen_card_view_linear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
                     android:orientation="vertical">
 
                     <LinearLayout
