@@ -49,11 +49,12 @@ public class HomeFragment extends Fragment {
     private String userEmail;
     private FirebaseFirestore firestore;
     private String step_goal, drink_goal;
-    private TextView statusOfProgressBar, numOfWater;
+    private TextView statusOfProgressBar, numOfWater,sleepTimeTextView;
     private DocumentReference docRef;
     private int numberOfStep;
     private FirebaseAuth mAuth;
     private static final String tempEmail = "tempEmail";
+    private String sleepTime;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -87,6 +88,7 @@ public class HomeFragment extends Fragment {
         statusOfProgressBar = (TextView) rootView.findViewById(R.id.status_of_progressbar_homefrag);
         setupWaterGoal = (ConstraintLayout) rootView.findViewById(R.id.setup_water_constraint);
         numOfWater = (TextView) rootView.findViewById(R.id.num_of_water);
+        sleepTimeTextView = (TextView) rootView.findViewById(R.id.sleep_time_text_view);
 
         SharedPreferences sharedPreferences = this.getActivity().
                 getSharedPreferences(tempEmail, MODE_PRIVATE);
@@ -161,6 +163,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent toSleepTime = new Intent(getActivity(), SleepTimeActivity.class);
+                toSleepTime.putExtra("sleepTime",sleepTime);
                 startActivity(toSleepTime);
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
@@ -200,6 +203,7 @@ public class HomeFragment extends Fragment {
                         editor.apply();
                         SetUpStepCountCard(userEmail);
                         SetUpWaterCard(userEmail);
+                        SetUpSleepCard(userEmail);
                     } else {
                         //check if goal exist or not
                         docRef = firestore.collection("users").document(userEmail);
@@ -277,7 +281,7 @@ public class HomeFragment extends Fragment {
                         step_goal = document.getString("step_goal");
                         Log.i("LOGGER", "Here it is " + document.getString("step_goal"));
                         if ("empty".equals(step_goal)) {
-                            statusOfProgressBar.setText("");
+                            statusOfProgressBar.setText("step");
                             setupStepGoal.setVisibility(View.VISIBLE);
                         } else {
                             setupStepGoal.setVisibility(View.GONE);
@@ -324,6 +328,37 @@ public class HomeFragment extends Fragment {
                         if (!"empty".equals(temp)) {
                             float waterHadDrink = Float.parseFloat(temp) / 1000;
                             numOfWater.setText(String.valueOf(waterHadDrink));
+                        }
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void SetUpSleepCard(String theTempEmail) {
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String temp = document.getString("sleep_time");
+                        if (!"empty".equals(temp)) {
+                            String[] splitString = temp.split(":");
+                            sleepTimeTextView.setText(splitString[0] + "h");
+                            sleepTime = temp;
                         }
                     } else {
                         Log.d("LOGGER", "No such document");
