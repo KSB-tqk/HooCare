@@ -344,10 +344,11 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/sleep_time_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/sleep_time_label"
+                        android:text="0"
                         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                         android:textColor="@color/black"
                         android:textStyle="bold">
