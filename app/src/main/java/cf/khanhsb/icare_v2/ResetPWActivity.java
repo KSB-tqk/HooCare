@@ -51,23 +51,24 @@ public class ResetPWActivity extends AppCompatActivity {
                 String email = mEmailResetPW.getText().toString().trim();
                 //
                 if(!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    mEmailResetPW.setError("Please enter valid email!");
-                    mEmailResetPW.requestFocus();
-                    return;
-                }
-                /////////////
-                mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                        if (task.isSuccessful()){
-                            Toast.makeText(ResetPWActivity.this, "Please check your email to reset password!", Toast.LENGTH_SHORT).show();
+                            if (task.isSuccessful()){
+                                Toast.makeText(ResetPWActivity.this, "Please check your email to reset password!", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(ResetPWActivity.this, "Oops! Something went wrong.", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else {
-                            Toast.makeText(ResetPWActivity.this, "Oops! Something went wrong.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    });
+
+                }else {mEmailResetPW.setError("Please enter valid email!");
+                mEmailResetPW.requestFocus();
+                return;}
+                /////////////
+
             }
         });
     }

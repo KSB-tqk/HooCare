@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".SignupActivity"
     android:orientation="vertical"
-    android:background="@drawable/hehehe"
+    android:background="@drawable/themebackground"
     android:padding="20dp">
     <ImageView
         android:id="@+id/applogo"
@@ -29,23 +29,27 @@
         android:fontFamily="@font/momcakebold"/>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:padding="20dp"
-        android:background="@drawable/button_bg"
-        android:orientation="vertical">
+        android:background="@drawable/button_bg_white"
+        >
         <TextView
+            android:id="@+id/tv_labelsignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign Up"
+            android:layout_centerHorizontal="true"
             android:textSize="30dp"
             android:fontFamily="@font/momcakebold"
             android:padding="10dp"
             android:layout_gravity="center"
             android:textColor="@color/lime_200"/>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fullname_input_layout"
+            android:layout_below="@id/tv_labelsignup"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,6 +64,8 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/username_input"
+            android:layout_below="@id/fullname_input_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,6 +79,8 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_input_layout_signup"
+            android:layout_below="@+id/username_input"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,6 +94,8 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_input_layout_signup"
+            android:layout_below="@id/email_input_layout_signup"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,16 +112,18 @@
 
         <Button
             android:id="@+id/btSignup"
+            android:layout_below="@id/password_input_layout_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/button_background"
+            android:background="@drawable/button_bg_green"
             android:text="JOIN US"
             android:textColor="#fff" />
 
         <Button
             android:id="@+id/jumptosignin"
+            android:layout_below="@id/btSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -120,5 +132,23 @@
             android:elevation="0dp"
             android:text="Already have an account ?"
             android:textColor="@color/black" />
-    </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/progress_bar_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/progressbar_bg"
+            android:elevation="8dp"
+            android:padding="18dp"
+            android:visibility="invisible">
+            <ProgressBar
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true">
+            </ProgressBar>
+
+
+
+        </RelativeLayout>
+    </RelativeLayout>
 </LinearLayout>

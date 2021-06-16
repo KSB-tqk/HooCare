@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -57,6 +58,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cf.khanhsb.icare_v2.SignupActivity;
+import io.grpc.okhttp.internal.framed.FrameReader;
 
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
@@ -74,16 +76,17 @@ public class SigninActivity extends AppCompatActivity {
     private DocumentReference docRef;
     private GoogleSignInClient mGoogleSignInClient;
     private boolean hadSetGoal = false;
-    //
+    //FaceBookAuthen Variables
     private Button btFacebook;
     CallbackManager mCallbackManager;
     private FirebaseAuth mAuth;
-
+    /////
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
+        mProgressbarAuth = findViewById(R.id.ProgressbarAuth);
         FacebookSdk.sdkInitialize(SigninActivity.this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         mEmail = findViewById(R.id.et_email_signin);
@@ -160,11 +163,20 @@ public class SigninActivity extends AppCompatActivity {
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginUser();
-            }
-        });
 
-    }
+                        loginUser();
+                        mProgressbarAuth.setVisibility(View.VISIBLE);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mProgressbarAuth.setVisibility(View.INVISIBLE);
+                            }
+                        }, 4000);
+                    }
+                }
+        );
+        }
+
 
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -322,7 +334,7 @@ public class SigninActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(SigninActivity.this, "Login Fail. Please Try Again !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SigninActivity.this,"Login Fail ! Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
