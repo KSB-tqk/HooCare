@@ -16,8 +16,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private SlidingRootNav slidingRootNav;
     private LinearLayout logout;
     private GoogleSignInClient mGoogleSignInClient;
+
+    FloatingActionMenu add_floatbtn;
+    FloatingActionButton set_weigh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();;
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
         logout = findViewById(R.id.linearlogout);
-        
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,6 +200,22 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        add_floatbtn = findViewById(R.id.add_floatbtn);
+        set_weigh = findViewById(R.id.set_weigh);
+
+        set_weigh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showToast("AAAA");
+            }
+        });
+
+
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, "message", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -229,4 +251,7 @@ public class MainActivity extends AppCompatActivity {
     public void replaceFragment(int fragmentPos){
         viewPager.setCurrentItem(fragmentPos);
     }
+
+
+
 }
