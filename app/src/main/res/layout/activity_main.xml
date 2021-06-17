@@ -90,13 +90,22 @@
                 app:menu_fab_show_animation="@anim/fab_slide_in_from_right"
                 app:menu_openDirection="up">
                 <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/set_weigh"
+                    android:id="@+id/drink_water_fltbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_pencil"
+                    android:src="@drawable/ic_cup_measuring"
                     app:fab_colorNormal="#58C892"
                     app:fab_colorPressed="#58C892"
                     app:fab_size="normal" />
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/set_weigh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_weight_scale"
+                    app:fab_colorNormal="#58C892"
+                    app:fab_colorPressed="#58C892"
+                    app:fab_size="normal" />
+
             </com.github.clans.fab.FloatingActionMenu>
 
 
