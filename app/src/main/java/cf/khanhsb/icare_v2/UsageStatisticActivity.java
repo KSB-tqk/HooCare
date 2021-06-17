@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.collection.LLRBBlackValueNode;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -57,11 +58,14 @@ public class UsageStatisticActivity extends AppCompatActivity {
     private MaterialCardView totalTimeUsageCardView;
     private static final String allowUsageAccess = "allowUsageAccess";
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onResume() {
         super.onResume();
         long end_time = System.currentTimeMillis();
-        long start_time = 0L;
+
+        LocalTime now = LocalTime.now();
+        long start_time = now.getHour()*1000*60*60 + now.getMinute()*1000*60 + now.getSecond()*1000;
 
         SharedPreferences sharedPreferences = getSharedPreferences(allowUsageAccess, MODE_PRIVATE);
 
