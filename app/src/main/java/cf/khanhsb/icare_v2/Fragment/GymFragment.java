@@ -36,6 +36,16 @@ public class GymFragment extends Fragment {
             "Arm - Beginner",
             "Leg - Beginner",
             "Shoulder & Back - Beginner"};
+    private String[] gymListTitleIntermediate = {"Abs - Intermediate",
+            "Chest - Intermediate",
+            "Arm - Intermediate",
+            "Leg - Intermediate",
+            "Shoulder & Back - Intermediate"};
+    private String[] gymListTitleAdvanced = {"Abs - Advanced",
+            "Chest - Advanced",
+            "Arm - Advanced",
+            "Leg - Advanced",
+            "Shoulder & Back - Advanced"};
     private String[] gymListTime = {"15 min", "6 min", "16 min", "21 min", "14 min"};
     private String[] focusBodyPart = {"Abs","Chest","Arm","Leg","Shoulder & Back"};
     private int[] gymListImage = {R.drawable.abs_workout_image,
@@ -91,14 +101,14 @@ public class GymFragment extends Fragment {
         GymListViewAdapter listViewAdapter_intermediate = new GymListViewAdapter(getActivity(),
                 R.layout.item_workout_list,
                 gymListImage,
-                gymListTitle,
+                gymListTitleIntermediate,
                 gymListTime);
         listView_intermediate.setAdapter(listViewAdapter_intermediate);
         listView_intermediate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), List_Data_Activity.class);
-                intent.putExtra("workoutTitle", gymListTitle[position]);
+                intent.putExtra("workoutTitle", gymListTitleIntermediate[position]);
                 intent.putExtra("workoutImage", gymListImage[position]);
                 intent.putExtra("workoutTime",gymListTime[position]);
                 intent.putExtra("focusBodyPart",focusBodyPart[position]);
@@ -111,14 +121,14 @@ public class GymFragment extends Fragment {
         GymListViewAdapter listViewAdapter_advanced = new GymListViewAdapter(getActivity(),
                 R.layout.item_workout_list,
                 gymListImage,
-                gymListTitle,
+                gymListTitleAdvanced,
                 gymListTime);
         listView_advanced.setAdapter(listViewAdapter_advanced);
         listView_advanced.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), List_Data_Activity.class);
-                intent.putExtra("workoutTitle", gymListTitle[position]);
+                intent.putExtra("workoutTitle", gymListTitleAdvanced[position]);
                 intent.putExtra("workoutImage", gymListImage[position]);
                 intent.putExtra("workoutTime",gymListTime[position]);
                 intent.putExtra("focusBodyPart",focusBodyPart[position]);
