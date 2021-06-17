@@ -69,7 +69,7 @@ public class UsageStatisticActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(allowUsageAccess, MODE_PRIVATE);
 
-        getUsageStatistics(start_time, end_time);
+        getUsageStatistics(end_time - start_time, end_time);
 
         String allowUsage = sharedPreferences.getString("allowUsage", "");
 
