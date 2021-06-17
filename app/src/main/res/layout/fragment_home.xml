@@ -94,7 +94,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 app:cardCornerRadius="25dp"
-                app:cardElevation="6sp"
+                app:cardElevation="1sp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
