@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,14 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import cf.khanhsb.icare_v2.R;
 
@@ -20,6 +29,8 @@ public class AnimExerListViewAdapter extends BaseAdapter {
     private View view;
     private int resource;
     private Holder holder;
+    private FirebaseFirestore firestore;
+    private DocumentReference docRef;
 
     public AnimExerListViewAdapter(Context context,int resource,String[] Image,
                                    String[] exerciseTitle,
@@ -59,6 +70,23 @@ public class AnimExerListViewAdapter extends BaseAdapter {
         holder.exerciseText = (TextView) view.findViewById(R.id.exercises_workout_duration);
         holder.videoView = (VideoView) view.findViewById(R.id.exercises_video);
         holder.frameLayout = (FrameLayout) view.findViewById(R.id.exercises_video_frame);
+
+        docRef = firestore.collection("exercise").document();
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+//                        workoutTitleList.add(document.getString("name"));
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
 
         holder.exerciseTitle.setText(title[position]);
         holder.videoView.requestFocus();
