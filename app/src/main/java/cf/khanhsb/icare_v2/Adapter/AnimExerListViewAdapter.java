@@ -21,32 +21,36 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 import cf.khanhsb.icare_v2.R;
 
 public class AnimExerListViewAdapter extends BaseAdapter {
-    private String[] title,textDetail,videoUri;
+    private ArrayList<String> title,textDetail,videoUri;
     private Context context;
     private View view;
     private int resource;
     private Holder holder;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
+    private String[] exerciseContainer;
 
-    public AnimExerListViewAdapter(Context context,int resource,String[] Image,
-                                   String[] exerciseTitle,
-                                   String[] exerciseText){
+    public AnimExerListViewAdapter(Context context,int resource,
+                                   ArrayList<String> title,
+                                   ArrayList<String> textDetail,
+                                   ArrayList<String> videoUri){
         super();
         this.context = context;
-        this.videoUri = Image;
-        this.title = exerciseTitle;
-        this.textDetail = exerciseText;
+        this.title = title;
+        this.textDetail = textDetail;
+        this.videoUri = videoUri;
         this.resource = resource;
     }
 
 
     @Override
     public int getCount() {
-        return title.length;
+        return title.size();
     }
 
     @Override
@@ -71,30 +75,13 @@ public class AnimExerListViewAdapter extends BaseAdapter {
         holder.videoView = (VideoView) view.findViewById(R.id.exercises_video);
         holder.frameLayout = (FrameLayout) view.findViewById(R.id.exercises_video_frame);
 
-        docRef = firestore.collection("exercise").document();
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-//                        workoutTitleList.add(document.getString("name"));
-                    } else {
-                        Log.d("LOGGER", "No such document");
-                    }
-                } else {
-                    Log.d("LOGGER", "get failed with ", task.getException());
-                }
-            }
-        });
-
-        holder.exerciseTitle.setText(title[position]);
+        holder.exerciseTitle.setText(title.get(position));
         holder.videoView.requestFocus();
-        holder.videoView.setVideoURI(Uri.parse(videoUri[position]));
+        holder.videoView.setVideoURI(Uri.parse(videoUri.get(position)));
         holder.videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                holder.videoView.setVideoURI(Uri.parse(videoUri[position]));
+                holder.videoView.setVideoURI(Uri.parse(videoUri.get(position)));
             }
         });
         holder.videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -104,7 +91,7 @@ public class AnimExerListViewAdapter extends BaseAdapter {
             }
         });
         holder.videoView.start();
-        holder.exerciseText.setText(textDetail[position]);
+        holder.exerciseText.setText(textDetail.get(position));
 
         return view;
     }
