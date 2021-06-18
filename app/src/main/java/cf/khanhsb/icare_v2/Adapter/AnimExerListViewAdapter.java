@@ -10,11 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -72,33 +76,24 @@ public class AnimExerListViewAdapter extends BaseAdapter {
         holder = new AnimExerListViewAdapter.Holder();
         holder.exerciseTitle = (TextView) view.findViewById(R.id.exercises_workout_title);
         holder.exerciseText = (TextView) view.findViewById(R.id.exercises_workout_duration);
-        holder.videoView = (VideoView) view.findViewById(R.id.exercises_video);
+        holder.exerciseGif = (ImageView) view.findViewById(R.id.exercises_video);
         holder.frameLayout = (FrameLayout) view.findViewById(R.id.exercises_video_frame);
 
         holder.exerciseTitle.setText(title.get(position));
-        holder.videoView.requestFocus();
-        holder.videoView.setVideoURI(Uri.parse(videoUri.get(position)));
-        holder.videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                holder.videoView.setVideoURI(Uri.parse(videoUri.get(position)));
-            }
-        });
-        holder.videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setLooping(true);
-            }
-        });
-        holder.videoView.start();
         holder.exerciseText.setText(textDetail.get(position));
+
+        Glide.with(context)
+                .load(videoUri.get(position))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                .into(holder.exerciseGif);
+
 
         return view;
     }
     public class Holder
     {
         TextView exerciseTitle,exerciseText;
-        VideoView videoView;
+        ImageView exerciseGif;
         FrameLayout frameLayout;
     }
 }

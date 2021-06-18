@@ -48,50 +48,8 @@ public class List_Data_Activity extends YouTubeBaseActivity {
     private DocumentReference docRef;
     private String exercise_contain,currentExercise,lastExercise;
     private String[] exerciseList;
-    private ArrayList<String> workoutTitleList, workoutDuration, workoutUri;
+    private ArrayList<String> workoutTitleList, workoutDuration, workoutUri,workoutDurationValue,workoutDurationType;
     private NonScrollListView listView;
-
-    /**
-     * animation exercise listview
-     */
-    private String[] anim_exer_ListTitle = {"JUMPING JACKS",
-            "ABSDOMINAL CRUNCHES",
-            "RUSSIAN TWIST",
-            "MOUNTAIN CLIMBER",
-            "HEEL TOUCH"};
-    private String[] anim_exer_ListText = {"00:20",
-            "x16",
-            "x20",
-            "x20",
-            "x20"};
-    private String[] anim_exer_ListDurationText = {"Duration (Seconds)",
-            "Repeat",
-            "Repeat",
-            "Repeat",
-            "Repeat"};
-    private String[] anim_exer_ListDurationValue = {"20",
-            "16",
-            "20",
-            "20",
-            "20"};
-    private String[] videoUri = {"https://firebasestorage.googleapis.com/v0/b/" +
-            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
-            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
-            , "https://firebasestorage.googleapis.com/v0/b/" +
-            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
-            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
-            , "https://firebasestorage.googleapis.com/v0/b/" +
-            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
-            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
-            , "https://firebasestorage.googleapis.com/v0/b/" +
-            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
-            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"
-            , "https://firebasestorage.googleapis.com/v0/b/" +
-            "icare-v2.appspot.com/o/RPReplay_Final1620401537." +
-            "mp4?alt=media&token=1609307e-850c-48f1-a749-b0f1da7d500a"};
-    /**
-     * animation exercise listview
-     */
 
     /*animation exercise viewpager*/
     private int[] gymViewPagerImage = {R.drawable.gif_test_image_anim_exer_viewpager,
@@ -159,6 +117,8 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                     workoutTitleList = new ArrayList<>();
                                     workoutDuration = new ArrayList<>();
                                     workoutUri = new ArrayList<>();
+                                    workoutDurationValue = new ArrayList<>();
+                                    workoutDurationType = new ArrayList<>();
 
                                     for (String exerciseItem : exerciseList) {
                                         currentExercise = exerciseItem;
@@ -173,6 +133,10 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                                     workoutDuration.add(tempDuration);
                                                     String tempUri = exerciseDocument.getString("url");
                                                     workoutUri.add(tempUri);
+                                                    String tempValue = exerciseDocument.getString("duration_value");
+                                                    workoutDurationValue.add(tempValue);
+                                                    String tempType = exerciseDocument.getString("duration_type");
+                                                    workoutDurationType.add(tempType);
 
                                                     if (currentExercise.equals(lastExercise)) {
                                                         /**setting up animation exercise listview*/
@@ -251,9 +215,10 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                                                     }
                                                                 });
 
-                                                                exerciseTitle.setText(anim_exer_ListTitle[position]);
-                                                                exerciseDurationText.setText(anim_exer_ListDurationText[position]);
-                                                                exerciseDurationValue.setText(anim_exer_ListDurationValue[position]);
+                                                                exerciseTitle.setText(workoutTitleList.get(position));
+                                                                exerciseDurationText.setText(workoutDurationType.get(position));
+                                                                exerciseDurationValue.setText(workoutDurationValue.get(position));
+                                                                exerciseCount.setText("(" + workoutTitleList.size() + ")");
                                                                 bottomSheetDialog.setContentView(bottomSheetView);
                                                                 bottomSheetDialog.show();
                                                             }
@@ -301,7 +266,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
         workoutTime.setText(intent.getStringExtra("workoutTime"));
         focusArea.setText(intent.getStringExtra("focusBodyPart"));
         workoutBigTitle.setText(intent.getStringExtra("focusBodyPart"));
-        exerciseCount.setText("(" + anim_exer_ListText.length + ")");
+
 
 
         /**app bar animation*/
@@ -318,20 +283,5 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                 }
             }
         });
-    }
-
-    class GetExerciseDataAsyncTask extends AsyncTask<String , Void, Void> {
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-        }
-
-        @Override
-        protected Void doInBackground(String... strings) {
-
-            return null;
-        }
     }
 }
