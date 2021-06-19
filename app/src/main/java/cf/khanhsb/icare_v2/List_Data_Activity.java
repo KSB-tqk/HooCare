@@ -39,7 +39,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
     private ImageView workoutImage, backButton, moreButton, favButton;
     private TextView workoutTitle, workoutTime, exerciseTitle, exerciseDurationValue,
             exerciseDurationText, animTitle, videoTitle, focusArea, workoutBigTitle,
-            animCloseBtn, exerciseCount;
+            animCloseBtn, exerciseCount,startWorkoutButton;
     private LinearLayout startButtonAnimExer;
     private ConstraintLayout bottomSheetContainer, selectedBackground;
     private ViewPager2 viewPager2;
@@ -72,6 +72,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
         backButton = (ImageView) findViewById(R.id.back_button_list_data);
         bottomSheetContainer = (ConstraintLayout) findViewById(R.id.bottom_sheet_container_exer_anim);
         startButtonAnimExer = (LinearLayout) findViewById(R.id.start_button_anim_exer_linear);
+        startWorkoutButton = findViewById(R.id.start_button_exercise_list);
 
         firestore = FirebaseFirestore.getInstance();
 
@@ -229,7 +230,14 @@ public class List_Data_Activity extends YouTubeBaseActivity {
         Thread backgroundThread = new Thread(homeBackGroundRunnable);
         backgroundThread.start();
 
-
+        startWorkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(List_Data_Activity.this, WorkoutActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            }
+        });
 
         startButtonAnimExer.bringToFront();
 
