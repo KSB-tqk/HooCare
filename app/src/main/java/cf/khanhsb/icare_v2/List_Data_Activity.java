@@ -48,30 +48,11 @@ public class List_Data_Activity extends YouTubeBaseActivity {
     private DocumentReference docRef;
     private String exercise_contain,currentExercise,lastExercise;
     private String[] exerciseList;
-    private ArrayList<String> workoutTitleList, workoutDuration, workoutUri,workoutDurationValue,workoutDurationType;
+    private ArrayList<String> workoutTitleList, workoutDuration, workoutUri,
+            workoutDurationValue,workoutDurationType,workoutVideoUrl;
     private NonScrollListView listView;
 
     /*animation exercise viewpager*/
-    private int[] gymViewPagerImage = {R.drawable.gif_test_image_anim_exer_viewpager,
-            R.drawable.gif_test_image_anim_exer_viewpager,
-            R.drawable.gif_test_image_anim_exer_viewpager,
-            R.drawable.gif_test_image_anim_exer_viewpager,
-            R.drawable.gif_test_image_anim_exer_viewpager};
-    private String[] videoId = {"https://firebasestorage.googleapis.com/v0/b/icare-v2.appspot." +
-            "com/o/RPReplay_Final1620553802.mp4?alt=media&token=" +
-            "07f04fe8-d6a8-4486-8d35-4b1bcb7d7f40"
-            , "https://firebasestorage.googleapis.com/v0/b/icare-v2.appspot." +
-            "com/o/RPReplay_Final1620553802.mp4?alt=media&token=" +
-            "07f04fe8-d6a8-4486-8d35-4b1bcb7d7f40"
-            , "https://firebasestorage.googleapis.com/v0/b/icare-v2.appspot." +
-            "com/o/RPReplay_Final1620553802.mp4?alt=media&token=" +
-            "07f04fe8-d6a8-4486-8d35-4b1bcb7d7f40"
-            , "https://firebasestorage.googleapis.com/v0/b/icare-v2" +
-            ".appspot.com/o/How%20to%20Do-%20JUMPING%20JACKS" +
-            ".mp4?alt=media&token=59670c54-a15f-4281-b980-79f9adf5bd03"
-            , "https://firebasestorage.googleapis.com/v0/b/icare-v2.appspot." +
-            "com/o/RPReplay_Final1620553802.mp4?alt=media&token=" +
-            "07f04fe8-d6a8-4486-8d35-4b1bcb7d7f40"};
 
 
     @SuppressLint("SetTextI18n")
@@ -119,6 +100,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                     workoutUri = new ArrayList<>();
                                     workoutDurationValue = new ArrayList<>();
                                     workoutDurationType = new ArrayList<>();
+                                    workoutVideoUrl = new ArrayList<>();
 
                                     for (String exerciseItem : exerciseList) {
                                         currentExercise = exerciseItem;
@@ -137,6 +119,8 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                                     workoutDurationValue.add(tempValue);
                                                     String tempType = exerciseDocument.getString("duration_type");
                                                     workoutDurationType.add(tempType);
+                                                    String tempVideoUrl = exerciseDocument.getString("video_url");
+                                                    workoutVideoUrl.add(tempVideoUrl);
 
                                                     if (currentExercise.equals(lastExercise)) {
                                                         /**setting up animation exercise listview*/
@@ -164,9 +148,9 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                                                 selectedBackground = bottomSheetView.findViewById(R.id.tab_animation_view);
 
                                                                 /**setting up viewpager in animaiton exercise*/
-                                                                animExerViewPagerAdapter = new AnimExerViewPagerAdapter(gymViewPagerImage, videoId
+                                                                animExerViewPagerAdapter = new AnimExerViewPagerAdapter(workoutUri, workoutVideoUrl
                                                                         , position
-                                                                        , bottomSheetView.getContext());
+                                                                        , List_Data_Activity.this);
                                                                 viewPager2 = bottomSheetView.findViewById(R.id.animation_exercise_viewPager);
                                                                 viewPager2.setAdapter(animExerViewPagerAdapter);
 

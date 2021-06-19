@@ -19,6 +19,8 @@
             android:id="@+id/exercises_video"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/loading_icon_exer_list_data"
             android:clickable="false" />
     </FrameLayout>
 
