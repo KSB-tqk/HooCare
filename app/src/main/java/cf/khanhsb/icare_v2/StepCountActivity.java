@@ -1,6 +1,5 @@
 package cf.khanhsb.icare_v2;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -51,7 +49,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     private TextView stepcounttext;
     private Sensor mStepCounter;
     private SensorManager sensorManager;
-    boolean isCounterSensorPresent=false;
+    private boolean isCounterSensorPresent;
     int stepCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +68,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         date_time_text = (TextView) findViewById(R.id.date_time_text);
         bottomSheetContainer = (ConstraintLayout) findViewById(R.id.bottom_sheet_container_step_count);
         stepcounttext = (TextView) findViewById(R.id.step_count_text);
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         /////
         if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null){
             mStepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
@@ -250,8 +248,9 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (isCounterSensorPresent){
-            stepcounttext.setText(String.valueOf(event.values[0]));
+        if (event.sensor==mStepCounter){
+            stepCount =(int) event.values[0];
+            stepcounttext.setText(String.valueOf(stepCount));
         }
     }
 
@@ -263,19 +262,14 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onResume() {
         super.onResume();
-        isCounterSensorPresent=true;
-        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        if(countSensor!=null){
-            sensorManager.registerListener(this,countSensor,SensorManager.SENSOR_DELAY_UI);
-    }else{
-            Toast.makeText(this, "Sensor not found", Toast.LENGTH_SHORT).show();
-        }
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null)
+            sensorManager.registerListener(this,mStepCounter,SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        isCounterSensorPresent = false;
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null)
         sensorManager.unregisterListener(this,mStepCounter);
     }
 }
