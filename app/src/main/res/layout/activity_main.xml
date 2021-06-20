@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:cardElevation="30dp"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+   >
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main_layout"
@@ -71,14 +72,35 @@
             </com.google.android.material.bottomnavigation.BottomNavigationView>
         </com.google.android.material.bottomappbar.BottomAppBar>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#58C892"
-            android:src="@drawable/ic_baseline_add"
-            app:layout_anchor="@id/bottom_app_bar"
-            app:layout_anchorGravity="center_horizontal"
-            android:contentDescription="@string/add_button" />
+
+
+
+            <com.github.clans.fab.FloatingActionMenu
+                android:id="@+id/add_floatbtn"
+
+                android:layout_width="@dimen/fab_actions_spacing"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/add_button"
+                android:src="@drawable/ic_baseline_add"
+                app:menu_colorPressed="#58C892"
+                app:layout_anchor="@id/bottom_app_bar"
+                app:layout_anchorGravity="center_horizontal"
+                app:menu_colorNormal="#58C892"
+                app:menu_fab_hide_animation="@anim/fab_slide_out_to_right"
+                app:menu_fab_show_animation="@anim/fab_slide_in_from_right"
+                app:menu_openDirection="up">
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/set_weigh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_pencil"
+                    app:fab_colorNormal="#58C892"
+                    app:fab_colorPressed="#58C892"
+                    app:fab_size="normal" />
+            </com.github.clans.fab.FloatingActionMenu>
+
+
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.cardview.widget.CardView>
 

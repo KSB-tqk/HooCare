@@ -17,11 +17,11 @@
             android:text="@string/_02"
             android:textColor="@color/black"
             android:textSize="19sp"
-
+            android:id="@+id/position_leaderboard"
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/image_avt_2"
+            android:id="@+id/image_avt_leaderboard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -53,7 +53,7 @@
                 android:src="@drawable/ic_leaf" />
 
             <TextView
-                android:id="@+id/healthypoint_lb2"
+                android:id="@+id/healthypoint_lb"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

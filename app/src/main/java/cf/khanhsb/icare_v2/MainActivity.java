@@ -1,8 +1,10 @@
 package cf.khanhsb.icare_v2;
 
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,14 +13,22 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
+
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -59,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
         long start_time = System.currentTimeMillis();
         SharedPreferences sharedPreferences = getSharedPreferences(sleepTime, MODE_PRIVATE);
     }
+
+    FloatingActionMenu add_floatbtn;
+    FloatingActionButton set_weigh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();;
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
         logout = findViewById(R.id.linearlogout);
-        
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,6 +223,49 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        add_floatbtn = findViewById(R.id.add_floatbtn);
+        set_weigh = findViewById(R.id.set_weigh);
+
+        set_weigh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                fillForm(Gravity.BOTTOM);
+            }
+        });
+
+
+    }
+
+    private void fillForm(int gravity) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_edit);
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = gravity;
+        window.setAttributes(windowAttributes);
+
+        if(Gravity.BOTTOM == gravity){
+            dialog.setCancelable(true);
+        } else{
+            dialog.setCancelable(false);
+        }
+        Button btncancel = dialog.findViewById(R.id.cancel_dialog);
+
+        btncancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
 
@@ -245,4 +301,7 @@ public class MainActivity extends AppCompatActivity {
     public void replaceFragment(int fragmentPos){
         viewPager.setCurrentItem(fragmentPos);
     }
+
+
+
 }
