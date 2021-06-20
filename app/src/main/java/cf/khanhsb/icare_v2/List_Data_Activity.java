@@ -2,6 +2,7 @@ package cf.khanhsb.icare_v2;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -46,11 +47,12 @@ public class List_Data_Activity extends YouTubeBaseActivity {
     private AnimExerViewPagerAdapter animExerViewPagerAdapter;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
-    private String exercise_contain,currentExercise,lastExercise;
+    private String exercise_contain,currentExercise,lastExercise,editDuration,editDurationValue;
     private String[] exerciseList;
     private ArrayList<String> workoutTitleList, workoutDuration, workoutUri,
             workoutDurationValue,workoutDurationType,workoutVideoUrl;
     private NonScrollListView listView;
+    private static final String tempEmail = "tempEmail";
 
     /*animation exercise viewpager*/
 
@@ -73,6 +75,9 @@ public class List_Data_Activity extends YouTubeBaseActivity {
         bottomSheetContainer = (ConstraintLayout) findViewById(R.id.bottom_sheet_container_exer_anim);
         startButtonAnimExer = (LinearLayout) findViewById(R.id.start_button_anim_exer_linear);
         startWorkoutButton = findViewById(R.id.start_button_exercise_list);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
 
         firestore = FirebaseFirestore.getInstance();
 
@@ -112,17 +117,27 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                                 if (exerciseDocument != null) {
                                                     String tempName = exerciseDocument.getString("name");
                                                     workoutTitleList.add(tempName);
-                                                    String tempDuration = exerciseDocument.getString("duration");
-                                                    workoutDuration.add(tempDuration);
                                                     String tempUri = exerciseDocument.getString("url");
                                                     workoutUri.add(tempUri);
-                                                    String tempValue = exerciseDocument.getString("duration_value");
-                                                    workoutDurationValue.add(tempValue);
                                                     String tempType = exerciseDocument.getString("duration_type");
                                                     workoutDurationType.add(tempType);
                                                     String tempVideoUrl = exerciseDocument.getString("video_url");
                                                     workoutVideoUrl.add(tempVideoUrl);
+                                                    String tempDuration = exerciseDocument.getString("duration");
+                                                    workoutDuration.add(tempDuration);
+                                                    String tempValue = exerciseDocument.getString("duration_value");
+                                                    workoutDurationValue.add(tempValue);
 
+//                                                    docRef = firestore.collection("users").document(theTempEmail).collection("exerciseList").document(tempName);
+//                                                    docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                                                        @Override
+//                                                        public void onSuccess(DocumentSnapshot userExerciseDocument) {
+//                                                            if(userExerciseDocument != null) {
+//                                                                editDuration = userExerciseDocument.getString("duraion");
+//                                                                editDurationValue = userExerciseDocument.getString("duration_value");
+//                                                            }
+//                                                        }
+//                                                    });
                                                     if (currentExercise.equals(lastExercise)) {
                                                         /**setting up animation exercise listview*/
                                                         listView = findViewById(R.id.list_view_list_data);
@@ -234,6 +249,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(List_Data_Activity.this, WorkoutActivity.class);
+                intent.putExtra("workoutTitle",tempString);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
