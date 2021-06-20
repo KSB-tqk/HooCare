@@ -107,6 +107,7 @@ public class SigninActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         handleFacebookAccessToken(loginResult.getAccessToken());
+                        mProgressbarAuth.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -155,6 +156,7 @@ public class SigninActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signInwithGoogle();
+                mProgressbarAuth.setVisibility(View.VISIBLE);
             }
         });
 
