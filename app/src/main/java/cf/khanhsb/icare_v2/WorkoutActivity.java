@@ -39,9 +39,9 @@ import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
 
 public class WorkoutActivity extends AppCompatActivity {
 
-    private ImageView backButton,gifExerciseWorkout,loadingIcon;
-    private TextView countDownTextView, exerciseCounter, exerciseTimeCounter,exerciseTitleWorkout,
-    excerciseNextTitleWorkout,afterStartWorkoutTitle,afterStartDuration,readyTextLabel;
+    private ImageView backButton, gifExerciseWorkout, loadingIcon;
+    private TextView countDownTextView, exerciseCounter, exerciseTimeCounter, exerciseTitleWorkout,
+            excerciseNextTitleWorkout, afterStartWorkoutTitle, afterStartDuration, readyTextLabel;
     private ProgressBar progressBar;
     private int tempProgress = 15000, exercisePos;
     private FirebaseFirestore firestore;
@@ -130,7 +130,7 @@ public class WorkoutActivity extends AppCompatActivity {
                                                     String tempValue = exerciseDocument.getString("duration_value");
                                                     workoutDurationValue.add(tempValue);
 
-                                                    if(workoutTitleList.size() == 1) {
+                                                    if (workoutTitleList.size() == 1) {
                                                         exerciseTitleWorkout.setText(tempName);
                                                         excerciseNextTitleWorkout.setText("Loading");
                                                         Glide.with(WorkoutActivity.this)
@@ -150,7 +150,7 @@ public class WorkoutActivity extends AppCompatActivity {
                                                                     }
                                                                 })
                                                                 .into(gifExerciseWorkout);
-                                                    } else if(workoutTitleList.size() == 2) {
+                                                    } else if (workoutTitleList.size() == 2) {
                                                         excerciseNextTitleWorkout.setText(tempName);
                                                     }
                                                 }
@@ -180,7 +180,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 String temp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
                 String sDuration = String.format(Locale.ENGLISH, "%02d",
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                if(sDuration.equals("00")) {
+                if (sDuration.equals("00")) {
                     sDuration = "0";
                 }
                 countDownTextView.setText(sDuration);
@@ -207,21 +207,33 @@ public class WorkoutActivity extends AppCompatActivity {
                 afterStartWorkoutTitle.setVisibility(View.VISIBLE);
                 readyTextLabel.setVisibility(View.INVISIBLE);
                 exerciseTitleWorkout.setVisibility(View.INVISIBLE);
-                CountDownTimer workoutCount = new  CountDownTimer(duration, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        String temp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                        String sAfterDuration = String.format(Locale.ENGLISH, "%02d:%02d",TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished),
-                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                        afterStartDuration.setText(sAfterDuration);
-                    }
 
-                    @Override
-                    public void onFinish() {
-
+                if (workoutDuration.get(exercisePos).contains(":")) {
+                    long exerDuration = 0;
+                    String[] splitDuration = workoutDuration.get(exercisePos).split(":");
+                    if (Integer.parseInt(splitDuration[0]) > 0) {
+                        exerDuration = Integer.parseInt(splitDuration[0]) * 60 + Integer.parseInt(splitDuration[1]);
+                    } else {
+                        exerDuration = Integer.parseInt(splitDuration[1]);
                     }
-                };
-                workoutCount.start();
+                    CountDownTimer workoutCount = new CountDownTimer(exerDuration, 1000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            String temp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                            String sAfterDuration = String.format(Locale.ENGLISH, "%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(1),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                            afterStartDuration.setText(sAfterDuration);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            exercisePos++;
+                        }
+                    }.start();
+                } else {
+                    afterStartDuration.setAllCaps(false);
+                    afterStartDuration.setText(workoutDuration.get(exercisePos));
+                }
             }
         };
         result.start();
