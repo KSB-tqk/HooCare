@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -27,7 +31,7 @@ import java.util.Date;
 import cf.khanhsb.icare_v2.Adapter.BarChartAdapter;
 import cf.khanhsb.icare_v2.Adapter.StepCountViewPagerAdapter;
 
-public class StepCountActivity extends AppCompatActivity implements View.OnClickListener {
+public class StepCountActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener {
 
     //initialize variable
     private ArrayList<BarEntry> dataValue = new ArrayList<BarEntry>();
@@ -41,8 +45,12 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     private BarChartAdapter adapter;
     private StepCountViewPagerAdapter stepCountViewPagerAdapter;
     private static final String tempEmail = "tempEmail";
-
-
+    /////////////////InitialalizeStepSensor///
+    private TextView stepcounttext;
+    private Sensor mStepCounter;
+    private SensorManager sensorManager;
+    private boolean isCounterSensorPresent;
+    int stepCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +67,15 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         more_menu_button = (ImageView) findViewById(R.id.more_menu_stepcount);
         date_time_text = (TextView) findViewById(R.id.date_time_text);
         bottomSheetContainer = (ConstraintLayout) findViewById(R.id.bottom_sheet_container_step_count);
-
+        stepcounttext = (TextView) findViewById(R.id.step_count_text);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        /////
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null){
+            mStepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+            isCounterSensorPresent = true;
+        }else{
+            isCounterSensorPresent=false;
+        }
         //set up date
         Date calendar = Calendar.getInstance().getTime();
         System.out.println("Current time => " + calendar);
@@ -228,5 +244,32 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
                 break;
 
         }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor==mStepCounter){
+            stepCount =(int) event.values[0];
+            stepcounttext.setText(String.valueOf(stepCount));
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null)
+            sensorManager.registerListener(this,mStepCounter,SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null)
+        sensorManager.unregisterListener(this,mStepCounter);
     }
 }

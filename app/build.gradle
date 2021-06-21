@@ -68,4 +68,6 @@ dependencies {
     implementation 'io.github.ShawnLin013:number-picker:2.4.13'
     implementation 'com.github.clans:fab:1.6.2'
 
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 }

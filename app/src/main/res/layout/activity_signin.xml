@@ -152,9 +152,9 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btGoogle"
-                android:layout_width="150dp"
-                android:layout_height="55dp"
-                android:background="@drawable/google_button_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/button_bg_green"
                 android:drawableLeft="@drawable/icon_google"
                 android:fontFamily="@font/momcakebold"
                 android:padding="10dp"
@@ -167,8 +167,8 @@
 
             <Button
                 android:id="@+id/btFB"
-                android:layout_width="155dp"
-                android:layout_height="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
                 android:drawableLeft="@drawable/facebook"
                 android:background="@drawable/login_button_bg"
                 android:fontFamily="@font/momcakebold"

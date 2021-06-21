@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SigninActivity"
+    android:orientation="vertical"
+    android:background="@drawable/curved_background"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="343dp"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/profilepiclayout"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/button_bg_white"
+            android:padding="10dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="20dp"
+                app:cardCornerRadius="20dp">
+
+                <ImageView
+                    android:id="@+id/id_userimage"
+                    android:layout_width="match_parent"
+                    android:layout_height="131dp"
+                    android:background="@drawable/testprofile" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/id_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profilepiclayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/momcakebold"
+            android:textColor="@color/white"
+            android:textSize="40sp"></TextView>
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="30dp"
+        android:background="@drawable/button_bg_white"
+        android:elevation="20dp"
+        >
+        <TextView
+            android:id="@+id/id_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:drawableLeft="@drawable/id"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/id_fullname"
+            android:layout_below="@id/id_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:drawableLeft="@drawable/name"
+            android:textColor="@color/black"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:id="@+id/id_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:drawableLeft="@drawable/email"
+            android:textColor="@color/black"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/id_fullname"/>
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:src="@drawable/diet" />
+</LinearLayout>

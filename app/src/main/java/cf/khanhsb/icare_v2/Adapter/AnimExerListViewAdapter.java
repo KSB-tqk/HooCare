@@ -10,43 +10,51 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 import cf.khanhsb.icare_v2.R;
 
 public class AnimExerListViewAdapter extends BaseAdapter {
-    private String[] title,textDetail,videoUri;
+    private ArrayList<String> title,textDetail,videoUri;
     private Context context;
     private View view;
     private int resource;
     private Holder holder;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
+    private String[] exerciseContainer;
 
-    public AnimExerListViewAdapter(Context context,int resource,String[] Image,
-                                   String[] exerciseTitle,
-                                   String[] exerciseText){
+    public AnimExerListViewAdapter(Context context,int resource,
+                                   ArrayList<String> title,
+                                   ArrayList<String> textDetail,
+                                   ArrayList<String> videoUri){
         super();
         this.context = context;
-        this.videoUri = Image;
-        this.title = exerciseTitle;
-        this.textDetail = exerciseText;
+        this.title = title;
+        this.textDetail = textDetail;
+        this.videoUri = videoUri;
         this.resource = resource;
     }
 
 
     @Override
     public int getCount() {
-        return title.length;
+        return title.size();
     }
 
     @Override
@@ -68,50 +76,24 @@ public class AnimExerListViewAdapter extends BaseAdapter {
         holder = new AnimExerListViewAdapter.Holder();
         holder.exerciseTitle = (TextView) view.findViewById(R.id.exercises_workout_title);
         holder.exerciseText = (TextView) view.findViewById(R.id.exercises_workout_duration);
-        holder.videoView = (VideoView) view.findViewById(R.id.exercises_video);
+        holder.exerciseGif = (ImageView) view.findViewById(R.id.exercises_video);
         holder.frameLayout = (FrameLayout) view.findViewById(R.id.exercises_video_frame);
 
-        docRef = firestore.collection("exercise").document();
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-//                        workoutTitleList.add(document.getString("name"));
-                    } else {
-                        Log.d("LOGGER", "No such document");
-                    }
-                } else {
-                    Log.d("LOGGER", "get failed with ", task.getException());
-                }
-            }
-        });
+        holder.exerciseTitle.setText(title.get(position));
+        holder.exerciseText.setText(textDetail.get(position));
 
-        holder.exerciseTitle.setText(title[position]);
-        holder.videoView.requestFocus();
-        holder.videoView.setVideoURI(Uri.parse(videoUri[position]));
-        holder.videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                holder.videoView.setVideoURI(Uri.parse(videoUri[position]));
-            }
-        });
-        holder.videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setLooping(true);
-            }
-        });
-        holder.videoView.start();
-        holder.exerciseText.setText(textDetail[position]);
+        Glide.with(context)
+                .load(videoUri.get(position))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                .into(holder.exerciseGif);
+
 
         return view;
     }
     public class Holder
     {
         TextView exerciseTitle,exerciseText;
-        VideoView videoView;
+        ImageView exerciseGif;
         FrameLayout frameLayout;
     }
 }

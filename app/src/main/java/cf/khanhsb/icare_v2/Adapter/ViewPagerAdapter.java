@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import cf.khanhsb.icare_v2.Fragment.ArchieveFragment;
+import cf.khanhsb.icare_v2.Fragment.UserProfileFragment;
 import cf.khanhsb.icare_v2.Fragment.GymFragment;
 import cf.khanhsb.icare_v2.Fragment.HomeFragment;
 import cf.khanhsb.icare_v2.Fragment.MealFragment;
@@ -25,7 +25,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return new HomeFragment(userEmail);
             case 1:
-                return new ArchieveFragment();
+                return new UserProfileFragment() ;
             case 2:
                 return new MealFragment();
             case 3:
