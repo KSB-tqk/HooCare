@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     FloatingActionMenu add_floatbtn;
     FloatingActionButton set_weigh;
+    FloatingActionButton drink_water_fltbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
         add_floatbtn = findViewById(R.id.add_floatbtn);
         set_weigh = findViewById(R.id.set_weigh);
+        drink_water_fltbtn= findViewById(R.id.drink_water_fltbtn);
 
         set_weigh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,7 +237,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        drink_water_fltbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wateredit(Gravity.BOTTOM);
+            }
+        });
 
+    }
+    private void wateredit(int gravity) {
+        final Dialog dialog2 = new Dialog(this);
+        dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog2.setContentView(R.layout.layout_water_edit);
+        Window window = dialog2.getWindow();
+        if (window == null) {
+            return;
+        }
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = gravity;
+        window.setAttributes(windowAttributes);
+
+        if(Gravity.BOTTOM == gravity){
+            dialog2.setCancelable(true);
+        } else{
+            dialog2.setCancelable(false);
+        }
+        Button btncancel2 = dialog2.findViewById(R.id.cancel_dialog2);
+
+        btncancel2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog2.dismiss();
+            }
+        });
+        dialog2.show();
     }
 
     private void fillForm(int gravity) {

@@ -93,7 +93,7 @@
                     android:id="@+id/drink_water_fltbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_cup_measuring"
+                    android:src="@drawable/ic_drop"
                     app:fab_colorNormal="#58C892"
                     app:fab_colorPressed="#58C892"
                     app:fab_size="normal" />
