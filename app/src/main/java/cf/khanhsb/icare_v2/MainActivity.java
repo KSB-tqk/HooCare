@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
@@ -15,12 +17,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.text.InputFilter;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.LinearLayout;
@@ -37,11 +41,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
+import java.time.LocalDate;
+
 import cf.khanhsb.icare_v2.Adapter.ViewPagerAdapter;
 import cf.khanhsb.icare_v2.Fragment.MealFragment;
+
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 public class MainActivity extends AppCompatActivity {
     private TextView username,toolBarTitle;
@@ -54,7 +65,10 @@ public class MainActivity extends AppCompatActivity {
     private SlidingRootNav slidingRootNav;
     private LinearLayout logout;
     private GoogleSignInClient mGoogleSignInClient;
+    private FirebaseFirestore firestore;
+    private DocumentReference docRef;
     private static final String sleepTime = "sleepTime";
+    private static final String tempEmail = "tempEmail";
 
     @Override
     protected void onPause() {
@@ -73,7 +87,11 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionMenu add_floatbtn;
     FloatingActionButton set_weigh;
     FloatingActionButton drink_water_fltbtn;
+    EditText edit_weight;
+    EditText edit_height;
+    Button save_btn_dialog;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,7 +204,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
 
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
+
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
 
         closeNavMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,6 +270,8 @@ public class MainActivity extends AppCompatActivity {
                 wateredit(Gravity.BOTTOM);
             }
         });
+
+
 
     }
     private void wateredit(int gravity) {

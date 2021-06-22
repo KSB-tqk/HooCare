@@ -23,22 +23,28 @@
         android:orientation="vertical">
 
         <EditText
+            android:maxLength="3"
+            android:id="@+id/edit_weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_marginTop="16dp"
+            android:hint="Your weight (cm)"
             android:background="@drawable/edittext_border"
-            android:hint="Your weight"
+            android:inputType="number"
             android:padding="12dp" />
 
         <EditText
+            android:maxLength="3"
+            android:id="@+id/edit_height"
+            android:hint="Your height (kg)"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/edittext_border"
-            android:hint="Your height"
+            android:inputType="number"
             android:padding="12dp" />
 
         <LinearLayout
