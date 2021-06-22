@@ -5,7 +5,7 @@
     <string name="HomeFragTitle">Summary</string>
     <string name="MealFragTitle">Meal</string>
     <string name="GymFragTitle">Gym</string>
-    <string name="ArchieveFragTitle">Archieve</string>
+    <string name="ArchieveFragTitle">Profile</string>
     <string name="body_measurement_headline_weight">Weight</string>
     <string name="body_measurement_header">Body Measurement</string>
     <string name="body_measurement_Detail">Details</string>

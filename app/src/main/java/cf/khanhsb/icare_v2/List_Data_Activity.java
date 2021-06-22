@@ -261,7 +261,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(List_Data_Activity.this, MainActivity.class);
-                intent.putExtra("fragmentPosition", 3);
+                intent.putExtra("fragmentPosition", 2);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
