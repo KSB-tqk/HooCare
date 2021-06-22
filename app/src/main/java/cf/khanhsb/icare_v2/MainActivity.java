@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
@@ -15,12 +17,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.text.InputFilter;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.LinearLayout;
@@ -37,11 +41,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
+import java.time.LocalDate;
+
 import cf.khanhsb.icare_v2.Adapter.ViewPagerAdapter;
 import cf.khanhsb.icare_v2.Fragment.MealFragment;
+
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 public class MainActivity extends AppCompatActivity {
     private TextView username,toolBarTitle;
@@ -54,7 +65,10 @@ public class MainActivity extends AppCompatActivity {
     private SlidingRootNav slidingRootNav;
     private LinearLayout logout;
     private GoogleSignInClient mGoogleSignInClient;
+    private FirebaseFirestore firestore;
+    private DocumentReference docRef;
     private static final String sleepTime = "sleepTime";
+    private static final String tempEmail = "tempEmail";
 
     @Override
     protected void onPause() {
@@ -72,7 +86,12 @@ public class MainActivity extends AppCompatActivity {
 
     FloatingActionMenu add_floatbtn;
     FloatingActionButton set_weigh;
+    FloatingActionButton drink_water_fltbtn;
+    EditText edit_weight;
+    EditText edit_height;
+    Button save_btn_dialog;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,7 +204,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
 
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
+
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
 
         closeNavMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
 
         add_floatbtn = findViewById(R.id.add_floatbtn);
         set_weigh = findViewById(R.id.set_weigh);
+        drink_water_fltbtn= findViewById(R.id.drink_water_fltbtn);
 
         set_weigh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,7 +264,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        drink_water_fltbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wateredit(Gravity.BOTTOM);
+            }
+        });
 
+
+
+    }
+    private void wateredit(int gravity) {
+        final Dialog dialog2 = new Dialog(this);
+        dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog2.setContentView(R.layout.layout_water_edit);
+        Window window = dialog2.getWindow();
+        if (window == null) {
+            return;
+        }
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = gravity;
+        window.setAttributes(windowAttributes);
+
+        if(Gravity.BOTTOM == gravity){
+            dialog2.setCancelable(true);
+        } else{
+            dialog2.setCancelable(false);
+        }
+        Button btncancel2 = dialog2.findViewById(R.id.cancel_dialog2);
+
+        btncancel2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog2.dismiss();
+            }
+        });
+        dialog2.show();
     }
 
     private void fillForm(int gravity) {
