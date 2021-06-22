@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             toolBarTitle.setTextColor(Color.WHITE);
             toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
             toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
-            toolbar.setBackground(getDrawable(R.color.white));
+            toolbar.setBackground(getDrawable(R.color.light_grey));
         }
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                         toolBarTitle.setTextColor(Color.WHITE);
                         toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
                         toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
-                        toolbar.setBackground(getDrawable(R.color.transparent));
+                        toolbar.setBackground(getDrawable(R.color.light_grey));
                         MealFragment mealFragment = new MealFragment();
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                         toolBarTitle.setTextColor(Color.WHITE);
                         toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
                         toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
-                        toolbar.setBackground(getDrawable(R.color.transparent));
+                        toolbar.setBackground(getDrawable(R.color.light_grey));
                         break;
                 }
             }
@@ -209,6 +209,8 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
         String theTempEmail = sharedPreferences.getString("Email", "");
+
+        firestore = FirebaseFirestore.getInstance();
 
         docRef = firestore.collection("daily").
                 document("week-of-" + monday.toString()).
