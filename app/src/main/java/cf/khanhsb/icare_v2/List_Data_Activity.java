@@ -128,6 +128,8 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                                     String tempValue = exerciseDocument.getString("duration_value");
                                                     workoutDurationValue.add(tempValue);
 
+                                                    exerciseCount.setText("(" + workoutTitleList.size() + ")");
+
 //                                                    docRef = firestore.collection("users").document(theTempEmail).collection("exerciseList").document(tempName);
 //                                                    docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
 //                                                        @Override
@@ -218,7 +220,6 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                                                 exerciseTitle.setText(workoutTitleList.get(position));
                                                                 exerciseDurationText.setText(workoutDurationType.get(position));
                                                                 exerciseDurationValue.setText(workoutDurationValue.get(position));
-                                                                exerciseCount.setText("(" + workoutTitleList.size() + ")");
                                                                 bottomSheetDialog.setContentView(bottomSheetView);
                                                                 bottomSheetDialog.show();
                                                             }
