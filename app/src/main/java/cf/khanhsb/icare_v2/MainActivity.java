@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         /**sliding between fragment and activity*/
         int fragmentPosition = intent.getIntExtra("fragmentPosition",0);
         viewPager.setCurrentItem(fragmentPosition);
-        if(fragmentPosition==3){
+        if(fragmentPosition==2){
             btmNav.getMenu().findItem(R.id.nav_gym).setChecked(true);
             toolBarTitle.setText(getString(R.string.GymFragTitle));
             toolBarTitle.setTextColor(Color.WHITE);
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                         toolBarTitle.setTextColor(getResources().getColor(R.color.lime_200));
                         toolBarImageView.setColorFilter(Color.WHITE);
                         break;
-                    case 1:
+                    case 3:
                         btmNav.getMenu().findItem(R.id.nav_archie).setChecked(true);
                         toolBarTitle.setText(getString(R.string.ArchieveFragTitle));
                         toolBarTitle.getBackground().setTint(Color.WHITE);
@@ -155,26 +155,26 @@ public class MainActivity extends AppCompatActivity {
                         toolBarImageView.setColorFilter(Color.WHITE);
                         toolbar.setBackground(getDrawable(R.color.transparent));
                         break;
-                    case 2:
+                    case 1:
                         btmNav.getMenu().findItem(R.id.nav_meal).setChecked(true);
                         toolBarTitle.setText(getString(R.string.MealFragTitle));
                         toolBarTitle.setTextColor(Color.WHITE);
                         toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
                         toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
-                        toolbar.setBackground(getDrawable(R.color.white));
+                        toolbar.setBackground(getDrawable(R.color.transparent));
                         MealFragment mealFragment = new MealFragment();
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.add(R.id.view_pager,mealFragment);
                         fragmentTransaction.commit();
                         break;
-                    case 3:
+                    case 2:
                         btmNav.getMenu().findItem(R.id.nav_gym).setChecked(true);
                         toolBarTitle.setText(getString(R.string.GymFragTitle));
                         toolBarTitle.setTextColor(Color.WHITE);
                         toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
                         toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
-                        toolbar.setBackground(getDrawable(R.color.white));
+                        toolbar.setBackground(getDrawable(R.color.transparent));
                         break;
                 }
             }
@@ -279,13 +279,13 @@ public class MainActivity extends AppCompatActivity {
                             viewPager.setCurrentItem(0);
                             break;
                         case R.id.nav_archie:
-                            viewPager.setCurrentItem(1);
+                            viewPager.setCurrentItem(3);
                             break;
                         case R.id.nav_meal:
-                            viewPager.setCurrentItem(2);
+                            viewPager.setCurrentItem(1);
                             break;
                         case R.id.nav_gym:
-                            viewPager.setCurrentItem(3);
+                            viewPager.setCurrentItem(2);
                             break;
                     }
                     return true;

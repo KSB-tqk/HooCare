@@ -25,11 +25,11 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return new HomeFragment(userEmail);
             case 1:
-                return new UserProfileFragment() ;
-            case 2:
                 return new MealFragment();
-            case 3:
+            case 2:
                 return new GymFragment();
+            case 3:
+                return new UserProfileFragment();
         }
         return null;
     }

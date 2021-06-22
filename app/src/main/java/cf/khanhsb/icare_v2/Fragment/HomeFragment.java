@@ -139,14 +139,14 @@ public class HomeFragment extends Fragment {
         caloCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getActivity()).replaceFragment(2);
+                ((MainActivity) getActivity()).replaceFragment(1);
             }
         });
 
         trainingCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getActivity()).replaceFragment(3);
+                ((MainActivity) getActivity()).replaceFragment(2);
             }
         });
 

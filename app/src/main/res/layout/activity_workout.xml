@@ -158,6 +158,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/exercise_title_workout">
 
+        <ImageView
+            android:id="@+id/finish_exercise_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:visibility="gone"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/check_icon_set_up_goal_stepcount"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
         <ProgressBar
             android:id="@+id/progressbar_workout"
             android:layout_width="137dp"

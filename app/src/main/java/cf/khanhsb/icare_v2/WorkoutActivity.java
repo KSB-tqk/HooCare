@@ -43,7 +43,7 @@ public class WorkoutActivity extends AppCompatActivity {
     private TextView countDownTextView, exerciseCounter, exerciseTimeCounter, exerciseTitleWorkout,
             excerciseNextTitleWorkout, afterStartWorkoutTitle, afterStartDuration, readyTextLabel;
     private ProgressBar progressBar;
-    private int tempProgress = 15000, exercisePos;
+    private int tempProgress = 15000, exercisePos,exerDuration;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private static final String tempEmail = "tempEmail";
@@ -53,6 +53,9 @@ public class WorkoutActivity extends AppCompatActivity {
     private String[] exerciseList;
     private boolean startTicking = true;
     private ConstraintLayout progressWorkoutConstaint;
+    private CountDownTimer toNextExerciseCountDown;
+    private long countDownDuration;
+    private ImageView finishExercise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +77,9 @@ public class WorkoutActivity extends AppCompatActivity {
         afterStartWorkoutTitle = findViewById(R.id.after_start_exercise_title_workout);
         loadingIcon = findViewById(R.id.gif_exer_workout_loading_image);
         readyTextLabel = findViewById(R.id.ready_text_label);
+        finishExercise = findViewById(R.id.finish_exercise_image);
 
-        long duration = TimeUnit.SECONDS.toMillis(15);
+        countDownDuration = TimeUnit.SECONDS.toMillis(15);
         progressBar.setMax(15000);
 
         SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
@@ -174,14 +178,14 @@ public class WorkoutActivity extends AppCompatActivity {
         Thread backgroundThread = new Thread(homeBackGroundRunnable);
         backgroundThread.start();
 
-        CountDownTimer result = new CountDownTimer(duration, 1000) {
+        CountDownTimer result = new CountDownTimer(countDownDuration, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 String temp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
                 String sDuration = String.format(Locale.ENGLISH, "%02d",
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
                 if (sDuration.equals("00")) {
-                    sDuration = "0";
+                    sDuration = "GO!";
                 }
                 countDownTextView.setText(sDuration);
                 if (startTicking) {
@@ -202,50 +206,96 @@ public class WorkoutActivity extends AppCompatActivity {
                 exerciseCounter.setText("Exercise " + String.valueOf(exercisePos + 1) + "/" + workoutTitleList.size());
                 exerciseTitleWorkout.setText(workoutTitleList.get(exercisePos));
                 excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos + 1));
-                progressWorkoutConstaint.setVisibility(View.INVISIBLE);
+                countDownTextView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 afterStartDuration.setVisibility(View.VISIBLE);
                 afterStartWorkoutTitle.setVisibility(View.VISIBLE);
                 readyTextLabel.setVisibility(View.INVISIBLE);
                 exerciseTitleWorkout.setVisibility(View.INVISIBLE);
 
                 if (workoutDuration.get(exercisePos).contains(":")) {
-                    long exerDuration = 0;
                     String[] splitDuration = workoutDuration.get(exercisePos).split(":");
                     if (Integer.parseInt(splitDuration[0]) > 0) {
                         exerDuration = Integer.parseInt(splitDuration[0]) * 60 + Integer.parseInt(splitDuration[1]);
                     } else {
                         exerDuration = Integer.parseInt(splitDuration[1]);
                     }
-                    CountDownTimer workoutCount = new CountDownTimer(exerDuration, 1000) {
-                        @Override
-                        public void onTick(long millisUntilFinished) {
-                            String temp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                            String sAfterDuration = String.format(Locale.ENGLISH, "%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(1),
-                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                            afterStartDuration.setText(sAfterDuration);
-                        }
-
-                        @Override
-                        public void onFinish() {
-                            exercisePos++;
-                        }
-                    }.start();
+                    reverseTimer(exerDuration,afterStartDuration);
                 } else {
                     afterStartDuration.setAllCaps(false);
                     afterStartDuration.setText(workoutDuration.get(exercisePos));
+                    finishExercise.setVisibility(View.VISIBLE);
                 }
             }
         };
         result.start();
 
+        finishExercise.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View v) {
+                setUpNextExercise();
+            }
+        });
+
+
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WorkoutActivity.this, MainActivity.class);
-                intent.putExtra("fragmentPosition", 3);
+                intent.putExtra("fragmentPosition", 2);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
+    }
+
+    public void reverseTimer(int Seconds,final TextView tv){
+
+        new CountDownTimer(Seconds* 1000+1000, 1000) {
+
+            @SuppressLint({"SetTextI18n", "DefaultLocale"})
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+                int minutes = seconds / 60;
+                seconds = seconds % 60;
+                tv.setText(String.format("%02d", minutes)
+                        + ":" + String.format("%02d", seconds));
+            }
+
+            public void onFinish() {
+                setUpNextExercise();
+            }
+        }.start();
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setUpNextExercise() {
+        if(exercisePos < workoutTitleList.size()-1){
+            exercisePos++;
+            if (exercisePos == workoutTitleList.size()-1){
+                excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos));
+            } else {
+                excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos + 1));
+            }
+        }
+        exerciseCounter.setText("Exercise " + String.valueOf(exercisePos + 1) + "/" + workoutTitleList.size());
+        afterStartWorkoutTitle.setText(workoutTitleList.get(exercisePos));
+
+        if (workoutDuration.get(exercisePos).contains(":")) {
+            finishExercise.setVisibility(View.INVISIBLE);
+            String[] splitDuration = workoutDuration.get(exercisePos).split(":");
+            if (Integer.parseInt(splitDuration[0]) > 0) {
+                exerDuration = Integer.parseInt(splitDuration[0]) * 60 + Integer.parseInt(splitDuration[1]);
+            } else {
+                exerDuration = Integer.parseInt(splitDuration[1]);
+            }
+            reverseTimer(exerDuration,afterStartDuration);
+        } else {
+            afterStartDuration.setAllCaps(false);
+            afterStartDuration.setText(workoutDuration.get(exercisePos));
+            finishExercise.setVisibility(View.VISIBLE);
+        }
     }
 }
