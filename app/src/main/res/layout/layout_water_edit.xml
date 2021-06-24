@@ -12,9 +12,9 @@
         android:background="@drawable/top_color_white_corner_16"
         android:gravity="center"
         android:padding="12dp"
-        android:text="Cups of water you drank today"
-        android:textColor="@color/black"
-        android:textSize="18sp"
+        android:text="Cups Of Water You Drank Today"
+        android:textColor="@color/white"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -27,6 +27,8 @@
             android:text="0"
             android:id="@+id/cup_of_water"
             android:textSize="40sp"
+            android:textStyle="bold"
+            android:textColor="@color/lime_200"
             android:layout_marginTop="20dp"
             android:layout_gravity="center"/>
         <LinearLayout
@@ -43,15 +45,16 @@
                 android:layout_margin="12dp"
                 android:text="Cancel"
                 android:id="@+id/cancel_dialog2"/>
+
             <Button
+                android:id="@+id/drink_btn_dialog"
                 android:layout_width="0dp"
-                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_weight="1"
                 android:layout_margin="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
                 android:text="Drink"
-                android:id="@+id/drink_btn_dialog"/>
+                android:textSize="14sp" />
 
         </LinearLayout>
 

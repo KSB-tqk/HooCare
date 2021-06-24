@@ -99,7 +99,7 @@ public class SignupActivity extends Activity {
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                CreateUserOnFirebase(email,username);
+                                CreateUserOnFirebase(email,username,pass);
 
                                 Toast.makeText(SignupActivity.this, "Sign Up Successfully !!", Toast.LENGTH_SHORT).show();
                                 //..........
@@ -123,7 +123,7 @@ public class SignupActivity extends Activity {
         }
     }
 
-    private void CreateUserOnFirebase(String userEmail, String userName) {
+    private void CreateUserOnFirebase(String userEmail, String userName,String password) {
         //Set up firestore
         firestore = FirebaseFirestore.getInstance();
 

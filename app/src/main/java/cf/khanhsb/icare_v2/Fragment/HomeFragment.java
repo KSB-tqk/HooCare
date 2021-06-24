@@ -215,6 +215,8 @@ public class HomeFragment extends Fragment {
                                     if (document != null) {
                                         String temp = document.getString("drink_goal");
                                         String time = document.getString("sleep_goal");
+                                        String weight = document.getString("weight");
+                                        String height = document.getString("height");
 
                                         //create dailyData
                                         docRef = firestore.collection("daily").
@@ -234,6 +236,20 @@ public class HomeFragment extends Fragment {
                                         } else {
                                             dailyGoal.put("sleep_time", "0");
                                         }
+
+                                        if (weight.equals("empty")) {
+                                            dailyGoal.put("weight", "empty");
+                                        } else {
+                                            dailyGoal.put("weight", weight);
+                                        }
+
+                                        if (height.equals("empty")) {
+                                            dailyGoal.put("height", "empty");
+                                        } else {
+                                            dailyGoal.put("height", height);
+                                        }
+
+
 
                                         //update data to firestore
                                         firestore = FirebaseFirestore.getInstance();
@@ -310,7 +326,7 @@ public class HomeFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void SetUpWaterCard(String theTempEmail) {
+    public void SetUpWaterCard(String theTempEmail) {
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
         docRef = firestore.collection("daily").

@@ -2,11 +2,25 @@ package cf.khanhsb.icare_v2;
 
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -16,24 +30,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
-import android.text.InputFilter;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-
 import com.facebook.login.LoginManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -42,6 +41,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
@@ -49,13 +49,14 @@ import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import java.time.LocalDate;
 
 import cf.khanhsb.icare_v2.Adapter.ViewPagerAdapter;
+import cf.khanhsb.icare_v2.Fragment.HomeFragment;
 import cf.khanhsb.icare_v2.Fragment.MealFragment;
 
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView username,toolBarTitle;
+    private TextView username, toolBarTitle;
     private ViewPager viewPager;
     private ViewPagerAdapter mViewPagerAdapter;
     private Toolbar toolbar;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private DocumentReference docRef;
     private static final String sleepTime = "sleepTime";
     private static final String tempEmail = "tempEmail";
+    private String numberOfCupHadDrink;
 
     @Override
     protected void onPause() {
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         /**setting up viewpager*/
         viewPager = findViewById(R.id.view_pager);
-        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),userEmail);
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), userEmail);
         viewPager.setAdapter(mViewPagerAdapter);
 
         /**setting up nav drawer*/
@@ -138,9 +140,9 @@ public class MainActivity extends AppCompatActivity {
         ImageView openNavMenuButton = (ImageView) findViewById(R.id.nav_menu_icon);
 
         /**sliding between fragment and activity*/
-        int fragmentPosition = intent.getIntExtra("fragmentPosition",0);
+        int fragmentPosition = intent.getIntExtra("fragmentPosition", 0);
         viewPager.setCurrentItem(fragmentPosition);
-        if(fragmentPosition==2){
+        if (fragmentPosition == 2) {
             btmNav.getMenu().findItem(R.id.nav_gym).setChecked(true);
             toolBarTitle.setText(getString(R.string.GymFragTitle));
             toolBarTitle.setTextColor(Color.WHITE);
@@ -184,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                         MealFragment mealFragment = new MealFragment();
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.add(R.id.view_pager,mealFragment);
+                        fragmentTransaction.add(R.id.view_pager, mealFragment);
                         fragmentTransaction.commit();
                         break;
                     case 2:
@@ -203,19 +205,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        LocalDate today = LocalDate.now();
-        LocalDate monday = today.with(previousOrSame(MONDAY));
-
-        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
-        String theTempEmail = sharedPreferences.getString("Email", "");
-
-        firestore = FirebaseFirestore.getInstance();
-
-        docRef = firestore.collection("daily").
-                document("week-of-" + monday.toString()).
-                collection(today.toString()).
-                document(theTempEmail);
 
         closeNavMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,8 +226,9 @@ public class MainActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
-                .build();;
-        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
+                .build();
+        ;
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         logout = findViewById(R.id.linearlogout);
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -249,14 +239,14 @@ public class MainActivity extends AppCompatActivity {
                 LoginManager.getInstance().logOut();
                 /////
                 mGoogleSignInClient.signOut();
-                startActivity(new Intent(MainActivity.this,SigninActivity.class));
+                startActivity(new Intent(MainActivity.this, SigninActivity.class));
                 finish();
             }
         });
 
         add_floatbtn = findViewById(R.id.add_floatbtn);
         set_weigh = findViewById(R.id.set_weigh);
-        drink_water_fltbtn= findViewById(R.id.drink_water_fltbtn);
+        drink_water_fltbtn = findViewById(R.id.drink_water_fltbtn);
 
         set_weigh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,13 +264,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
     }
+
     private void wateredit(int gravity) {
-        final Dialog dialog2 = new Dialog(this);
-        dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog2.setContentView(R.layout.layout_water_edit);
-        Window window = dialog2.getWindow();
+        final Dialog drinkWaterDialog = new Dialog(this);
+        drinkWaterDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        drinkWaterDialog.setContentView(R.layout.layout_water_edit);
+        Window window = drinkWaterDialog.getWindow();
         if (window == null) {
             return;
         }
@@ -290,20 +280,61 @@ public class MainActivity extends AppCompatActivity {
         windowAttributes.gravity = gravity;
         window.setAttributes(windowAttributes);
 
-        if(Gravity.BOTTOM == gravity){
-            dialog2.setCancelable(true);
-        } else{
-            dialog2.setCancelable(false);
+        if (Gravity.BOTTOM == gravity) {
+            drinkWaterDialog.setCancelable(true);
+        } else {
+            drinkWaterDialog.setCancelable(false);
         }
-        Button btncancel2 = dialog2.findViewById(R.id.cancel_dialog2);
+        Button drinkWaterCancelBtn = drinkWaterDialog.findViewById(R.id.cancel_dialog2);
+        Button drinkWaterBtn = drinkWaterDialog.findViewById(R.id.drink_btn_dialog);
+        TextView cupOfWater = drinkWaterDialog.findViewById(R.id.cup_of_water);
 
-        btncancel2.setOnClickListener(new View.OnClickListener() {
+        Runnable setUpWaterDialogRunnable = new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void run() {
+                SetUpWaterDialogFirebase(cupOfWater);
+            }
+        };
+
+        Thread backgroundThread = new Thread(setUpWaterDialogRunnable);
+        backgroundThread.start();
+
+        drinkWaterBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                dialog2.dismiss();
+                int updateDrinkValue = Integer.parseInt(String.valueOf(cupOfWater.getText())) + 1;
+                numberOfCupHadDrink = String.valueOf(updateDrinkValue);
+                String updateDrinkValueToFirebase = String.valueOf(updateDrinkValue * 250);
+
+                LocalDate today = LocalDate.now();
+                LocalDate monday = today.with(previousOrSame(MONDAY));
+
+                SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+                String theTempEmail = sharedPreferences.getString("Email", "");
+
+                firestore = FirebaseFirestore.getInstance();
+
+                firestore.collection("daily").
+                        document("week-of-" + monday.toString()).
+                        collection(today.toString()).
+                        document(theTempEmail).
+                        update("drink", String.valueOf(updateDrinkValueToFirebase));
+                cupOfWater.setText(numberOfCupHadDrink);
+                startActivity(getIntent());
+                finish();
+                overridePendingTransition(0, 0);
             }
         });
-        dialog2.show();
+
+        drinkWaterCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drinkWaterDialog.dismiss();
+            }
+        });
+        drinkWaterDialog.show();
     }
 
     private void fillForm(int gravity) {
@@ -320,12 +351,86 @@ public class MainActivity extends AppCompatActivity {
         windowAttributes.gravity = gravity;
         window.setAttributes(windowAttributes);
 
-        if(Gravity.BOTTOM == gravity){
+        if (Gravity.BOTTOM == gravity) {
             dialog.setCancelable(true);
-        } else{
+        } else {
             dialog.setCancelable(false);
         }
+
         Button btncancel = dialog.findViewById(R.id.cancel_dialog);
+        EditText weightEditText = dialog.findViewById(R.id.edit_weight);
+        EditText heightEditText = dialog.findViewById(R.id.edit_height);
+        Button saveButton = dialog.findViewById(R.id.save_btn_dialog);
+
+        Runnable setUpBMIRunnable = new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void run() {
+                SetUpBMIDialogFirebase(weightEditText,heightEditText);
+            }
+        };
+
+        Thread backgroundBMIThread = new Thread(setUpBMIRunnable);
+        backgroundBMIThread.start();
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+                String theTempEmail = sharedPreferences.getString("Email", "");
+
+                firestore = FirebaseFirestore.getInstance();
+
+                LocalDate today = LocalDate.now();
+                LocalDate monday = today.with(previousOrSame(MONDAY));
+
+                docRef = firestore.collection("daily").
+                        document("week-of-" + monday.toString()).
+                        collection(today.toString()).
+                        document(theTempEmail);
+                docRef.update("weight", String.valueOf(weightEditText.getText()));
+                docRef.update("height", String.valueOf(heightEditText.getText()));
+
+                startActivity(getIntent());
+                finish();
+                overridePendingTransition(0, 0);
+            }
+        });
+
+        weightEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                saveButton.setText("Update");
+            }
+        });
+
+        heightEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                saveButton.setText("Update");
+            }
+        });
 
         btncancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -362,14 +467,87 @@ public class MainActivity extends AppCompatActivity {
 
     public void Logout(View view) {
         mAuth.signOut();
-        startActivity(new Intent(MainActivity.this,SigninActivity.class));
+        startActivity(new Intent(MainActivity.this, SigninActivity.class));
         finish();
     }
 
-    public void replaceFragment(int fragmentPos){
+    public void replaceFragment(int fragmentPos) {
         viewPager.setCurrentItem(fragmentPos);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void SetUpWaterDialogFirebase(TextView cupOfWater) {
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
 
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
 
+        firestore = FirebaseFirestore.getInstance();
+
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String temp = document.getString("drink");
+                        if (!"empty".equals(temp)) {
+                            float waterHadDrink = Float.parseFloat(temp) / 250;
+                            cupOfWater.setText(String.valueOf((int) waterHadDrink));
+                        }
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void SetUpBMIDialogFirebase(EditText weightEditText, EditText heightEditText) {
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
+
+        firestore = FirebaseFirestore.getInstance();
+
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String weight = document.getString("weight");
+                        String height = document.getString("height");
+                        if (!"empty".equals(weight)) {
+                            weightEditText.setText(weight);
+                        }
+                        if (!"empty".equals(height)) {
+                            heightEditText.setText(height);
+                        }
+
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
 }
