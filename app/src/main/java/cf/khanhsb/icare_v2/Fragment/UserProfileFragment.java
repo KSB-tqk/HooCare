@@ -37,9 +37,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class UserProfileFragment extends Fragment {
     TextView mName, mId, mEmail, mUsername;
     ImageView mUserImage;
-    private FirebaseUser user;
-    private DatabaseReference reference;
-    private String userID;
     private static final String tempEmail = "tempEmail";
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
@@ -53,9 +50,7 @@ public class UserProfileFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
