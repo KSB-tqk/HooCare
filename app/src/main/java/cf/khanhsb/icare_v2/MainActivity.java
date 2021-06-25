@@ -20,8 +20,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -31,12 +31,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import com.facebook.login.LoginManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -45,7 +42,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
-import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
 import java.time.LocalDate;
 
@@ -236,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
-                SetUpWaterDialogFirebase(cupOfWater,waterCupIcon);
+                SetUpWaterDialogFirebase(cupOfWater, waterCupIcon);
             }
         };
 
@@ -248,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String cupOfWaterLabel = String.valueOf(cupOfWater.getText());
-                if(!cupOfWaterLabel.equals("Set a Goal First")){
+                if (!cupOfWaterLabel.equals("Set a Goal First")) {
                     int updateDrinkValue = Integer.parseInt(cupOfWaterLabel) + 1;
                     numberOfCupHadDrink = String.valueOf(updateDrinkValue);
                     String updateDrinkValueToFirebase = String.valueOf(updateDrinkValue * 250);
@@ -283,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         drinkWaterDialog.show();
     }
 
-    private void fillForm(int gravity) {
+    public void fillForm(int gravity) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_edit);
@@ -308,6 +304,31 @@ public class MainActivity extends AppCompatActivity {
         EditText heightEditText = dialog.findViewById(R.id.edit_height);
         Button saveButton = dialog.findViewById(R.id.save_btn_dialog);
 
+        weightEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 2 && !String.valueOf(weightEditText.getText()).contains(".")) {
+                    String weightInput = weightEditText.getText().toString();
+                    String bigWeight = weightInput.substring(0, 2);
+                    String smallWeight = weightInput.substring(2);
+                    weightEditText.setText(bigWeight + "." + smallWeight);
+                    weightEditText.setSelection(4);
+                }
+            }
+        });
+
         Runnable setUpBMIRunnable = new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -323,24 +344,35 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
-                String theTempEmail = sharedPreferences.getString("Email", "");
+                String checkWeight = weightEditText.getText().toString();
+                String checkHeight = heightEditText.getText().toString();
+                if(checkHeight.trim().equals("") || checkWeight.trim().equals("")){
+                    Toast.makeText(MainActivity.this, "Please fill out the form!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+                    String theTempEmail = sharedPreferences.getString("Email", "");
 
-                firestore = FirebaseFirestore.getInstance();
+                    firestore = FirebaseFirestore.getInstance();
 
-                LocalDate today = LocalDate.now();
-                LocalDate monday = today.with(previousOrSame(MONDAY));
+                    LocalDate today = LocalDate.now();
+                    LocalDate monday = today.with(previousOrSame(MONDAY));
 
-                docRef = firestore.collection("daily").
-                        document("week-of-" + monday.toString()).
-                        collection(today.toString()).
-                        document(theTempEmail);
-                docRef.update("weight", String.valueOf(weightEditText.getText()));
-                docRef.update("height", String.valueOf(heightEditText.getText()));
+                    docRef = firestore.collection("daily").
+                            document("week-of-" + monday.toString()).
+                            collection(today.toString()).
+                            document(theTempEmail);
+                    docRef.update("weight", String.valueOf(weightEditText.getText()));
+                    docRef.update("height", String.valueOf(heightEditText.getText()));
 
-                startActivity(getIntent());
-                finish();
-                overridePendingTransition(0, 0);
+                    docRef = firestore.collection("users").document(theTempEmail);
+                    docRef.update("weight", String.valueOf(weightEditText.getText()));
+                    docRef.update("height", String.valueOf(heightEditText.getText()));
+
+                    startActivity(getIntent());
+                    finish();
+                    overridePendingTransition(0, 0);
+                }
             }
         });
 
@@ -422,7 +454,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void SetUpWaterDialogFirebase(TextView cupOfWater,ImageView waterCupIcon) {
+    private void SetUpWaterDialogFirebase(TextView cupOfWater, ImageView waterCupIcon) {
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
 
@@ -444,8 +476,7 @@ public class MainActivity extends AppCompatActivity {
                         if (temp.equals("empty")) {
                             cupOfWater.setText("Set a Goal First");
                             waterCupIcon.setVisibility(View.INVISIBLE);
-                        }
-                        else {
+                        } else {
                             docRef = firestore.collection("daily").
                                     document("week-of-" + monday.toString()).
                                     collection(today.toString()).
@@ -489,33 +520,60 @@ public class MainActivity extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        docRef = firestore.collection("daily").
-                document("week-of-" + monday.toString()).
-                collection(today.toString()).
-                document(theTempEmail);
-
+        docRef = firestore.collection("users").document(theTempEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
-                        String weight = document.getString("weight");
-                        String height = document.getString("height");
-                        if (!"empty".equals(weight)) {
-                            weightEditText.setText(weight);
+                        String tempWeight = document.getString("weight");
+                        String tempHeight = document.getString("height");
+
+                        assert tempWeight != null;
+                        if(!tempWeight.equals("empty")) {
+                            weightEditText.setText(tempWeight);
                         }
-                        if (!"empty".equals(height)) {
-                            heightEditText.setText(height);
+                        assert tempHeight != null;
+                        if(!tempHeight.equals("empty")) {
+                            heightEditText.setText(tempHeight);
                         }
 
-                    } else {
-                        Log.d("LOGGER", "No such document");
+                        if(tempHeight.equals("empty") && tempWeight.equals("empty")){
+                            docRef = firestore.collection("daily").
+                                    document("week-of-" + monday.toString()).
+                                    collection(today.toString()).
+                                    document(theTempEmail);
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document != null) {
+                                            String weight = document.getString("weight");
+                                            String height = document.getString("height");
+                                            if (!"empty".equals(weight)) {
+                                                weightEditText.setText(weight);
+                                            }
+                                            if (!"empty".equals(height)) {
+                                                heightEditText.setText(height);
+                                            }
+
+                                        } else {
+                                            Log.d("LOGGER", "No such document");
+                                        }
+                                    } else {
+                                        Log.d("LOGGER", "get failed with ", task.getException());
+                                    }
+                                }
+                            });
+                        }
                     }
-                } else {
-                    Log.d("LOGGER", "get failed with ", task.getException());
                 }
             }
         });
+
+
     }
 }
