@@ -1,6 +1,7 @@
 package cf.khanhsb.icare_v2;
 
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -49,7 +50,6 @@ import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import java.time.LocalDate;
 
 import cf.khanhsb.icare_v2.Adapter.ViewPagerAdapter;
-import cf.khanhsb.icare_v2.Fragment.HomeFragment;
 import cf.khanhsb.icare_v2.Fragment.MealFragment;
 
 import static java.time.DayOfWeek.MONDAY;
@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     private Boolean isGymFragment = false;
     private FirebaseAuth mAuth;
     private SlidingRootNav slidingRootNav;
-    private LinearLayout logout;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
@@ -108,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
 
         /**setting up toolbar*/
         toolBarTitle = findViewById(R.id.tool_bar_title);
-        toolBarImageView = findViewById(R.id.nav_menu_icon);
 
         /**getting intent*/
         Intent intent = getIntent();
@@ -125,19 +123,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar.bringToFront();
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle(null);
-        slidingRootNav = new SlidingRootNavBuilder(this)
-                .withDragDistance(180)
-                .withMenuLocked(true)
-                .withRootViewScale(0.75f)
-                .withRootViewElevation(30)
-                .withMenuOpened(false)
-                .withContentClickableWhenMenuOpened(false)
-                .withSavedState(savedInstanceState)
-                .withMenuLayout(R.layout.drawer_menu)
-                .inject();
-
-        ImageView closeNavMenuButton = (ImageView) findViewById(R.id.close_nav_menu_button);
-        ImageView openNavMenuButton = (ImageView) findViewById(R.id.nav_menu_icon);
 
         /**sliding between fragment and activity*/
         int fragmentPosition = intent.getIntExtra("fragmentPosition", 0);
@@ -147,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
             toolBarTitle.setText(getString(R.string.GymFragTitle));
             toolBarTitle.setTextColor(Color.WHITE);
             toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
-            toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
             toolbar.setBackground(getDrawable(R.color.light_grey));
         }
 
@@ -166,14 +150,12 @@ public class MainActivity extends AppCompatActivity {
                         toolbar.setBackground(getDrawable(R.color.transparent));
                         toolBarTitle.getBackground().setTint(Color.WHITE);
                         toolBarTitle.setTextColor(getResources().getColor(R.color.lime_200));
-                        toolBarImageView.setColorFilter(Color.WHITE);
                         break;
                     case 3:
                         btmNav.getMenu().findItem(R.id.nav_archie).setChecked(true);
                         toolBarTitle.setText(getString(R.string.ArchieveFragTitle));
                         toolBarTitle.getBackground().setTint(Color.WHITE);
                         toolBarTitle.setTextColor(getResources().getColor(R.color.lime_200));
-                        toolBarImageView.setColorFilter(Color.WHITE);
                         toolbar.setBackground(getDrawable(R.color.transparent));
                         break;
                     case 1:
@@ -181,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                         toolBarTitle.setText(getString(R.string.MealFragTitle));
                         toolBarTitle.setTextColor(Color.WHITE);
                         toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
-                        toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
                         toolbar.setBackground(getDrawable(R.color.light_grey));
                         MealFragment mealFragment = new MealFragment();
                         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -194,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
                         toolBarTitle.setText(getString(R.string.GymFragTitle));
                         toolBarTitle.setTextColor(Color.WHITE);
                         toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
-                        toolBarImageView.setColorFilter(Color.parseColor("#58C892"));
                         toolbar.setBackground(getDrawable(R.color.light_grey));
                         break;
                 }
@@ -203,44 +183,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrollStateChanged(int state) {
 
-            }
-        });
-
-        closeNavMenuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                slidingRootNav.closeMenu();
-                slidingRootNav.setMenuLocked(true);
-            }
-        });
-
-        openNavMenuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                slidingRootNav.setMenuLocked(false);
-                slidingRootNav.openMenu();
-            }
-        });
-
-        mAuth = FirebaseAuth.getInstance();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        ;
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        logout = findViewById(R.id.linearlogout);
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                //
-                LoginManager.getInstance().logOut();
-                /////
-                mGoogleSignInClient.signOut();
-                startActivity(new Intent(MainActivity.this, SigninActivity.class));
-                finish();
             }
         });
 
@@ -288,12 +230,13 @@ public class MainActivity extends AppCompatActivity {
         Button drinkWaterCancelBtn = drinkWaterDialog.findViewById(R.id.cancel_dialog2);
         Button drinkWaterBtn = drinkWaterDialog.findViewById(R.id.drink_btn_dialog);
         TextView cupOfWater = drinkWaterDialog.findViewById(R.id.cup_of_water);
+        ImageView waterCupIcon = drinkWaterDialog.findViewById(R.id.water_cup_icon);
 
         Runnable setUpWaterDialogRunnable = new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
-                SetUpWaterDialogFirebase(cupOfWater);
+                SetUpWaterDialogFirebase(cupOfWater,waterCupIcon);
             }
         };
 
@@ -304,27 +247,30 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                int updateDrinkValue = Integer.parseInt(String.valueOf(cupOfWater.getText())) + 1;
-                numberOfCupHadDrink = String.valueOf(updateDrinkValue);
-                String updateDrinkValueToFirebase = String.valueOf(updateDrinkValue * 250);
+                String cupOfWaterLabel = String.valueOf(cupOfWater.getText());
+                if(!cupOfWaterLabel.equals("Set a Goal First")){
+                    int updateDrinkValue = Integer.parseInt(cupOfWaterLabel) + 1;
+                    numberOfCupHadDrink = String.valueOf(updateDrinkValue);
+                    String updateDrinkValueToFirebase = String.valueOf(updateDrinkValue * 250);
 
-                LocalDate today = LocalDate.now();
-                LocalDate monday = today.with(previousOrSame(MONDAY));
+                    LocalDate today = LocalDate.now();
+                    LocalDate monday = today.with(previousOrSame(MONDAY));
 
-                SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
-                String theTempEmail = sharedPreferences.getString("Email", "");
+                    SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+                    String theTempEmail = sharedPreferences.getString("Email", "");
 
-                firestore = FirebaseFirestore.getInstance();
+                    firestore = FirebaseFirestore.getInstance();
 
-                firestore.collection("daily").
-                        document("week-of-" + monday.toString()).
-                        collection(today.toString()).
-                        document(theTempEmail).
-                        update("drink", String.valueOf(updateDrinkValueToFirebase));
-                cupOfWater.setText(numberOfCupHadDrink);
-                startActivity(getIntent());
-                finish();
-                overridePendingTransition(0, 0);
+                    firestore.collection("daily").
+                            document("week-of-" + monday.toString()).
+                            collection(today.toString()).
+                            document(theTempEmail).
+                            update("drink", String.valueOf(updateDrinkValueToFirebase));
+                    cupOfWater.setText(numberOfCupHadDrink);
+                    startActivity(getIntent());
+                    finish();
+                    overridePendingTransition(0, 0);
+                }
             }
         });
 
@@ -366,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
-                SetUpBMIDialogFirebase(weightEditText,heightEditText);
+                SetUpBMIDialogFirebase(weightEditText, heightEditText);
             }
         };
 
@@ -476,7 +422,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void SetUpWaterDialogFirebase(TextView cupOfWater) {
+    private void SetUpWaterDialogFirebase(TextView cupOfWater,ImageView waterCupIcon) {
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
 
@@ -485,30 +431,52 @@ public class MainActivity extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        docRef = firestore.collection("daily").
-                document("week-of-" + monday.toString()).
-                collection(today.toString()).
-                document(theTempEmail);
-
+        docRef = firestore.collection("users").document(theTempEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
-                        String temp = document.getString("drink");
-                        if (!"empty".equals(temp)) {
-                            float waterHadDrink = Float.parseFloat(temp) / 250;
-                            cupOfWater.setText(String.valueOf((int) waterHadDrink));
+                        String temp = document.getString("drink_goal");
+                        assert temp != null;
+                        if (temp.equals("empty")) {
+                            cupOfWater.setText("Set a Goal First");
+                            waterCupIcon.setVisibility(View.INVISIBLE);
                         }
-                    } else {
-                        Log.d("LOGGER", "No such document");
+                        else {
+                            docRef = firestore.collection("daily").
+                                    document("week-of-" + monday.toString()).
+                                    collection(today.toString()).
+                                    document(theTempEmail);
+
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document != null) {
+                                            String temp = document.getString("drink");
+                                            if (!"empty".equals(temp)) {
+                                                float waterHadDrink = Float.parseFloat(temp) / 250;
+                                                cupOfWater.setText(String.valueOf((int) waterHadDrink));
+                                                waterCupIcon.setVisibility(View.VISIBLE);
+                                            }
+                                        } else {
+                                            Log.d("LOGGER", "No such document");
+                                        }
+                                    } else {
+                                        Log.d("LOGGER", "get failed with ", task.getException());
+                                    }
+                                }
+                            });
+                        }
                     }
-                } else {
-                    Log.d("LOGGER", "get failed with ", task.getException());
                 }
             }
         });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
