@@ -52,6 +52,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     private static final String TEXT_NUM_STEPS = "";
     private int numSteps;
     private TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,6 +212,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         simpleStepDetector.registerListener(this);
 
         textView = findViewById(R.id.step_count_text);
+
         sensorManager.registerListener(StepCountActivity.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
 
 
@@ -266,6 +268,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     public void step(long timeNs) {
         numSteps++;
         textView.setText(TEXT_NUM_STEPS + numSteps);
+
     }
 
 }
