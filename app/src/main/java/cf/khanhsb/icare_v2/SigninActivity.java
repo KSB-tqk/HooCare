@@ -357,6 +357,8 @@ public class SigninActivity extends AppCompatActivity {
         Map<String, Object> user = new HashMap<>();
         user.put("name", userName);
         user.put("email", userEmail);
+        user.put("gender","empty");
+        user.put("date_of_birth","empty");
         user.put("weight", "empty");
         user.put("height", "empty");
         user.put("step_goal", "empty");

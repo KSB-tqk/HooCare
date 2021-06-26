@@ -28,7 +28,10 @@ import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.collection.LLRBBlackValueNode;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +48,8 @@ import cf.khanhsb.icare_v2.Model.AppUsageInfo;
 import cf.khanhsb.icare_v2.Model.NonScrollListView;
 
 import static android.content.ContentValues.TAG;
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 public class UsageStatisticActivity extends AppCompatActivity {
 
@@ -57,6 +62,9 @@ public class UsageStatisticActivity extends AppCompatActivity {
     private TextView totalTextView,dateTimeTextView,eyeConditionTextView;
     private MaterialCardView totalTimeUsageCardView;
     private static final String allowUsageAccess = "allowUsageAccess";
+    private static final String tempEmail = "tempEmail";
+    private FirebaseFirestore firestore;
+    private DocumentReference docRef;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -263,6 +271,30 @@ public class UsageStatisticActivity extends AppCompatActivity {
             String eyeCondition;
             String tempTime = getTimeUsage(totalTime);
             totalTextView.setText(tempTime);
+
+            Runnable uploadDataRunnable = new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void run() {
+                    SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+                    String theTempEmail = sharedPreferences.getString("Email", "");
+
+                    firestore = FirebaseFirestore.getInstance();
+
+                    LocalDate today = LocalDate.now();
+                    LocalDate monday = today.with(previousOrSame(MONDAY));
+
+                    docRef = firestore.collection("daily").
+                            document("week-of-" + monday.toString()).
+                            collection(today.toString()).
+                            document(theTempEmail);
+                    docRef.update("time_on_screen", tempTime );
+                }
+            };
+
+            Thread backgroundThread = new Thread(uploadDataRunnable);
+            backgroundThread.start();
+
             if(tempTime.contains("h")){
                 String[] splitTime = tempTime.split("h");
                 int tempHour = Integer.parseInt(splitTime[0]);
