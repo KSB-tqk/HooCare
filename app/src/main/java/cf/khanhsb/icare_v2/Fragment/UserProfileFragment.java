@@ -35,7 +35,7 @@ import cf.khanhsb.icare_v2.SigninActivity;
 import static android.content.Context.MODE_PRIVATE;
 
 public class UserProfileFragment extends Fragment {
-    TextView mName, mId, mEmail, mUsername;
+    private TextView mName, mId, mEmail, mDateOfBirth,mGender;
     ImageView mUserImage;
     private static final String tempEmail = "tempEmail";
     private FirebaseFirestore firestore;
@@ -61,11 +61,11 @@ public class UserProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         mName = (TextView) rootview.findViewById(R.id.id_fullname);
-        mId = rootview.findViewById(R.id.id_user);
         mEmail = (TextView) rootview.findViewById(R.id.id_email);
-        mUsername = (TextView) rootview.findViewById(R.id.id_username);
         mUserImage = rootview.findViewById(R.id.id_userimage);
         logout = rootview.findViewById(R.id.linearlogout);
+        mDateOfBirth = rootview.findViewById(R.id.id_date_of_birth);
+        mGender = rootview.findViewById(R.id.id_gender);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -102,7 +102,19 @@ public class UserProfileFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
                         String temp = document.getString("name");
+                        String tempBirth = document.getString("date_of_birth");
+                        String tempGender = document.getString("gender");
                         mName.setText(temp);
+
+                        assert tempBirth != null;
+                        if(!tempBirth.equals("empty")){
+                            mDateOfBirth.setText(tempBirth);
+                        }
+
+                        assert tempGender != null;
+                        if(!tempGender.equals("empty")){
+                            mGender.setText(tempGender);
+                        }
                     }
                 }
             }
