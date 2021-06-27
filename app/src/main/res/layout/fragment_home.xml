@@ -192,6 +192,7 @@
                                 android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="@+id/progressBar_homefrag"
                                 app:layout_constraintStart_toStartOf="@+id/progressBar_homefrag">
@@ -664,7 +665,6 @@
                             android:paddingBottom="15dp"
                             android:text="@string/on_screen_hour"
                             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium">
-
                         </TextView>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
