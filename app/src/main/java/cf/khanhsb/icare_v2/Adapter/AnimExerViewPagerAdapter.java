@@ -1,6 +1,7 @@
 package cf.khanhsb.icare_v2.Adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -11,11 +12,16 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -68,8 +74,20 @@ public class AnimExerViewPagerAdapter extends
         else{
             holder.imageView.setVisibility(View.VISIBLE);
             Glide.with(context)
-                    .load(gifImageList.get(position))
+                    .load(gifImageList.get(positionOfView))
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            holder.loadingIcon.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(holder.imageView);
 //            holder.videoView.setVisibility(View.GONE);
             holder.youTubePlayerView.setVisibility(View.GONE);
@@ -85,13 +103,14 @@ public class AnimExerViewPagerAdapter extends
     public class ViewHolder extends RecyclerView.ViewHolder {
         //initialize variable
         VideoView videoView;
-        ImageView imageView;
+        ImageView imageView,loadingIcon;
         YouTubePlayerView youTubePlayerView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             youTubePlayerView = itemView.findViewById(R.id.video_view_viewpager);
             imageView = itemView.findViewById(R.id.gif_anim_view_viewpager);
+            loadingIcon = itemView.findViewById(R.id.loading_icon_anim_exer_viewpager);
         }
     }
 }
