@@ -24,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import cf.khanhsb.icare_v2.Adapter.MealViewPagerAdapter;
 import cf.khanhsb.icare_v2.MainActivity;
@@ -41,7 +42,7 @@ public class MealFragment extends Fragment {
     private ArrayList<Drawable> backgroundView;
     private MealViewPagerAdapter adapter;
     private MealPlanData mealPlanData;
-    private TextView weightTextView, heightTextView, setUpBMIButton, bmiTextView;
+    private TextView weightTextView, heightTextView, setUpBMIButton, bmiTextView, bodyFatData;
     private static final String tempEmail = "tempEmail";
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
@@ -71,6 +72,7 @@ public class MealFragment extends Fragment {
         bmiRelative = rootview.findViewById(R.id.bmi_relative);
         setUpBMIButton = rootview.findViewById(R.id.setup_bmi_button);
         bmiTextView = rootview.findViewById(R.id.BMI_data);
+        bodyFatData = rootview.findViewById(R.id.body_fat_data);
 
         SharedPreferences sharedPreferences = this.getActivity().
                 getSharedPreferences(tempEmail, MODE_PRIVATE);
@@ -82,6 +84,7 @@ public class MealFragment extends Fragment {
                 firestore = FirebaseFirestore.getInstance();
                 docRef = firestore.collection("users").document(theTempEmail);
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -89,13 +92,20 @@ public class MealFragment extends Fragment {
                             if (document != null) {
                                 String tempWeight = document.getString("weight");
                                 String tempHeight = document.getString("height");
+                                String tempGender = document.getString("gender");
+                                String tempDate = document.getString("date_of_birth");
 
                                 assert tempWeight != null;
                                 if (!tempWeight.equals("empty")) {
-                                    String bmiNum = getBMI(tempHeight, tempWeight);
+                                    String bmiData = getBMI_And_getBodyFat(tempHeight, tempWeight , tempGender,tempDate);
                                     weightTextView.setText(tempWeight);
-                                    heightTextView.setText(tempHeight);
-                                    bmiTextView.setText(bmiNum);
+                                    heightTextView.setText(tempHeight + " cm");
+                                    String[] splitString = bmiData.split("-");
+                                    bmiTextView.setText(splitString[0] + " BMI");
+                                    bodyFatData.setText(splitString[1]);
+                                    if(splitString[1].equals("No Data")){
+                                        bodyFatData.setTextSize(13);
+                                    }
                                     bmiRelative.setVisibility(View.VISIBLE);
                                     setUPContraint.setVisibility(View.GONE);
                                 } else {
@@ -162,12 +172,26 @@ public class MealFragment extends Fragment {
     }
 
     @SuppressLint("DefaultLocale")
-    private String getBMI(String tempHeight, String tempWeight) {
-        String bmi;
+    private String getBMI_And_getBodyFat(String tempHeight, String tempWeight,String tempGender,String tempDate) {
+        String bmi,bodyFatAns;
         float height = Float.parseFloat(tempHeight) / 100;
         float weight = Float.parseFloat(tempWeight);
-        float ans = weight / (height * height);
-        bmi = String.format("%.2f", ans);;
-        return bmi;
+        float ans = weight / (height * height),bodyfat;
+
+        bodyFatAns = "No Data";
+        if(!tempGender.equals("empty")){
+            String[] realDate = tempDate.split("/");
+            float year = (float) Calendar.getInstance().get(Calendar.YEAR);
+            float age = year - Float.parseFloat(realDate[2]);
+            if(tempGender.equals("male")){
+                bodyfat = ((1.2f * ans) + (0.23f * age)) - 16.2f;
+                bodyFatAns = String.format("%.0f", bodyfat) + "%";
+            } else if(tempGender.equals("female")){
+                bodyfat = ((1.2f * ans) + (0.23f * age)) - 5.4f;
+                bodyFatAns = String.format("%.0f", bodyfat) + "%";
+            }
+        }
+        bmi = String.format("%.1f", ans);
+        return bmi+"-"+bodyFatAns;
     }
 }
