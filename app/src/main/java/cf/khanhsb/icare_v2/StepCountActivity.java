@@ -30,8 +30,10 @@ import java.util.Date;
 
 import cf.khanhsb.icare_v2.Adapter.BarChartAdapter;
 import cf.khanhsb.icare_v2.Adapter.StepCountViewPagerAdapter;
+import cf.khanhsb.icare_v2.StepCounter.StepDetector;
+import cf.khanhsb.icare_v2.StepListener;
 
-public class StepCountActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener {
+public class StepCountActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener, StepListener {
 
     //initialize variable
     private ArrayList<BarEntry> dataValue = new ArrayList<BarEntry>();
@@ -46,11 +48,10 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     private StepCountViewPagerAdapter stepCountViewPagerAdapter;
     private static final String tempEmail = "tempEmail";
     /////////////////InitialalizeStepSensor///
-    private TextView stepcounttext;
-    private Sensor mStepCounter;
-    private SensorManager sensorManager;
-    private boolean isCounterSensorPresent;
-    int stepCount = 0;
+    private StepDetector simpleStepDetector;
+    private static final String TEXT_NUM_STEPS = "";
+    private int numSteps;
+    private TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +68,8 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         more_menu_button = (ImageView) findViewById(R.id.more_menu_stepcount);
         date_time_text = (TextView) findViewById(R.id.date_time_text);
         bottomSheetContainer = (ConstraintLayout) findViewById(R.id.bottom_sheet_container_step_count);
-        stepcounttext = (TextView) findViewById(R.id.step_count_text);
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        /////
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null){
-            mStepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-            isCounterSensorPresent = true;
-        }else{
-            isCounterSensorPresent=false;
-        }
+
+
         //set up date
         Date calendar = Calendar.getInstance().getTime();
         System.out.println("Current time => " + calendar);
@@ -210,6 +204,16 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         //setting adapter on to the viewpager2
         verticalViewPager2.setUserInputEnabled(false);
         verticalViewPager2.setAdapter(adapter);
+
+        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        Sensor accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        simpleStepDetector = new StepDetector();
+        simpleStepDetector.registerListener(this);
+
+        textView = findViewById(R.id.step_count_text);
+        sensorManager.registerListener(StepCountActivity.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
+
+
     }
 
 
@@ -248,9 +252,9 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor==mStepCounter){
-            stepCount =(int) event.values[0];
-            stepcounttext.setText(String.valueOf(stepCount));
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            simpleStepDetector.updateAccel(
+                    event.timestamp, event.values[0], event.values[1], event.values[2]);
         }
     }
 
@@ -258,18 +262,10 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-
     @Override
-    protected void onResume() {
-        super.onResume();
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null)
-            sensorManager.registerListener(this,mStepCounter,SensorManager.SENSOR_DELAY_NORMAL);
+    public void step(long timeNs) {
+        numSteps++;
+        textView.setText(TEXT_NUM_STEPS + numSteps);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null)
-        sensorManager.unregisterListener(this,mStepCounter);
-    }
 }

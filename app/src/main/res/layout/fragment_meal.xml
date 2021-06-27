@@ -376,9 +376,12 @@
             app:shapeAppearance="@style/ShapeAppearance.HooCare.MediumComponent.Rounded">
 
             <RelativeLayout
+                android:id="@+id/bmi_relative"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="15dp">
+                android:paddingEnd="10dp"
+                android:layout_margin="15dp"
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/weight_headline"
@@ -465,7 +468,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_toEndOf="@id/BMI_title"
                     android:paddingTop="10dp"
-                    android:text="@string/_20"
+                    android:text="No Data"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -510,6 +513,47 @@
                     android:text="@string/overweight"
                     android:textSize="13sp" />
             </RelativeLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/setup_bmi_constraint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/water_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/setup_bmi_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Set your weight and height to get your BMI"
+                    app:layout_constraintBottom_toTopOf="@id/setup_bmi_button"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/setup_bmi_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/cardview_background_gradient"
+                    android:backgroundTint="@color/lime_200"
+                    android:gravity="center"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="5dp"
+                    android:text="Set up BMI"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/setup_bmi_label" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <Space

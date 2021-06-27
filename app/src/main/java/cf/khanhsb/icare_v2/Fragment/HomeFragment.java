@@ -48,9 +48,9 @@ public class HomeFragment extends Fragment {
     private ConstraintLayout setupStepGoal, setupWaterGoal;
     private String userEmail;
     private FirebaseFirestore firestore;
-    private String step_goal, drink_goal;
-    private TextView statusOfProgressBar, numOfWater,sleepTimeTextView;
     private DocumentReference docRef;
+    private String step_goal, drink_goal;
+    private TextView statusOfProgressBar, numOfWater,sleepTimeTextView,timeOnScreenTextView;
     private int numberOfStep;
     private FirebaseAuth mAuth;
     private static final String tempEmail = "tempEmail";
@@ -89,6 +89,7 @@ public class HomeFragment extends Fragment {
         setupWaterGoal = (ConstraintLayout) rootView.findViewById(R.id.setup_water_constraint);
         numOfWater = (TextView) rootView.findViewById(R.id.num_of_water);
         sleepTimeTextView = (TextView) rootView.findViewById(R.id.sleep_time_text_view);
+        timeOnScreenTextView = (TextView) rootView.findViewById(R.id.time_on_screen_text_view);
 
         SharedPreferences sharedPreferences = this.getActivity().
                 getSharedPreferences(tempEmail, MODE_PRIVATE);
@@ -204,6 +205,7 @@ public class HomeFragment extends Fragment {
                         SetUpStepCountCard(userEmail);
                         SetUpWaterCard(userEmail);
                         SetUpSleepCard(userEmail);
+                        SetUpTimeCard(userEmail);
                     } else {
                         //check if goal exist or not
                         docRef = firestore.collection("users").document(userEmail);
@@ -249,7 +251,7 @@ public class HomeFragment extends Fragment {
                                             dailyGoal.put("height", height);
                                         }
 
-
+                                        dailyGoal.put("time_on_screen","0");
 
                                         //update data to firestore
                                         firestore = FirebaseFirestore.getInstance();
@@ -375,6 +377,37 @@ public class HomeFragment extends Fragment {
                             String[] splitString = temp.split(":");
                             sleepTimeTextView.setText(splitString[0] + "h");
                             sleepTime = temp;
+                        }
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void SetUpTimeCard(String theTempEmail) {
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String temp = document.getString("time_on_screen");
+                        if (!"0".equals(temp)) {
+                            String[] splitHourOnScreen = temp.split(" ");
+                            timeOnScreenTextView.setText(splitHourOnScreen[0]);
                         }
                     } else {
                         Log.d("LOGGER", "No such document");
