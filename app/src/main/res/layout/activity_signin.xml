@@ -138,7 +138,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="82dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="76dp"
             android:layout_marginBottom="12dp"
             android:layout_centerHorizontal="true"
@@ -148,7 +148,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_othermethod">
+            android:layout_below="@+id/tv_othermethod"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btGoogle"
@@ -160,7 +162,7 @@
                 android:padding="10dp"
                 android:text="GOOGLE"
                 android:textColor="@color/white"
-                android:textSize="19dp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -175,7 +177,7 @@
                 android:padding="10dp"
                 android:text="FACEBOOK"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -202,4 +204,12 @@
             
 
     </RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#00000000"
+        android:text="taking care since 2021"
+        android:textColor="@color/light_grey"
+        android:layout_marginTop="10dp"></Button>
 </LinearLayout>
