@@ -19,10 +19,18 @@
             android:id="@+id/exercises_video"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:scaleType="centerCrop"
+            android:visibility="invisible"
             android:src="@drawable/loading_icon_exer_list_data"
             android:clickable="false" />
     </FrameLayout>
+
+    <ImageView
+        android:id="@+id/loading_image_list_data"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/loading_icon_exer_list_data"
+        app:layout_constraintLeft_toLeftOf="@id/exercises_video_frame"
+        app:layout_constraintTop_toTopOf="@id/exercises_video_frame"/>
 
     <TextView
         android:id="@+id/exercises_workout_title"

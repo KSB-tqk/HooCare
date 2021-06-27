@@ -85,6 +85,7 @@
                 android:rowCount="3"
                 android:columnCount="2"
                 android:orientation="vertical"
+                android:layout_marginTop="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent">
