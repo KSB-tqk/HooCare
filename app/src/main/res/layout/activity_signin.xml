@@ -1,53 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/themebackground"
+    tools:context=".SigninActivity"
     android:orientation="vertical"
-    tools:context=".SigninActivity">
-
+    android:background="@drawable/themebackground"
+    >
     <ImageView
         android:id="@+id/applogo"
         android:layout_width="200dp"
         android:layout_height="70dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/logoinlogin"
-        android:transitionName="logo_image" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:transitionName="logo_image"
         android:layout_marginLeft="20dp"
-        android:fontFamily="@font/momcakethin"
-        android:text="Hello there,"
-        android:textColor="@color/white"
-        android:textSize="25dp" />
-
+        android:src="@drawable/logoinlogin"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Hello there,"
+        android:textSize="25dp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/momcakethin"
+        android:layout_marginLeft="20dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome back"
         android:layout_gravity="center"
+        android:textSize="55dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
-        android:fontFamily="@font/momcakebold"
-        android:text="Welcome back"
         android:textColor="@color/white"
-        android:textSize="55dp" />
+        android:fontFamily="@font/momcakebold"/>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:background="@drawable/button_bg_white"
-        android:padding="15dp">
+        android:padding="15dp"
+        android:background="@drawable/button_bg_white">
 
-        <include
-            android:id="@+id/sign_in_include_layout"
-            layout="@layout/sign_in_field_layout"
+        <Button
+            android:id="@+id/labelsignin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="#00000000"
+            android:elevation="0dp"
+            android:text="Sign in"
+            android:textColor="@color/lime_200"
+            android:textSize="20dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_input_layout_signin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_below="@id/labelsignin"
+            android:layout_marginTop="10dp"
+            android:hint="Email">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_email_signin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_input_layout_signin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -173,7 +201,8 @@
 
             </ProgressBar>
         </RelativeLayout>
-           
+
+
     </RelativeLayout>
     <Button
         android:layout_width="wrap_content"
