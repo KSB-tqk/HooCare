@@ -114,9 +114,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="6h 30m"
+                    android:text="16h 40m"
+                    android:gravity="center"
                     android:textColor="@color/lime_100"
-                    android:textSize="40sp"
+                    android:textSize="35sp"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@id/time_icon_time_usage"
                     app:layout_constraintTop_toBottomOf="@id/date_time_statistic" />
@@ -139,8 +140,8 @@
                     android:background="@drawable/time_usage_eye_condition_box_background"
                     android:orientation="vertical"
                     android:padding="10dp"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintBottom_toBottomOf="@id/total_time_text"
-                    app:layout_constraintLeft_toRightOf="@id/total_time_text"
                     app:layout_constraintRight_toRightOf="parent">
 
                     <ImageView

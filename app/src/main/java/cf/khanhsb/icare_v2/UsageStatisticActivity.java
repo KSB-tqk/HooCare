@@ -94,6 +94,7 @@ public class UsageStatisticActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,8 +133,11 @@ public class UsageStatisticActivity extends AppCompatActivity {
         });
 
         long end_time = System.currentTimeMillis();
-        long start_time = end_time - (1000*60*60);
-        getUsageStatistics(start_time, end_time);
+
+        LocalTime now = LocalTime.now();
+        long start_time = now.getHour()*1000*60*60 + now.getMinute()*1000*60 + now.getSecond()*1000;
+
+        getUsageStatistics(end_time - start_time, end_time);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override

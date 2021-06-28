@@ -27,6 +27,16 @@
                 android:contentDescription="@string/back_button_contentDes"
                 android:src="@drawable/back_image_button_anim" />
 
+            <TextView
+                android:id="@+id/workout_part_main_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                android:layout_toLeftOf="@id/more_menu_waterfrag"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:id="@+id/more_menu_waterfrag"
                 android:layout_width="wrap_content"
@@ -54,7 +64,7 @@
                     android:gravity="right"
                     android:text="00:10"
                     android:textSize="15sp"
-                    android:visibility="visible" />
+                    android:visibility="invisible" />
             </LinearLayout>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -71,9 +81,9 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:adjustViewBounds="true"
-            android:visibility="invisible"
             android:scaleType="centerCrop"
             android:src="@drawable/gif_test_image_anim_exer_viewpager"
+            android:visibility="invisible"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -86,6 +96,16 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/congrat_animation_lottie"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/gif_exer_workout_constaint"
+        app:layout_constraintBottom_toBottomOf="@id/gif_exer_workout_constaint"
+        app:lottie_rawRes="@raw/congrat_animation"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false"/>
 
     <TextView
         android:id="@+id/ready_text_label"
@@ -111,6 +131,22 @@
         android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/progressbar_workout_constraint"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ready_text_label" />
+
+    <TextView
+        android:id="@+id/rest_count_down_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:visibility="invisible"
+        android:text="00:00"
+        android:textAllCaps="true"
+        android:textColor="@color/lime_100"
+        android:textSize="35sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/progressbar_workout_constraint"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -162,14 +198,14 @@
             android:id="@+id/finish_exercise_image"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:visibility="gone"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
             android:src="@drawable/check_icon_set_up_goal_stepcount"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressbar_workout"
@@ -195,8 +231,47 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/skip_button_exercise"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/cardview_background_gradient"
+            android:gravity="center"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+            android:text="SKIP"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/count_down_text"
+            app:layout_constraintLeft_toRightOf="@id/count_down_text"
+            app:layout_constraintTop_toTopOf="@id/count_down_text" />
+
+        <TextView
+            android:id="@+id/plus_button_exercise"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/plus_second_button_background"
+            android:gravity="center"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+            android:text="+10s"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/count_down_text"
+            app:layout_constraintRight_toLeftOf="@id/count_down_text"
+            app:layout_constraintTop_toTopOf="@id/count_down_text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/next_workout_linear"
