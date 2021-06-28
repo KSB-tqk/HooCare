@@ -50,7 +50,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
     private String exercise_contain,currentExercise,lastExercise,editDuration,editDurationValue;
     private String[] exerciseList;
     private ArrayList<String> workoutTitleList, workoutDuration, workoutUri,
-            workoutDurationValue,workoutDurationType,workoutVideoUrl;
+            workoutDurationValue,workoutDurationType,workoutVideoUrl,workoutHDUrl;
     private NonScrollListView listView;
     private static final String tempEmail = "tempEmail";
 
@@ -107,6 +107,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                     workoutDurationValue = new ArrayList<>();
                                     workoutDurationType = new ArrayList<>();
                                     workoutVideoUrl = new ArrayList<>();
+                                    workoutHDUrl = new ArrayList<>();
 
                                     for (String exerciseItem : exerciseList) {
                                         currentExercise = exerciseItem;
@@ -115,18 +116,13 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                             @Override
                                             public void onSuccess(DocumentSnapshot exerciseDocument) {
                                                 if (exerciseDocument != null) {
-                                                    String tempName = exerciseDocument.getString("name");
-                                                    workoutTitleList.add(tempName);
-                                                    String tempUri = exerciseDocument.getString("url");
-                                                    workoutUri.add(tempUri);
-                                                    String tempType = exerciseDocument.getString("duration_type");
-                                                    workoutDurationType.add(tempType);
-                                                    String tempVideoUrl = exerciseDocument.getString("video_url");
-                                                    workoutVideoUrl.add(tempVideoUrl);
-                                                    String tempDuration = exerciseDocument.getString("duration");
-                                                    workoutDuration.add(tempDuration);
-                                                    String tempValue = exerciseDocument.getString("duration_value");
-                                                    workoutDurationValue.add(tempValue);
+                                                    workoutTitleList.add(exerciseDocument.getString("name"));
+                                                    workoutUri.add(exerciseDocument.getString("url"));
+                                                    workoutHDUrl.add(exerciseDocument.getString("hd_url"));
+                                                    workoutDurationType.add(exerciseDocument.getString("duration_type"));
+                                                    workoutVideoUrl.add(exerciseDocument.getString("video_url"));
+                                                    workoutDuration.add(exerciseDocument.getString("duration"));
+                                                    workoutDurationValue.add(exerciseDocument.getString("duration_value"));
 
                                                     exerciseCount.setText("(" + workoutTitleList.size() + ")");
 
@@ -140,6 +136,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
 //                                                            }
 //                                                        }
 //                                                    });
+
                                                     if (currentExercise.equals(lastExercise)) {
                                                         /**setting up animation exercise listview*/
                                                         listView = findViewById(R.id.list_view_list_data);
@@ -166,7 +163,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                                                                 selectedBackground = bottomSheetView.findViewById(R.id.tab_animation_view);
 
                                                                 /**setting up viewpager in animaiton exercise*/
-                                                                animExerViewPagerAdapter = new AnimExerViewPagerAdapter(workoutUri, workoutVideoUrl
+                                                                animExerViewPagerAdapter = new AnimExerViewPagerAdapter(workoutHDUrl, workoutVideoUrl
                                                                         , position
                                                                         , List_Data_Activity.this);
                                                                 viewPager2 = bottomSheetView.findViewById(R.id.animation_exercise_viewPager);
@@ -251,6 +248,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(List_Data_Activity.this, WorkoutActivity.class);
                 intent.putExtra("workoutTitle",tempString);
+                intent.putExtra("workoutTotalExercise",String.valueOf(workoutTitleList.size()));
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }

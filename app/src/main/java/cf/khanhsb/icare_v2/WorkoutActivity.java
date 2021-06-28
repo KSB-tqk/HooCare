@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -41,9 +43,10 @@ public class WorkoutActivity extends AppCompatActivity {
 
     private ImageView backButton, gifExerciseWorkout, loadingIcon;
     private TextView countDownTextView, exerciseCounter, exerciseTimeCounter, exerciseTitleWorkout,
-            excerciseNextTitleWorkout, afterStartWorkoutTitle, afterStartDuration, readyTextLabel;
+            excerciseNextTitleWorkout, afterStartWorkoutTitle, afterStartDuration, readyTextLabel,
+            workoutPartMainTitle, skipButton, plusSecondButton, restCountDownTimer,nextLabel;
     private ProgressBar progressBar;
-    private int tempProgress = 15000, exercisePos,exerDuration;
+    private int tempProgress = 15000, exercisePos, exerDuration;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private static final String tempEmail = "tempEmail";
@@ -53,9 +56,12 @@ public class WorkoutActivity extends AppCompatActivity {
     private String[] exerciseList;
     private boolean startTicking = true;
     private ConstraintLayout progressWorkoutConstaint;
-    private CountDownTimer toNextExerciseCountDown;
+    private CountDownTimer exerciseCountDown,restCountDown;
     private long countDownDuration;
     private ImageView finishExercise;
+    private LottieAnimationView congratAnimation;
+    long startTime = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +84,29 @@ public class WorkoutActivity extends AppCompatActivity {
         loadingIcon = findViewById(R.id.gif_exer_workout_loading_image);
         readyTextLabel = findViewById(R.id.ready_text_label);
         finishExercise = findViewById(R.id.finish_exercise_image);
+        workoutPartMainTitle = findViewById(R.id.workout_part_main_title);
+        skipButton = findViewById(R.id.skip_button_exercise);
+        plusSecondButton = findViewById(R.id.plus_button_exercise);
+        restCountDownTimer = findViewById(R.id.rest_count_down_timer);
+        congratAnimation = findViewById(R.id.congrat_animation_lottie);
+        nextLabel = findViewById(R.id.exercise_next_title_workout_label);
+
+        //runs without a timer by reposting this handler at the end of the runnable
+        Handler timerHandler = new Handler();
+        Runnable timerRunnable = new Runnable() {
+
+            @Override
+            public void run() {
+                long millis = System.currentTimeMillis() - startTime;
+                int seconds = (int) (millis / 1000);
+                int minutes = seconds / 60;
+                seconds = seconds % 60;
+
+                exerciseTimeCounter.setText(String.format("%02d:%02d", minutes, seconds));
+
+                timerHandler.postDelayed(this, 500);
+            }
+        };
 
         countDownDuration = TimeUnit.SECONDS.toMillis(15);
         progressBar.setMax(15000);
@@ -88,6 +117,8 @@ public class WorkoutActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
 
         String tempString = intent.getStringExtra("workoutTitle");
+        String tempTotal = intent.getStringExtra("workoutTotalExercise");
+        workoutPartMainTitle.setText(tempTotal + " Exercises");
 
         Runnable homeBackGroundRunnable = new Runnable() {
             @Override
@@ -121,21 +152,16 @@ public class WorkoutActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(DocumentSnapshot exerciseDocument) {
                                                 if (exerciseDocument != null) {
-                                                    String tempName = exerciseDocument.getString("name");
-                                                    workoutTitleList.add(tempName);
-                                                    String tempUri = exerciseDocument.getString("url");
-                                                    workoutUri.add(tempUri);
-                                                    String tempType = exerciseDocument.getString("duration_type");
-                                                    workoutDurationType.add(tempType);
-                                                    String tempVideoUrl = exerciseDocument.getString("video_url");
-                                                    workoutVideoUrl.add(tempVideoUrl);
-                                                    String tempDuration = exerciseDocument.getString("duration");
-                                                    workoutDuration.add(tempDuration);
-                                                    String tempValue = exerciseDocument.getString("duration_value");
-                                                    workoutDurationValue.add(tempValue);
+                                                    workoutTitleList.add(exerciseDocument.getString("name"));
+                                                    workoutUri.add(exerciseDocument.getString("hd_url"));
+                                                    workoutDurationType.add(exerciseDocument.getString("duration_type"));
+                                                    workoutVideoUrl.add(exerciseDocument.getString("video_url"));
+                                                    workoutDuration.add(exerciseDocument.getString("duration"));
+                                                    workoutDurationValue.add(exerciseDocument.getString("duration_value"));
 
                                                     if (workoutTitleList.size() == 1) {
-                                                        exerciseTitleWorkout.setText(tempName);
+                                                        exerciseTitleWorkout.setText(workoutTitleList.get(0));
+                                                        afterStartWorkoutTitle.setText(workoutTitleList.get(exercisePos));
                                                         excerciseNextTitleWorkout.setText("Loading");
                                                         Glide.with(WorkoutActivity.this)
                                                                 .load(workoutUri.get(0))
@@ -149,13 +175,13 @@ public class WorkoutActivity extends AppCompatActivity {
                                                                     @Override
                                                                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                                                         gifExerciseWorkout.setVisibility(View.VISIBLE);
-                                                                        loadingIcon.setVisibility(View.GONE);
+                                                                        loadingIcon.setVisibility(View.INVISIBLE);
                                                                         return false;
                                                                     }
                                                                 })
                                                                 .into(gifExerciseWorkout);
                                                     } else if (workoutTitleList.size() == 2) {
-                                                        excerciseNextTitleWorkout.setText(tempName);
+                                                        exerciseTitleWorkout.setText(workoutTitleList.get(0));
                                                     }
                                                 }
                                             }
@@ -206,12 +232,36 @@ public class WorkoutActivity extends AppCompatActivity {
                 exerciseCounter.setText("Exercise " + String.valueOf(exercisePos + 1) + "/" + workoutTitleList.size());
                 exerciseTitleWorkout.setText(workoutTitleList.get(exercisePos));
                 excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos + 1));
-                countDownTextView.setVisibility(View.GONE);
-                progressBar.setVisibility(View.GONE);
+                countDownTextView.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
                 afterStartDuration.setVisibility(View.VISIBLE);
                 afterStartWorkoutTitle.setVisibility(View.VISIBLE);
                 readyTextLabel.setVisibility(View.INVISIBLE);
                 exerciseTitleWorkout.setVisibility(View.INVISIBLE);
+                workoutPartMainTitle.setVisibility(View.INVISIBLE);
+                exerciseTimeCounter.setVisibility(View.VISIBLE);
+                startTime = System.currentTimeMillis();
+                timerHandler.postDelayed(timerRunnable, 0);
+
+                loadingIcon.setVisibility(View.VISIBLE);
+
+                Glide.with(WorkoutActivity.this)
+                        .load(workoutUri.get(exercisePos))
+                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                gifExerciseWorkout.setVisibility(View.VISIBLE);
+                                loadingIcon.setVisibility(View.INVISIBLE);
+                                return false;
+                            }
+                        })
+                        .into(gifExerciseWorkout);
 
                 if (workoutDuration.get(exercisePos).contains(":")) {
                     String[] splitDuration = workoutDuration.get(exercisePos).split(":");
@@ -220,7 +270,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     } else {
                         exerDuration = Integer.parseInt(splitDuration[1]);
                     }
-                    reverseTimer(exerDuration,afterStartDuration);
+                    reverseTimer(exerDuration, afterStartDuration);
                 } else {
                     afterStartDuration.setAllCaps(false);
                     afterStartDuration.setText(workoutDuration.get(exercisePos));
@@ -234,11 +284,35 @@ public class WorkoutActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
+                if (workoutDuration.get(exercisePos).contains(":")) {
+                    exerciseCountDown.cancel();
+                }
                 setUpNextExercise();
             }
         });
 
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                restCountDown.cancel();
+                afterStartDuration.setVisibility(View.VISIBLE);
+                afterStartWorkoutTitle.setVisibility(View.VISIBLE);
+                readyTextLabel.setVisibility(View.INVISIBLE);
+                restCountDownTimer.setVisibility(View.INVISIBLE);
+                plusSecondButton.setVisibility(View.INVISIBLE);
+                skipButton.setVisibility(View.INVISIBLE);
+                finishExercise.setVisibility(View.VISIBLE);
 
+                if (exercisePos == workoutTitleList.size() - 1) {
+                    excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos));
+                } else {
+                    excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos + 1));
+                }
+                if (workoutDuration.get(exercisePos).contains(":")) {
+                    reverseTimer(exerDuration, afterStartDuration);
+                }
+            }
+        });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,9 +325,9 @@ public class WorkoutActivity extends AppCompatActivity {
         });
     }
 
-    public void reverseTimer(int Seconds,final TextView tv){
+    public void reverseTimer(int Seconds, final TextView tv) {
 
-        new CountDownTimer(Seconds* 1000+1000, 1000) {
+        exerciseCountDown =  new CountDownTimer(Seconds * 1000 + 1000, 1000) {
 
             @SuppressLint({"SetTextI18n", "DefaultLocale"})
             public void onTick(long millisUntilFinished) {
@@ -270,32 +344,124 @@ public class WorkoutActivity extends AppCompatActivity {
         }.start();
     }
 
+    public void reverseTimerRest(int Seconds, final TextView tv, int duration, TextView textView, boolean isCountDownDuration) {
+
+        restCountDown = new CountDownTimer(Seconds * 1000 + 1000, 1000) {
+
+            @SuppressLint({"SetTextI18n", "DefaultLocale"})
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+                int minutes = seconds / 60;
+                seconds = seconds % 60;
+                tv.setText(String.format("%02d", minutes)
+                        + ":" + String.format("%02d", seconds));
+            }
+
+            public void onFinish() {
+                afterStartDuration.setVisibility(View.VISIBLE);
+                afterStartWorkoutTitle.setVisibility(View.VISIBLE);
+                readyTextLabel.setVisibility(View.INVISIBLE);
+                restCountDownTimer.setVisibility(View.INVISIBLE);
+                plusSecondButton.setVisibility(View.INVISIBLE);
+                skipButton.setVisibility(View.INVISIBLE);
+                finishExercise.setVisibility(View.VISIBLE);
+
+                if (exercisePos == workoutTitleList.size() - 1) {
+                    excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos));
+                } else {
+                    excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos + 1));
+                }
+                if (isCountDownDuration) {
+                    reverseTimer(duration, textView);
+                }
+            }
+        }.start();
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setUpRestTime(int nextExerDuration, TextView nextExerTextView) {
+        finishExercise.setVisibility(View.INVISIBLE);
+        restCountDownTimer.setVisibility(View.VISIBLE);
+        afterStartDuration.setVisibility(View.INVISIBLE);
+        afterStartWorkoutTitle.setVisibility(View.INVISIBLE);
+        readyTextLabel.setVisibility(View.VISIBLE);
+        plusSecondButton.setVisibility(View.VISIBLE);
+        skipButton.setVisibility(View.VISIBLE);
+        readyTextLabel.setText("Take a Rest");
+        int duration = 30;
+        if (exercisePos == 1) {
+            duration = 10;
+        }
+        if (workoutDuration.get(exercisePos).contains(":")) {
+            reverseTimerRest(duration, restCountDownTimer, nextExerDuration, nextExerTextView, true);
+        } else {
+            reverseTimerRest(duration, restCountDownTimer, nextExerDuration, nextExerTextView, false);
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     private void setUpNextExercise() {
-        if(exercisePos < workoutTitleList.size()-1){
+        finishExercise.setVisibility(View.VISIBLE);
+        if (exercisePos < workoutTitleList.size() - 1) {
             exercisePos++;
-            if (exercisePos == workoutTitleList.size()-1){
-                excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos));
-            } else {
-                excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos + 1));
-            }
-        }
-        exerciseCounter.setText("Exercise " + String.valueOf(exercisePos + 1) + "/" + workoutTitleList.size());
-        afterStartWorkoutTitle.setText(workoutTitleList.get(exercisePos));
+            exerciseCounter.setText("Exercise " + String.valueOf(exercisePos + 1) + "/" + workoutTitleList.size());
+            afterStartWorkoutTitle.setText(workoutTitleList.get(exercisePos));
 
-        if (workoutDuration.get(exercisePos).contains(":")) {
-            finishExercise.setVisibility(View.INVISIBLE);
-            String[] splitDuration = workoutDuration.get(exercisePos).split(":");
-            if (Integer.parseInt(splitDuration[0]) > 0) {
-                exerDuration = Integer.parseInt(splitDuration[0]) * 60 + Integer.parseInt(splitDuration[1]);
+            loadingIcon.setVisibility(View.VISIBLE);
+
+            Glide.with(WorkoutActivity.this)
+                    .load(workoutUri.get(exercisePos))
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            gifExerciseWorkout.setVisibility(View.VISIBLE);
+                            loadingIcon.setVisibility(View.INVISIBLE);
+                            return false;
+                        }
+                    })
+                    .into(gifExerciseWorkout);
+
+            if (workoutDuration.get(exercisePos).contains(":")) {
+                finishExercise.setVisibility(View.INVISIBLE);
+                String[] splitDuration = workoutDuration.get(exercisePos).split(":");
+                if (Integer.parseInt(splitDuration[0]) > 0) {
+                    exerDuration = Integer.parseInt(splitDuration[0]) * 60 + Integer.parseInt(splitDuration[1]);
+                } else {
+                    exerDuration = Integer.parseInt(splitDuration[1]);
+                }
+
             } else {
-                exerDuration = Integer.parseInt(splitDuration[1]);
+                afterStartDuration.setAllCaps(false);
+                afterStartDuration.setText(workoutDuration.get(exercisePos));
+                finishExercise.setVisibility(View.VISIBLE);
             }
-            reverseTimer(exerDuration,afterStartDuration);
+
+            setUpRestTime(exerDuration, afterStartDuration);
         } else {
-            afterStartDuration.setAllCaps(false);
-            afterStartDuration.setText(workoutDuration.get(exercisePos));
-            finishExercise.setVisibility(View.VISIBLE);
+            endExercise();
         }
+
+    }
+
+    private void endExercise() {
+        afterStartDuration.setVisibility(View.INVISIBLE);
+        afterStartWorkoutTitle.setVisibility(View.INVISIBLE);
+        readyTextLabel.setVisibility(View.INVISIBLE);
+        restCountDownTimer.setVisibility(View.INVISIBLE);
+        plusSecondButton.setVisibility(View.INVISIBLE);
+        skipButton.setVisibility(View.INVISIBLE);
+        finishExercise.setVisibility(View.INVISIBLE);
+        gifExerciseWorkout.setVisibility(View.INVISIBLE);
+        excerciseNextTitleWorkout.setVisibility(View.INVISIBLE);
+        nextLabel.setVisibility(View.INVISIBLE);
+
+        congratAnimation.setVisibility(View.VISIBLE);
+        congratAnimation.playAnimation();
     }
 }
