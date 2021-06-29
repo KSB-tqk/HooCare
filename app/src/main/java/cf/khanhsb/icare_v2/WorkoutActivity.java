@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,6 +36,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
@@ -44,7 +47,8 @@ public class WorkoutActivity extends AppCompatActivity {
     private ImageView backButton, gifExerciseWorkout, loadingIcon;
     private TextView countDownTextView, exerciseCounter, exerciseTimeCounter, exerciseTitleWorkout,
             excerciseNextTitleWorkout, afterStartWorkoutTitle, afterStartDuration, readyTextLabel,
-            workoutPartMainTitle, skipButton, plusSecondButton, restCountDownTimer,nextLabel;
+            workoutPartMainTitle, skipButton, plusSecondButton, restCountDownTimer,nextLabel,
+            finishedTitle,finishedTime,finishedKcal,totalFinishedExercise;
     private ProgressBar progressBar;
     private int tempProgress = 15000, exercisePos, exerDuration;
     private FirebaseFirestore firestore;
@@ -55,11 +59,12 @@ public class WorkoutActivity extends AppCompatActivity {
             workoutDurationValue, workoutDurationType, workoutVideoUrl;
     private String[] exerciseList;
     private boolean startTicking = true;
-    private ConstraintLayout progressWorkoutConstaint;
+    private LinearLayout finishedLinear;
     private CountDownTimer exerciseCountDown,restCountDown;
     private long countDownDuration;
     private ImageView finishExercise;
     private LottieAnimationView congratAnimation;
+    private Handler timerHandler;
     long startTime = 0;
 
 
@@ -77,7 +82,6 @@ public class WorkoutActivity extends AppCompatActivity {
         exerciseTimeCounter = findViewById(R.id.exercise_time_counter);
         exerciseTitleWorkout = findViewById(R.id.exercise_title_workout);
         excerciseNextTitleWorkout = findViewById(R.id.exercise_next_title_workout);
-        progressWorkoutConstaint = findViewById(R.id.progressbar_workout_constraint);
         gifExerciseWorkout = findViewById(R.id.gif_exer_workout);
         afterStartDuration = findViewById(R.id.exercise_real_time_counter_workout);
         afterStartWorkoutTitle = findViewById(R.id.after_start_exercise_title_workout);
@@ -90,9 +94,17 @@ public class WorkoutActivity extends AppCompatActivity {
         restCountDownTimer = findViewById(R.id.rest_count_down_timer);
         congratAnimation = findViewById(R.id.congrat_animation_lottie);
         nextLabel = findViewById(R.id.exercise_next_title_workout_label);
+        finishedLinear = findViewById(R.id.finish_exercise_linear);
+        finishedTitle = findViewById(R.id.exercise_done_title);
+        finishedTime = findViewById(R.id.time_of_exercise);
+        finishedKcal = findViewById(R.id.kcal_of_exercise);
+        totalFinishedExercise = findViewById(R.id.num_of_exercise);
+
+        //thread pool to stop timer
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         //runs without a timer by reposting this handler at the end of the runnable
-        Handler timerHandler = new Handler();
+        timerHandler = new Handler();
         Runnable timerRunnable = new Runnable() {
 
             @Override
@@ -444,9 +456,9 @@ public class WorkoutActivity extends AppCompatActivity {
 
             setUpRestTime(exerDuration, afterStartDuration);
         } else {
+            timerHandler.removeCallbacksAndMessages(null);
             endExercise();
         }
-
     }
 
     private void endExercise() {
@@ -460,6 +472,9 @@ public class WorkoutActivity extends AppCompatActivity {
         gifExerciseWorkout.setVisibility(View.INVISIBLE);
         excerciseNextTitleWorkout.setVisibility(View.INVISIBLE);
         nextLabel.setVisibility(View.INVISIBLE);
+        finishedLinear.setVisibility(View.VISIBLE);
+        finishedTime.setText(exerciseTimeCounter.getText());
+        totalFinishedExercise.setText(String.valueOf(workoutTitleList.size()));
 
         congratAnimation.setVisibility(View.VISIBLE);
         congratAnimation.playAnimation();
