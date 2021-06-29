@@ -96,16 +96,170 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/congrat_animation_lottie"
-        android:visibility="gone"
+    <LinearLayout
+        android:id="@+id/finish_exercise_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/gif_exer_workout_constaint"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@id/gif_exer_workout_constaint"
+        app:layout_constraintRight_toRightOf="@id/gif_exer_workout_constaint"
+        app:layout_constraintTop_toTopOf="@id/gif_exer_workout_constaint">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/momcakebold"
+            android:text="@string/congrat"
+            android:textColor="@color/lime_200"
+            android:textSize="40sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/momcakethin"
+            android:text="@string/workout_completed"
+            android:textColor="@color/lime_200"
+            android:textSize="25sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/cardview_background_gradient">
+
+            <TextView
+                android:id="@+id/exercise_done_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Shoulder - Intermidiate"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:layout_margin="10dp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <TextView
+                android:id="@+id/num_of_exercise_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="Exercises :"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/num_of_exercise"
+                app:layout_constraintTop_toBottomOf="@id/exercise_done_title"/>
+
+            <TextView
+                android:id="@+id/num_of_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="10"
+                android:textColor="@color/white"
+                android:textSize="27sp"
+                android:fontFamily="@font/momcakebold"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/num_of_exercise_label"
+                app:layout_constraintTop_toTopOf="@id/num_of_exercise_label"
+                app:layout_constraintBottom_toBottomOf="@id/num_of_exercise_label"/>
+
+            <TextView
+                android:id="@+id/time_of_exercise_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="Time :"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="@id/num_of_exercise_label"
+                app:layout_constraintRight_toRightOf="@id/num_of_exercise_label"
+                app:layout_constraintTop_toBottomOf="@id/num_of_exercise_label"/>
+
+            <TextView
+                android:id="@+id/time_of_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="10:00"
+                android:textColor="@color/white"
+                android:textSize="27sp"
+                android:fontFamily="@font/momcakebold"
+                app:layout_constraintLeft_toLeftOf="@id/num_of_exercise"
+                app:layout_constraintRight_toRightOf="@id/num_of_exercise"
+                app:layout_constraintTop_toTopOf="@id/time_of_exercise_label"
+                app:layout_constraintBottom_toBottomOf="@id/time_of_exercise_label"/>
+
+            <TextView
+                android:id="@+id/kcal_of_exercise_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="@string/kcal"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="@id/num_of_exercise_label"
+                app:layout_constraintRight_toRightOf="@id/num_of_exercise_label"
+                app:layout_constraintTop_toBottomOf="@id/time_of_exercise_label"/>
+
+            <TextView
+                android:id="@+id/kcal_of_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="100"
+                android:textColor="@color/white"
+                android:textSize="27sp"
+                android:fontFamily="@font/momcakebold"
+                app:layout_constraintLeft_toLeftOf="@id/num_of_exercise"
+                app:layout_constraintRight_toRightOf="@id/num_of_exercise"
+                app:layout_constraintTop_toTopOf="@id/kcal_of_exercise_label"
+                app:layout_constraintBottom_toBottomOf="@id/kcal_of_exercise_label"/>
+
+            <TextView
+                android:id="@+id/done_button_workout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/cardview_background_gradient"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:text="Finish"
+                android:textColor="@color/lime_100"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/kcal_of_exercise_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/congrat_animation_lottie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/gif_exer_workout_constaint"
-        app:lottie_rawRes="@raw/congrat_animation"
+        app:layout_constraintTop_toTopOf="@id/gif_exer_workout_constaint"
         app:lottie_autoPlay="false"
-        app:lottie_loop="false"/>
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/congrat_animation" />
 
     <TextView
         android:id="@+id/ready_text_label"
@@ -142,12 +296,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:visibility="invisible"
         android:text="00:00"
         android:textAllCaps="true"
         android:textColor="@color/lime_100"
         android:textSize="35sp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/progressbar_workout_constraint"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -234,7 +388,6 @@
 
         <TextView
             android:id="@+id/skip_button_exercise"
-            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -248,13 +401,13 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/count_down_text"
             app:layout_constraintLeft_toRightOf="@id/count_down_text"
             app:layout_constraintTop_toTopOf="@id/count_down_text" />
 
         <TextView
             android:id="@+id/plus_button_exercise"
-            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -268,6 +421,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/count_down_text"
             app:layout_constraintRight_toLeftOf="@id/count_down_text"
             app:layout_constraintTop_toTopOf="@id/count_down_text" />

@@ -183,5 +183,8 @@
     <string name="_8_hours">8 Hours</string>
     <string name="bed_time">Bed Time</string>
     <string name="wake_time">Wake Time</string>
+    <string name="workout_completed">Workout completed</string>
+    <string name="congrat">Congrat</string>
+    <string name="kcal">Kcal :</string>
 
 </resources>
