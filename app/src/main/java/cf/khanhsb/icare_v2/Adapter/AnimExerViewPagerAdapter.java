@@ -62,6 +62,7 @@ public class AnimExerViewPagerAdapter extends
 
         if(position == 1){
             holder.imageView.setVisibility(View.GONE);
+            holder.loadingIcon.setVisibility(View.GONE);
             holder.youTubePlayerView.setVisibility(View.VISIBLE);
             holder.youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                 @Override

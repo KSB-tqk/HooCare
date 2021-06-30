@@ -79,7 +79,7 @@
     </ProgressBar>
 
     <TextView
-        android:id="@+id/close_button_animation_exercise"
+        android:id="@+id/close_button_water"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
