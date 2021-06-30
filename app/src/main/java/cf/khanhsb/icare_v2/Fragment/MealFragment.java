@@ -95,6 +95,11 @@ public class MealFragment extends Fragment {
                                 String tempGender = document.getString("gender");
                                 String tempDate = document.getString("date_of_birth");
 
+                                SharedPreferences.Editor editor;
+                                editor = sharedPreferences.edit();
+                                editor.putString("Weight", tempWeight);
+                                editor.apply();
+
                                 assert tempWeight != null;
                                 if (!tempWeight.equals("empty")) {
                                     String bmiData = getBMI_And_getBodyFat(tempHeight, tempWeight , tempGender,tempDate);

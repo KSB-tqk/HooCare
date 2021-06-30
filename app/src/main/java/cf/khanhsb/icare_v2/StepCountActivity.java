@@ -100,6 +100,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
                 Intent toMain = new Intent(StepCountActivity.this, MainActivity.class);
                 toMain.putExtra("userEmail", userEmail);
                 startActivity(toMain);
+                finish();
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });

@@ -48,6 +48,7 @@ public class SplashScreenActivity2 extends AppCompatActivity {
 
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SplashScreenActivity2.this,pairs);
                 startActivity(intent,options.toBundle());
+                finish();
             }
         }, SPLASH_SCREEN);
 
