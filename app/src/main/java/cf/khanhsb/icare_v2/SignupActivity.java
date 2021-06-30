@@ -188,10 +188,10 @@ public class SignupActivity extends Activity {
                             }
                         });
                     } else {
-                        Toast.makeText(this, "Please select date of birth!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "Please select date of birth!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(this, "Please select gender!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignupActivity.this, "Please select gender!", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 mPass.setError("Your Password must not empty");
@@ -220,7 +220,7 @@ public class SignupActivity extends Activity {
         user.put("calories_burn_goal", "empty");
         user.put("sleep_goal", "empty");
         user.put("on_screen_goal", "empty");
-        user.put("health_point", "empty");
+        user.put("recent_workout", "empty");
         user.put("time_to_sleep","empty");
         user.put("time_to_wake","empty");
         firestore.collection("users").document(userEmail)

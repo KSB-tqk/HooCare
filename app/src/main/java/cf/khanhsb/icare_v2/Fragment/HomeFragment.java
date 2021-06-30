@@ -203,7 +203,7 @@ public class HomeFragment extends Fragment {
                         editor.putString("Email", userEmail);
                         editor.apply();
                         SetUpStepCountCard(userEmail);
-                        SetUpWaterCard(userEmail);
+                        SetUpWaterCard();
                         SetUpSleepCard(userEmail);
                         SetUpTimeCard(userEmail);
                     } else {
@@ -265,7 +265,7 @@ public class HomeFragment extends Fragment {
                                         editor.putString("Email", userEmail);
                                         editor.apply();
                                         SetUpStepCountCard(userEmail);
-                                        SetUpWaterCard(userEmail);
+                                        SetUpWaterCard();
                                     } else {
                                         Log.d("LOGGER", "No such document");
                                     }
@@ -328,7 +328,11 @@ public class HomeFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void SetUpWaterCard(String theTempEmail) {
+    public void SetUpWaterCard() {
+        SharedPreferences sharedPreferences = this.getActivity().
+                getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
+
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
         docRef = firestore.collection("daily").
