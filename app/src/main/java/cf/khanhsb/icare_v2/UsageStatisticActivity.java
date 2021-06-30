@@ -144,6 +144,7 @@ public class UsageStatisticActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toMain = new Intent(UsageStatisticActivity.this, MainActivity.class);
                 startActivity(toMain);
+                finish();
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });

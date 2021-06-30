@@ -41,6 +41,7 @@ public class ResetPWActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ResetPWActivity.this, SigninActivity.class));
+                finish();
             }
         });
         mResetPW.setOnClickListener(new View.OnClickListener() {

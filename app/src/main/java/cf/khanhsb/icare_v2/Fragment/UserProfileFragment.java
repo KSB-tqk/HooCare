@@ -84,6 +84,7 @@ public class UserProfileFragment extends Fragment {
                 mGoogleSignInClient.signOut();
                 Intent i = new Intent(getActivity(), SigninActivity.class);
                 startActivity(i);
+                getActivity().finish();
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
             }
         });

@@ -48,9 +48,9 @@ public class WorkoutActivity extends AppCompatActivity {
     private TextView countDownTextView, exerciseCounter, exerciseTimeCounter, exerciseTitleWorkout,
             excerciseNextTitleWorkout, afterStartWorkoutTitle, afterStartDuration, readyTextLabel,
             workoutPartMainTitle, skipButton, plusSecondButton, restCountDownTimer,nextLabel,
-            finishedTitle,finishedTime,finishedKcal,totalFinishedExercise;
+            finishedTitle,finishedTime,finishedKcal,totalFinishedExercise, addWeightLabel;
     private ProgressBar progressBar;
-    private int tempProgress = 15000, exercisePos, exerDuration;
+    private int tempProgress = 15000, exercisePos, exerDuration,miniteOfWorkout,secondOfWorkout;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private static final String tempEmail = "tempEmail";
@@ -65,9 +65,11 @@ public class WorkoutActivity extends AppCompatActivity {
     private ImageView finishExercise;
     private LottieAnimationView congratAnimation;
     private Handler timerHandler;
+    private String workoutTitle;
     long startTime = 0;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +101,7 @@ public class WorkoutActivity extends AppCompatActivity {
         finishedTime = findViewById(R.id.time_of_exercise);
         finishedKcal = findViewById(R.id.kcal_of_exercise);
         totalFinishedExercise = findViewById(R.id.num_of_exercise);
+        addWeightLabel = findViewById(R.id.add_weight_recommended);
 
         //thread pool to stop timer
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -115,7 +118,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 seconds = seconds % 60;
 
                 exerciseTimeCounter.setText(String.format("%02d:%02d", minutes, seconds));
-
+                miniteOfWorkout = minutes;
+                secondOfWorkout = seconds;
                 timerHandler.postDelayed(this, 500);
             }
         };
@@ -123,14 +127,14 @@ public class WorkoutActivity extends AppCompatActivity {
         countDownDuration = TimeUnit.SECONDS.toMillis(15);
         progressBar.setMax(15000);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
-        String theTempEmail = sharedPreferences.getString("Email", "");
+
 
         firestore = FirebaseFirestore.getInstance();
 
         String tempString = intent.getStringExtra("workoutTitle");
         String tempTotal = intent.getStringExtra("workoutTotalExercise");
         workoutPartMainTitle.setText(tempTotal + " Exercises");
+        workoutTitle = tempString;
 
         Runnable homeBackGroundRunnable = new Runnable() {
             @Override
@@ -332,6 +336,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 Intent intent = new Intent(WorkoutActivity.this, MainActivity.class);
                 intent.putExtra("fragmentPosition", 2);
                 startActivity(intent);
+                finish();
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
@@ -475,6 +480,32 @@ public class WorkoutActivity extends AppCompatActivity {
         finishedLinear.setVisibility(View.VISIBLE);
         finishedTime.setText(exerciseTimeCounter.getText());
         totalFinishedExercise.setText(String.valueOf(workoutTitleList.size()));
+
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempWeight = sharedPreferences.getString("Weight","");
+
+        if(!theTempWeight.equals("empty")){
+            float MET = 0f;
+            String[] levelOfWorkout = workoutTitle.split("-");
+            if(levelOfWorkout[1].equals(" Beginner")){
+                MET = 2.8f;
+            } else if(levelOfWorkout[1].equals(" Advanced")) {
+                MET = 8.0f;
+            } else if( levelOfWorkout[1].equals(" Intermidiate")){
+                MET = 3.8f;
+            }
+
+            if(miniteOfWorkout > 0){
+                float kcalOfWorkout = (Float.parseFloat(theTempWeight) * MET) * miniteOfWorkout / 60;
+                finishedKcal.setText(String.valueOf((int) kcalOfWorkout));
+            } else {
+                finishedKcal.setText("0");
+            }
+            addWeightLabel.setVisibility(View.GONE);
+        } else {
+            finishedKcal.setText("No Data");
+            addWeightLabel.setVisibility(View.VISIBLE);
+        }
 
         congratAnimation.setVisibility(View.VISIBLE);
         congratAnimation.playAnimation();
