@@ -250,6 +250,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                 intent.putExtra("workoutTitle",tempString);
                 intent.putExtra("workoutTotalExercise",String.valueOf(workoutTitleList.size()));
                 startActivity(intent);
+                finish();
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
@@ -262,6 +263,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
                 Intent intent = new Intent(List_Data_Activity.this, MainActivity.class);
                 intent.putExtra("fragmentPosition", 2);
                 startActivity(intent);
+                finish();
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });

@@ -75,6 +75,7 @@ public class SignupActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignupActivity.this, SigninActivity.class));
+                finish();
             }
         });
 
@@ -240,10 +241,10 @@ public class SignupActivity extends Activity {
 
     private String getGender(CheckBox maleCheckbox,CheckBox femaleCheckbox){
         if(maleCheckbox.isChecked()){
-            return "male";
+            return "Male";
         }
         else {
-            return "female";
+            return "Female";
         }
     }
 }
