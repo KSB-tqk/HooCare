@@ -199,7 +199,7 @@ public class WaterActivity extends AppCompatActivity {
                     minusButton = (ImageView) bottomSheetView.findViewById(R.id.minus_button_water_menu);
                     progressBar = (ProgressBar) bottomSheetView.findViewById(R.id.progressbar_water);
                     numberOfCups_text_view = (TextView) bottomSheetView.findViewById(R.id.num_of_cup_progress);
-                    doneButton = (TextView) bottomSheetView.findViewById(R.id.close_button_animation_exercise);
+                    doneButton = (TextView) bottomSheetView.findViewById(R.id.close_button_water);
 
                     progressBar.setMax(12000);
                     progressBar.setProgress(numOfCup * 1000);

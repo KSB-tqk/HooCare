@@ -274,7 +274,10 @@
 
             </cf.khanhsb.icare_v2.Model.NonScrollListView>
 
-
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@id/list_view_list_data"/>
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 
