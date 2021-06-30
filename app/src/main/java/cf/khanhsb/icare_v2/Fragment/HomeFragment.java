@@ -3,6 +3,10 @@ package cf.khanhsb.icare_v2.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,14 +38,17 @@ import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
 import cf.khanhsb.icare_v2.R;
 import cf.khanhsb.icare_v2.SleepTimeActivity;
 import cf.khanhsb.icare_v2.StepCountActivity;
+import cf.khanhsb.icare_v2.StepCounter.StepDetector;
+import cf.khanhsb.icare_v2.StepListener;
 import cf.khanhsb.icare_v2.UsageStatisticActivity;
 import cf.khanhsb.icare_v2.WaterActivity;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.SENSOR_SERVICE;
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements SensorEventListener, StepListener {
     private LinearLayout waterCardview, stepCardView, caloCardView,
             sleepCardView, trainingCardView, progressBar_text, timeOnScreenCardView;
     private ProgressBar progressBar;
@@ -55,6 +62,12 @@ public class HomeFragment extends Fragment {
     private FirebaseAuth mAuth;
     private static final String tempEmail = "tempEmail";
     private String sleepTime;
+
+
+    private StepDetector simpleStepDetector;
+    private static final String TEXT_NUM_STEPS = "";
+    private int numSteps;
+    private TextView home_step_count;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -75,6 +88,19 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        home_step_count=(TextView) rootView.findViewById(R.id.home_step_count);
+        SensorManager sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
+        Sensor accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        simpleStepDetector = new StepDetector();
+        simpleStepDetector.registerListener(this);
+
+        sensorManager.registerListener(HomeFragment.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
+
+
+
+
+
 
         waterCardview = (LinearLayout) rootView.findViewById(R.id.water_card_view_linear);
         stepCardView = (LinearLayout) rootView.findViewById(R.id.step_count_cardview_linear);
@@ -98,6 +124,9 @@ public class HomeFragment extends Fragment {
         waterCardview.setClickable(false);
         stepCardView.setClickable(false);
         sleepCardView.setClickable(false);
+
+
+
 
         Runnable homeBackGroundRunnable = new Runnable() {
             @Override
@@ -171,6 +200,9 @@ public class HomeFragment extends Fragment {
         });
 
         return rootView;
+
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -417,6 +449,27 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+    }
+
+
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            simpleStepDetector.updateAccel(
+                    event.timestamp, event.values[0], event.values[1], event.values[2]);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+    @Override
+    public void step(long timeNs) {
+        numSteps++;
+        home_step_count.setText(TEXT_NUM_STEPS + numSteps);
+
     }
 
 }
