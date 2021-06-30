@@ -31,7 +31,7 @@ import java.util.Date;
 import cf.khanhsb.icare_v2.Adapter.BarChartAdapter;
 import cf.khanhsb.icare_v2.Adapter.StepCountViewPagerAdapter;
 import cf.khanhsb.icare_v2.StepCounter.StepDetector;
-import cf.khanhsb.icare_v2.StepListener;
+import cf.khanhsb.icare_v2.StepCounter.StepListener;
 
 public class StepCountActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener, StepListener {
 
