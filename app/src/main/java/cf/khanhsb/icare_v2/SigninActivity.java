@@ -366,7 +366,7 @@ public class SigninActivity extends AppCompatActivity {
         user.put("calories_burn_goal", "empty");
         user.put("sleep_goal", "empty");
         user.put("on_screen_goal", "empty");
-        user.put("health_point", "empty");
+        user.put("recent_workout", "empty");
         user.put("time_to_sleep","empty");
         user.put("time_to_wake","empty");
         firestore.collection("users").document(userEmail)

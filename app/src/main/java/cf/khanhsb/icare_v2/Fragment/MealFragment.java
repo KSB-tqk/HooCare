@@ -53,6 +53,8 @@ public class MealFragment extends Fragment {
     private EditText mCarbs, mProtein, mFat;
     private Button mConsumed;
     public int eaten =0 ;
+    private Thread backgroundThread;
+
 
     public MealFragment() {
         // Required empty public constructor
@@ -166,7 +168,7 @@ public class MealFragment extends Fragment {
             }
         };
 
-        Thread backgroundThread = new Thread(setUpBMIRunnable);
+        backgroundThread = new Thread(setUpBMIRunnable);
         backgroundThread.start();
 
         setUpBMIButton.setOnClickListener(new View.OnClickListener() {
@@ -240,5 +242,9 @@ public class MealFragment extends Fragment {
         }
         bmi = String.format("%.1f", ans);
         return bmi+"-"+bodyFatAns;
+    }
+
+    public void SetUpWeight() {
+        backgroundThread.start();
     }
 }
