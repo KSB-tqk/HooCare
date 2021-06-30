@@ -8,6 +8,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,13 +44,17 @@ public class MealFragment extends Fragment {
     private ArrayList<Drawable> backgroundView;
     private MealViewPagerAdapter adapter;
     private MealPlanData mealPlanData;
-    private TextView weightTextView, heightTextView, setUpBMIButton, bmiTextView, bodyFatData;
+    private TextView weightTextView, heightTextView, setUpBMIButton, bmiTextView, bodyFatData, eatenKCal;
     private static final String tempEmail = "tempEmail";
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private ConstraintLayout setUPContraint;
     private RelativeLayout bmiRelative;
+    private EditText mCarbs, mProtein, mFat;
+    private Button mConsumed;
+    public int eaten =0 ;
     private Thread backgroundThread;
+
 
     public MealFragment() {
         // Required empty public constructor
@@ -74,7 +80,44 @@ public class MealFragment extends Fragment {
         setUpBMIButton = rootview.findViewById(R.id.setup_bmi_button);
         bmiTextView = rootview.findViewById(R.id.BMI_data);
         bodyFatData = rootview.findViewById(R.id.body_fat_data);
-
+        mCarbs = rootview.findViewById(R.id.et_carbs);
+        mProtein = rootview.findViewById(R.id.et_protein);
+        mFat = rootview.findViewById(R.id.et_fat);
+        mConsumed = rootview.findViewById(R.id.btConsume);
+        eatenKCal = rootview.findViewById(R.id.eaten_kcal_number_view);
+        ///Calculate Calories
+        mConsumed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String carb = mCarbs.getText().toString();
+                String protein = mProtein.getText().toString();
+                String fat = mFat.getText().toString();
+                if (carb.isEmpty()){
+                    carb = "0";
+                }
+                if (protein.isEmpty()) {
+                    protein = "0";
+                }
+                if (fat.isEmpty()){
+                    fat = "0";
+                }
+                int finalcarb,finalprotein,finalfat,consume;
+                try {
+                    finalcarb = Integer.parseInt(carb);
+                    finalprotein = Integer.parseInt(protein);
+                    finalfat = Integer.parseInt(fat);
+                }
+                catch (NumberFormatException e)
+                {
+                    finalcarb = 0;
+                    finalprotein = 0;
+                    finalfat = 0;
+                }
+                consume = finalcarb*4 + finalprotein*4 + finalfat*9;
+                eaten = eaten + consume ;
+                eatenKCal.setText(String.valueOf(eaten));
+            }
+        });
         SharedPreferences sharedPreferences = this.getActivity().
                 getSharedPreferences(tempEmail, MODE_PRIVATE);
         String theTempEmail = sharedPreferences.getString("Email", "");

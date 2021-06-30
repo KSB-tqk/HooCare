@@ -150,7 +150,7 @@
                                 android:id="@+id/eaten_kcal_number_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/_1620"
+                                android:text="@string/_0"
                                 android:textSize="23sp"
                                 android:textStyle="bold" />
 
@@ -230,21 +230,12 @@
                             android:text="@string/carbs_text"
                             android:textSize="18sp"
                             android:textStyle="bold" />
-
-                        <ProgressBar
-                            android:layout_width="70dp"
-                            android:layout_height="6dp"
-                            android:layout_gravity="center"
-                            android:indeterminateOnly="false"
-                            android:progress="30"
-                            android:progressDrawable="@drawable/carbs_rounded_progressbar_meal_frag" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <EditText
+                            android:id="@+id/et_carbs"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/_10g_left"
-                            android:textSize="14sp" />
+                            android:hint="###"
+                            android:inputType="number"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -261,20 +252,12 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
-                        <ProgressBar
-                            android:layout_width="70dp"
-                            android:layout_height="6dp"
-                            android:layout_gravity="center"
-                            android:indeterminateOnly="false"
-                            android:progress="30"
-                            android:progressDrawable="@drawable/protein_rounded_progressbar_meal_frag" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <EditText
+                            android:id="@+id/et_protein"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/_12g_left"
-                            android:textSize="14sp" />
+                            android:hint="###"
+                            android:inputType="number"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -291,22 +274,20 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
-                        <ProgressBar
-                            android:layout_width="70dp"
-                            android:layout_height="6dp"
-                            android:layout_gravity="center"
-                            android:indeterminateOnly="false"
-                            android:progress="70"
-                            android:progressDrawable="@drawable/fat_rounded_progressbar_meal_frag" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <EditText
+                            android:id="@+id/et_fat"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/_5g_left"
-                            android:textSize="14sp" />
+                            android:hint="###"
+                            android:inputType="number"/>
                     </LinearLayout>
                 </LinearLayout>
+                <Button
+                    android:id="@+id/btConsume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="CONSUMED"
+                    android:layout_margin="10dp"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
