@@ -1,6 +1,7 @@
 package cf.khanhsb.icare_v2.Fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,11 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -21,11 +29,18 @@ import cf.khanhsb.icare_v2.List_Data_Activity;
 import cf.khanhsb.icare_v2.Model.NonScrollListView;
 import cf.khanhsb.icare_v2.R;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class GymFragment extends Fragment {
     private FloatingActionButton viewButtonExercises;
-    private TextView workoutHeadline, workoutTitle;
+    private TextView workoutHeadline, workoutTitle,workoutTime,workoutRecommended;
     private Boolean gotPlan = false;
     private ImageView clockIcon;
+    private FirebaseFirestore firestore;
+    private DocumentReference docRef;
+    private static final String tempEmail = "tempEmail";
+    private String workoutLabel,workoutDuration,workoutImage;
+    private LinearLayout timeLinear;
 
     /**
      * Gym listview
@@ -76,6 +91,69 @@ public class GymFragment extends Fragment {
         workoutHeadline = (TextView) rootView.findViewById(R.id.workout_headline);
         workoutTitle = (TextView) rootView.findViewById(R.id.workout_title);
         clockIcon = (ImageView) rootView.findViewById(R.id.clockIcon);
+        workoutTime = rootView.findViewById(R.id.workout_time);
+        timeLinear = rootView.findViewById(R.id.time_linear);
+        workoutRecommended = rootView.findViewById(R.id.workout_recommended);
+
+        SharedPreferences sharedPreferences = this.getActivity().
+                getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
+
+        firestore = FirebaseFirestore.getInstance();
+
+        Runnable getRecentWorkoutRunnable = new Runnable() {
+            @Override
+            public void run() {
+                docRef = firestore.collection("workoutHistory").document(theTempEmail);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null) {
+                                workoutLabel = document.getString("workoutTitle");
+                                if(workoutLabel != null){
+                                    workoutDuration = document.getString("workoutDuration");
+                                    workoutImage = document.getString("workoutImage");
+                                    workoutTitle.setText(workoutLabel);
+                                    workoutTime.setText(workoutDuration);
+
+                                    workoutHeadline.setText("Recent Workout");
+                                    timeLinear.setVisibility(View.VISIBLE);
+                                    workoutRecommended.setVisibility(View.INVISIBLE);
+                                    viewButtonExercises.setVisibility(View.VISIBLE);
+
+                                    viewButtonExercises.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(getContext(), List_Data_Activity.class);
+                                            intent.putExtra("workoutTitle", workoutLabel);
+                                            intent.putExtra("workoutImage", Integer.parseInt(workoutImage));
+                                            intent.putExtra("workoutTime",workoutDuration);
+
+                                            String[] splitString = workoutLabel.split("-");
+                                            intent.putExtra("focusBodyPart",splitString[0].trim());
+
+                                            startActivity(intent);
+                                            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
+                                        }
+                                    });
+                                } else {
+                                    workoutHeadline.setText("No Recent Workout");
+                                    workoutTitle.setText("Let's workout and keep fit!");
+                                    viewButtonExercises.setVisibility(View.INVISIBLE);
+                                    timeLinear.setVisibility(View.GONE);
+                                    workoutRecommended.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        };
+
+        Thread getRecentWorkoutThread = new Thread(getRecentWorkoutRunnable);
+        getRecentWorkoutThread.start();
 
         listView = (NonScrollListView) rootView.findViewById(R.id.classic_workout_listview);
         GymListViewAdapter listViewAdapter = new GymListViewAdapter(getActivity(),

@@ -51,8 +51,8 @@
     <string name="overweight">Overweight</string>
     <string name="your_program">My Workout</string>
     <string name="view_button_contentDes">view button</string>
-    <string name="_52_min_workoutLength">52 min</string>
-    <string name="workout_name_detail">Legs Toning and Glutes Workout at Home</string>
+    <string name="_52_min_workoutLength">Loading</string>
+    <string name="workout_name_detail">Loading</string>
     <string name="next_workout">Next workout</string>
     <string name="classic_workouts_label">Classic Workouts</string>
     <string name="for_today_label">For Today</string>
@@ -184,5 +184,6 @@
     <string name="workout_completed">Workout completed</string>
     <string name="congrat">Congrat</string>
     <string name="kcal">Kcal :</string>
+    <string name="choose_workout_below_and_start_now">Choose workouts from below</string>
 
 </resources>

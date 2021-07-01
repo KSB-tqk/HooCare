@@ -60,11 +60,11 @@ public class WorkoutActivity extends AppCompatActivity {
             finishedTitle, finishedTime, finishedKcal, totalFinishedExercise, addWeightLabel,
             doneWorkoutButton;
     private ProgressBar progressBar;
-    private int tempProgress = 15000, exercisePos, exerDuration, miniteOfWorkout, plusDuration;
+    private int tempProgress = 15000, exercisePos, exerDuration, miniteOfWorkout, plusDuration,workoutImage;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private static final String tempEmail = "tempEmail";
-    private String exercise_contain, currentExercise, lastExercise;
+    private String exercise_contain, currentExercise, lastExercise,bigWorkoutDuration;
     private ArrayList<String> workoutTitleList, workoutDuration, workoutUri,
             workoutDurationValue, workoutDurationType, workoutVideoUrl;
     private String[] exerciseList;
@@ -87,6 +87,8 @@ public class WorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_workout);
 
         Intent intent = getIntent();
+        bigWorkoutDuration = intent.getStringExtra("workoutTime");
+        workoutImage = intent.getIntExtra("workoutImage", 0);
 
         countDownTextView = findViewById(R.id.count_down_text);
         backButton = findViewById(R.id.button_backtohomefrag_workout);
@@ -555,6 +557,8 @@ public class WorkoutActivity extends AppCompatActivity {
         Runnable dataRunnable = new Runnable() {
             @Override
             public void run() {
+                firestore = FirebaseFirestore.getInstance();
+
                 String workoutTime = finishedTime.getText().toString();
                 String workoutKcal = finishedKcal.getText().toString();
                 String workoutDay = today.toString();
@@ -566,13 +570,18 @@ public class WorkoutActivity extends AppCompatActivity {
                 workoutData.put("workoutTitle", workoutTitle);
                 workoutData.put("workoutKcal", workoutKcal);
                 workoutData.put("totalWorkout", totalWorkout);
-
-                firestore = FirebaseFirestore.getInstance();
-                docRef = firestore.collection("workoutHistory").document(theTempEmail);
-                docRef.set(workoutData);
+                String theWorkoutImage = String.valueOf(workoutImage);
+                workoutData.put("workoutImage",theWorkoutImage);
 
                 firestore.collection("workoutHistory").
                         document(theTempEmail).collection("History").document().set(workoutData);
+
+                workoutData.put("workoutDuration",bigWorkoutDuration);
+
+                docRef = firestore.collection("workoutHistory").document(theTempEmail);
+                docRef.set(workoutData);
+
+
             }
         };
 
