@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -68,7 +69,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_data);
 
-        Intent intent = getIntent();
+        Intent intentListExercise = getIntent();
 
         workoutTitle = (TextView) findViewById(R.id.gym_list_workout_text);
         workoutBigTitle = (TextView) findViewById(R.id.title_list_data);
@@ -86,7 +87,7 @@ public class List_Data_Activity extends YouTubeBaseActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        String tempString = intent.getStringExtra("workoutTitle");
+        String tempString = intentListExercise.getStringExtra("workoutTitle");
 
         Runnable trackEditDataRunnable = new Runnable() {
             @Override
@@ -328,6 +329,8 @@ public class List_Data_Activity extends YouTubeBaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(List_Data_Activity.this, WorkoutActivity.class);
                 intent.putExtra("workoutTitle", tempString);
+                intent.putExtra("workoutImage",intentListExercise.getIntExtra("workoutImage", 0));
+                intent.putExtra("workoutTime",intentListExercise.getStringExtra("workoutTime"));
                 intent.putExtra("workoutTotalExercise", String.valueOf(workoutTitleList.size()));
                 startActivity(intent);
                 finish();
@@ -350,11 +353,11 @@ public class List_Data_Activity extends YouTubeBaseActivity {
 
         /**setting up intent from gym fragment*/
 
-        workoutTitle.setText(intent.getStringExtra("workoutTitle"));
-        workoutImage.setImageResource(intent.getIntExtra("workoutImage", 0));
-        workoutTime.setText(intent.getStringExtra("workoutTime"));
-        focusArea.setText(intent.getStringExtra("focusBodyPart"));
-        workoutBigTitle.setText(intent.getStringExtra("focusBodyPart"));
+        workoutTitle.setText(intentListExercise.getStringExtra("workoutTitle"));
+        workoutImage.setImageResource(intentListExercise.getIntExtra("workoutImage", 0));
+        workoutTime.setText(intentListExercise.getStringExtra("workoutTime"));
+        focusArea.setText(intentListExercise.getStringExtra("focusBodyPart"));
+        workoutBigTitle.setText(intentListExercise.getStringExtra("focusBodyPart"));
 
 
         /**app bar animation*/
