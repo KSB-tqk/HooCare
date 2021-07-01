@@ -33,7 +33,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GymFragment extends Fragment {
     private FloatingActionButton viewButtonExercises;
-    private TextView workoutHeadline, workoutTitle,workoutTime,workoutRecommended;
+    private TextView workoutHeadline, workoutTitle,workoutTime,workoutRecommended,viewAll;
     private Boolean gotPlan = false;
     private ImageView clockIcon;
     private FirebaseFirestore firestore;
@@ -94,6 +94,7 @@ public class GymFragment extends Fragment {
         workoutTime = rootView.findViewById(R.id.workout_time);
         timeLinear = rootView.findViewById(R.id.time_linear);
         workoutRecommended = rootView.findViewById(R.id.workout_recommended);
+        viewAll = rootView.findViewById(R.id.view_all_button);
 
         SharedPreferences sharedPreferences = this.getActivity().
                 getSharedPreferences(tempEmail, MODE_PRIVATE);
@@ -226,12 +227,12 @@ public class GymFragment extends Fragment {
             }
         });
 
-        if (!gotPlan) {
-            workoutHeadline.setText("Set Up plan");
-        } else {
-            viewButtonExercises.setVisibility(View.VISIBLE);
-            workoutHeadline.setText("Next workout");
-        }
+        viewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
 
         return rootView;
     }

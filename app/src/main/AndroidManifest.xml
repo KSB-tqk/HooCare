@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ICare_v2">
-        <activity android:name=".WorkoutActivity"></activity>
+        <activity android:name=".WorkoutHistoryActivity"></activity>
+        <activity android:name=".WorkoutActivity" />
 
         <receiver android:name=".Model.AlertReceiver" />
 
@@ -47,9 +48,6 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-
-
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>

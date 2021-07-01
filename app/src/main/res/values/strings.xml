@@ -8,7 +8,7 @@
     <string name="ArchieveFragTitle">Profile</string>
     <string name="body_measurement_headline_weight">Weight</string>
     <string name="body_measurement_header">Body Measurement</string>
-    <string name="body_measurement_Detail">Details</string>
+    <string name="body_measurement_Detail">View all</string>
     <string name="meals_today_header">Meals today</string>
     <string name="meals_today_customize">Customize</string>
     <string name="carbs_text">Carbs</string>
