@@ -72,7 +72,6 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
 
         //set up date
         Date calendar = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + calendar);
         String day = (String) DateFormat.format("dd", calendar); // 20
         String monthString = (String) DateFormat.format("MMM", calendar); // Jun
         String today = day + " " + monthString;

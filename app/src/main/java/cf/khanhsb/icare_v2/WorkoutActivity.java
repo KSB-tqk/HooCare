@@ -37,8 +37,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -564,9 +568,25 @@ public class WorkoutActivity extends AppCompatActivity {
                 String workoutDay = today.toString();
                 String totalWorkout = totalFinishedExercise.getText().toString();
 
+                Calendar cal = Calendar.getInstance();
+                Date currentLocalTime = cal.getTime();
+                DateFormat date = new SimpleDateFormat("HH:mm");
+                String localTime = date.format(currentLocalTime);
+
+                //set up date
+                Date calendar = Calendar.getInstance().getTime();
+                String day = (String) android.text.format.DateFormat.format("dd", calendar); // 20
+                String monthString = (String) android.text.format.DateFormat.format("MMM", calendar); // Jun
+                String today = day + " " + monthString;
+
+                long time= System.currentTimeMillis();
+
                 Map<String, Object> workoutData = new HashMap<>();
                 workoutData.put("workoutTime", workoutTime);
                 workoutData.put("workoutDay", workoutDay);
+                workoutData.put("workoutDate", today);
+                workoutData.put("firebaseTime", time);
+                workoutData.put("workoutDayTime", localTime);
                 workoutData.put("workoutTitle", workoutTitle);
                 workoutData.put("workoutKcal", workoutKcal);
                 workoutData.put("totalWorkout", totalWorkout);

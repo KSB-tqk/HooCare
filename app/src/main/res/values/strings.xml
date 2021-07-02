@@ -12,7 +12,7 @@
     <string name="meals_today_header">Meals today</string>
     <string name="meals_today_customize">Customize</string>
     <string name="carbs_text">Carbs</string>
-    <string name="kcals">Kcals</string>
+    <string name="kcals">Kcal</string>
     <string name="_620">620</string>
     <string name="_10g_left">10g left</string>
     <string name="_12g_left">12g left</string>
@@ -185,5 +185,7 @@
     <string name="congrat">Congrat</string>
     <string name="kcal">Kcal :</string>
     <string name="choose_workout_below_and_start_now">Choose workouts from below</string>
+    <string name="duration">Duration</string>
+    <string name="no_workout_history">No Workout History</string>
 
 </resources>
