@@ -8,22 +8,32 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,7 +43,10 @@ import cf.khanhsb.icare_v2.Adapter.StepCountViewPagerAdapter;
 import cf.khanhsb.icare_v2.StepCounter.StepDetector;
 import cf.khanhsb.icare_v2.StepListener;
 
-public class StepCountActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener, StepListener {
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
+
+public class StepCountActivity extends AppCompatActivity implements View.OnClickListener {
 
     //initialize variable
     private ArrayList<BarEntry> dataValue = new ArrayList<BarEntry>();
@@ -48,15 +61,21 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     private StepCountViewPagerAdapter stepCountViewPagerAdapter;
     private static final String tempEmail = "tempEmail";
     /////////////////InitialalizeStepSensor///
-    private StepDetector simpleStepDetector;
-    private static final String TEXT_NUM_STEPS = "";
-    private int numSteps;
-    private TextView textView;
+    private TextView step_count_text;
+
+    private FirebaseFirestore firestore;
+    private DocumentReference docRef;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_count);
+
+        SharedPreferences sharedPreferences = this.
+                getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
 
         /**assign variable*/
         statusOfProgressBar = (TextView) findViewById(R.id.progressbar_status);
@@ -69,7 +88,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         more_menu_button = (ImageView) findViewById(R.id.more_menu_stepcount);
         date_time_text = (TextView) findViewById(R.id.date_time_text);
         bottomSheetContainer = (ConstraintLayout) findViewById(R.id.bottom_sheet_container_step_count);
-
+        step_count_text = (TextView) findViewById(R.id.step_count_text);
 
         //set up date
         Date calendar = Calendar.getInstance().getTime();
@@ -91,7 +110,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         String userEmail = infoIntent.getStringExtra("userEmail");
         String step_goal = infoIntent.getStringExtra("step_goal");
 
-        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail,MODE_PRIVATE);
+
 
         /**back button on the toolbar click event*/
         backtohomefrag_button.setOnClickListener(new View.OnClickListener() {
@@ -207,17 +226,48 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         verticalViewPager2.setUserInputEnabled(false);
         verticalViewPager2.setAdapter(adapter);
 
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        Sensor accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        simpleStepDetector = new StepDetector();
-        simpleStepDetector.registerListener(this);
+        Runnable stepCountRunnable = new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void run() {
+                LocalDate today = LocalDate.now();
+                LocalDate monday = today.with(previousOrSame(MONDAY));
+                firestore = FirebaseFirestore.getInstance();
+                docRef = firestore.collection("daily").
+                        document("week-of-" + monday.toString()).
+                        collection(today.toString()).
+                        document(theTempEmail);
 
-        textView = findViewById(R.id.step_count_text);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null) {
+                                String temp = document.getString("steps");
+                                if (!"empty".equals(temp)) {
+                                    step_count_text.setText(String.valueOf(temp));
+                                }
+                            } else {
+                                Log.d("LOGGER", "No such document");
+                            }
+                        } else {
+                            Log.d("LOGGER", "get failed with ", task.getException());
+                        }
 
-        sensorManager.registerListener(StepCountActivity.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
+                    }
+                });
+
+            }
+
+        };
+        Thread backgroundThread = new Thread(stepCountRunnable);
+        backgroundThread.start();
+
 
 
     }
+
 
 
     /**
@@ -253,23 +303,6 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            simpleStepDetector.updateAccel(
-                    event.timestamp, event.values[0], event.values[1], event.values[2]);
-        }
-    }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
-    @Override
-    public void step(long timeNs) {
-        numSteps++;
-        textView.setText(TEXT_NUM_STEPS + numSteps);
-
-    }
 
 }
