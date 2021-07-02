@@ -28,6 +28,7 @@ import cf.khanhsb.icare_v2.Adapter.GymListViewAdapter;
 import cf.khanhsb.icare_v2.List_Data_Activity;
 import cf.khanhsb.icare_v2.Model.NonScrollListView;
 import cf.khanhsb.icare_v2.R;
+import cf.khanhsb.icare_v2.WorkoutHistoryActivity;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -230,7 +231,9 @@ public class GymFragment extends Fragment {
         viewAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Intent toHistory = new Intent(getContext(), WorkoutHistoryActivity.class);
+                startActivity(toHistory);
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 

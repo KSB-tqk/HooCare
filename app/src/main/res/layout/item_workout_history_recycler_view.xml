@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:padding="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/body_part_icon_cardview"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:cardCornerRadius="10dp"
+            android:elevation="0dp"
+            app:cardUseCompatPadding="true"
+            tools:ignore="MissingConstraints">
+            <ImageView
+                android:id="@+id/exercise_history_icon"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/workout_real_pic_item_list_icon"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/workout_title_history_recycler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/body_part_icon_cardview"
+            app:layout_constraintTop_toTopOf="@id/body_part_icon_cardview"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:text="Abs - Beginner"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/workout_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:textSize="14sp"
+            android:text="19:38"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/workout_title_history_recycler"
+            app:layout_constraintStart_toStartOf="@id/workout_title_history_recycler"
+            app:layout_constraintRight_toLeftOf="@id/duration_workout"/>
+
+        <TextView
+            android:id="@+id/workoutDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginTop="3dp"
+            android:text="30 Jun"
+            app:layout_constraintTop_toBottomOf="@id/workout_time"
+            app:layout_constraintStart_toStartOf="@id/workout_time"/>
+
+        <TextView
+            android:id="@+id/kcal_workout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:textSize="14sp"
+            android:text="19:38"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/workout_title_history_recycler"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/duration_workout"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginTop="3dp"
+            android:text="@string/kcals"
+            app:layout_constraintTop_toBottomOf="@id/kcal_workout"
+            app:layout_constraintStart_toStartOf="@id/kcal_workout"/>
+
+        <TextView
+            android:id="@+id/duration_workout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:textSize="14sp"
+            android:text="19:38"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/workout_title_history_recycler"
+            app:layout_constraintRight_toLeftOf="@id/kcal_workout"
+            app:layout_constraintLeft_toRightOf="@id/workout_time"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginTop="3dp"
+            android:text="@string/duration"
+            app:layout_constraintTop_toBottomOf="@id/duration_workout"
+            app:layout_constraintStart_toStartOf="@id/duration_workout"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
