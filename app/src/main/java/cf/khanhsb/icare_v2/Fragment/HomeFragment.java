@@ -1,10 +1,16 @@
 package cf.khanhsb.icare_v2.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -34,14 +41,17 @@ import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
 import cf.khanhsb.icare_v2.R;
 import cf.khanhsb.icare_v2.SleepTimeActivity;
 import cf.khanhsb.icare_v2.StepCountActivity;
+import cf.khanhsb.icare_v2.StepCounter.StepDetector;
+import cf.khanhsb.icare_v2.StepListener;
 import cf.khanhsb.icare_v2.UsageStatisticActivity;
 import cf.khanhsb.icare_v2.WaterActivity;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.SENSOR_SERVICE;
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements SensorEventListener, StepListener {
     private LinearLayout waterCardview, stepCardView, caloCardView,
             sleepCardView, trainingCardView, progressBar_text, timeOnScreenCardView;
     private ProgressBar progressBar;
@@ -50,11 +60,20 @@ public class HomeFragment extends Fragment {
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private String step_goal, drink_goal;
-    private TextView statusOfProgressBar, numOfWater,sleepTimeTextView,timeOnScreenTextView;
+    private TextView statusOfProgressBar, numOfWater, sleepTimeTextView, timeOnScreenTextView;
     private int numberOfStep;
     private FirebaseAuth mAuth;
     private static final String tempEmail = "tempEmail";
-    private String sleepTime;
+    private String sleepTime, stepGoal;
+
+    private TextView km_step_count;
+
+
+    private StepDetector simpleStepDetector;
+    private static final String TEXT_NUM_STEPS = "";
+    private int numStepsHomeFrag;
+    private TextView home_step_count;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -70,12 +89,23 @@ public class HomeFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        home_step_count = (TextView) rootView.findViewById(R.id.home_step_count);
+        SensorManager sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
+        Sensor accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        simpleStepDetector = new StepDetector();
+        simpleStepDetector.registerListener(this);
+
+        sensorManager.registerListener(HomeFragment.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
+
+        km_step_count = (TextView) rootView.findViewById(R.id.km_step_count_text);
         waterCardview = (LinearLayout) rootView.findViewById(R.id.water_card_view_linear);
         stepCardView = (LinearLayout) rootView.findViewById(R.id.step_count_cardview_linear);
         caloCardView = (LinearLayout) rootView.findViewById(R.id.calo_card_view_linear);
@@ -107,14 +137,56 @@ public class HomeFragment extends Fragment {
                     waterCardview.setClickable(true);
                     stepCardView.setClickable(true);
                     sleepCardView.setClickable(true);
-                } catch(Exception err) {
+                } catch (Exception err) {
                     err.printStackTrace();
                 }
             }
         };
-        
+
         Thread backgroundThread = new Thread(homeBackGroundRunnable);
         backgroundThread.start();
+
+        Runnable stepData = new Runnable() {
+            @Override
+            public void run() {
+                LocalDate today = LocalDate.now();
+                LocalDate monday = today.with(previousOrSame(MONDAY));
+                firestore = FirebaseFirestore.getInstance();
+                docRef = firestore.collection("daily").
+                        document("week-of-" + monday.toString()).
+                        collection(today.toString()).
+                        document(theTempEmail);
+
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null) {
+                                String temp = document.getString("steps");
+                                if (temp != null) {
+                                    if (!"empty".equals(temp)) {
+                                        home_step_count.setText(String.valueOf(temp));
+
+                                        numStepsHomeFrag = Integer.parseInt(temp);
+                                    }
+                                }
+                            } else {
+                                Log.d("LOGGER", "No such document");
+                            }
+                        } else {
+                            Log.d("LOGGER", "get failed with ", task.getException());
+                        }
+
+                    }
+                });
+
+            }
+        };
+
+        Thread stepDataThread = new Thread(stepData);
+        stepDataThread.start();
+
 
         waterCardview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,13 +236,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent toSleepTime = new Intent(getActivity(), SleepTimeActivity.class);
-                toSleepTime.putExtra("sleepTime",sleepTime);
+                toSleepTime.putExtra("sleepTime", sleepTime);
                 startActivity(toSleepTime);
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 
         return rootView;
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -219,6 +293,7 @@ public class HomeFragment extends Fragment {
                                         String time = document.getString("sleep_goal");
                                         String weight = document.getString("weight");
                                         String height = document.getString("height");
+                                        String step = document.getString("step_goal");
 
                                         //create dailyData
                                         docRef = firestore.collection("daily").
@@ -251,7 +326,14 @@ public class HomeFragment extends Fragment {
                                             dailyGoal.put("height", height);
                                         }
 
-                                        dailyGoal.put("time_on_screen","0");
+                                        if (step.equals("empty")) {
+                                            dailyGoal.put("steps", "empty");
+                                        } else {
+                                            dailyGoal.put("steps", step);
+                                        }
+
+
+                                        dailyGoal.put("time_on_screen", "0");
 
                                         //update data to firestore
                                         firestore = FirebaseFirestore.getInstance();
@@ -306,10 +388,6 @@ public class HomeFragment extends Fragment {
                             statusOfProgressBar.setText("/" + step_goal);
                             numberOfStep = Integer.parseInt("0");
                         }
-                        progressBar.setMax(10000);
-                        ProgressBarAnimation anim = new ProgressBarAnimation(progressBar, 0, numberOfStep);
-                        anim.setDuration(3000);
-                        progressBar.startAnimation(anim);
 
                         drink_goal = document.getString("drink_goal");
                         if ("empty".equals(drink_goal)) {
@@ -357,6 +435,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void SetUpSleepCard(String theTempEmail) {
         LocalDate today = LocalDate.now();
@@ -420,4 +499,63 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            simpleStepDetector.updateAccel(
+                    event.timestamp, event.values[0], event.values[1], event.values[2]);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void step(long timeNs) {
+        if (!statusOfProgressBar.getText().equals("steps")) {
+            numStepsHomeFrag++;
+            home_step_count.setText(TEXT_NUM_STEPS + numStepsHomeFrag);
+
+
+            String tempStepGoal = statusOfProgressBar.getText().toString().substring(1);
+            progressBar.setMax(Integer.parseInt(tempStepGoal));
+
+            float progress = Float.parseFloat(String.valueOf(numStepsHomeFrag));
+            ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
+                    numStepsHomeFrag - 1,
+                    numStepsHomeFrag);
+            anim.setDuration(100);
+            progressBar.startAnimation(anim);
+
+            Runnable stepCountRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    SharedPreferences sharedPreferences = getActivity().
+                            getSharedPreferences(tempEmail, MODE_PRIVATE);
+                    String theTempEmail = sharedPreferences.getString("Email", "");
+
+                    LocalDate today = LocalDate.now();
+                    LocalDate monday = today.with(previousOrSame(MONDAY));
+                    docRef = firestore.collection("daily").
+
+                            document("week-of-" + monday.toString()).
+
+                            collection(today.toString()).
+
+                            document(theTempEmail);
+                    docRef.update("steps", String.valueOf(numStepsHomeFrag));
+
+                }
+            };
+            Thread backgroundThread = new Thread(stepCountRunnable);
+            backgroundThread.start();
+        }
+    }
+
 }
+
+
