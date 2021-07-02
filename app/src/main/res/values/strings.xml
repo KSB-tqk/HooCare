@@ -8,11 +8,11 @@
     <string name="ArchieveFragTitle">Profile</string>
     <string name="body_measurement_headline_weight">Weight</string>
     <string name="body_measurement_header">Body Measurement</string>
-    <string name="body_measurement_Detail">Details</string>
+    <string name="body_measurement_Detail">View all</string>
     <string name="meals_today_header">Meals today</string>
     <string name="meals_today_customize">Customize</string>
     <string name="carbs_text">Carbs</string>
-    <string name="kcals">Kcals</string>
+    <string name="kcals">Kcal</string>
     <string name="_620">620</string>
     <string name="_10g_left">10g left</string>
     <string name="_12g_left">12g left</string>
@@ -51,8 +51,8 @@
     <string name="overweight">Overweight</string>
     <string name="your_program">My Workout</string>
     <string name="view_button_contentDes">view button</string>
-    <string name="_52_min_workoutLength">52 min</string>
-    <string name="workout_name_detail">Legs Toning and Glutes Workout at Home</string>
+    <string name="_52_min_workoutLength">Loading</string>
+    <string name="workout_name_detail">Loading</string>
     <string name="next_workout">Next workout</string>
     <string name="classic_workouts_label">Classic Workouts</string>
     <string name="for_today_label">For Today</string>
@@ -109,10 +109,8 @@
     <string name="friends">Friends</string>
     <string name="claim_your_rank_reward">Claim your Rank Reward</string>
     <string name="user_name">User Name</string>
-    <string name="animation_exercise_text_detail">Start with your feet together and your arms by
-        your side,then jump up with your feet apart and your hands overhead.</string>
-    <string name="second_text_detail_animation_exercise">Return to the start position then do the next step. This exercise provides full-body workout and works all your large muscle groups.</string>
-
+    <string name="animation_exercise_text_detail">Loading...</string>
+    <string name="second_text_detail_animation_exercise" />
     <string name="view_leader_board">View Leader Board</string>
     <string name="novice_gymer">Novice Gymer</string>
     <string name="intermidiate_runner">Intermidiate Runner</string>
@@ -186,5 +184,8 @@
     <string name="workout_completed">Workout completed</string>
     <string name="congrat">Congrat</string>
     <string name="kcal">Kcal :</string>
+    <string name="choose_workout_below_and_start_now">Choose workouts from below</string>
+    <string name="duration">Duration</string>
+    <string name="no_workout_history">No Workout History</string>
 
 </resources>

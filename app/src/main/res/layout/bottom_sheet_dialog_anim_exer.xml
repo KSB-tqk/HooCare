@@ -1,182 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_sheet_container_exer_anim"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/gym_fragment_rounded_corner_background">
 
-    <ImageView
-        android:id="@+id/grey_blank_view"
-        android:layout_width="30dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/grey_rounded_corner_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/tab_bar_anim_exer_backgound"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/tab_bar_anim_exer">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tab_animation_view"
+        <ImageView
+            android:id="@+id/grey_blank_view"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/grey_rounded_corner_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/tab_bar_anim_exer_backgound"
             android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tab_bar_anim_exer">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/tab_animation_view"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="5dp"
+                    android:background="@drawable/anim_sliding_view"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:layout_width="40dp"
-                android:layout_height="5dp"
-                android:background="@drawable/anim_sliding_view"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:id="@+id/video_title_backgound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/video_title_backgound"
+        <LinearLayout
+            android:id="@+id/tab_bar_anim_exer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/grey_blank_view">
 
-    <LinearLayout
-        android:id="@+id/tab_bar_anim_exer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/grey_blank_view">
+            <TextView
+                android:id="@+id/animation_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Animation"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/video_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Video"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/animation_exercise_viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tab_bar_anim_exer">
+
+        </androidx.viewpager2.widget.ViewPager2>
 
         <TextView
-            android:id="@+id/animation_title"
+            android:id="@+id/title_animation_exercise"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Animation"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:text="JUMPING JACK"
             android:textColor="@color/black"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/animation_exercise_viewPager" />
+
+        <TextView
+            android:id="@+id/text_animation_exercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Duration (Seconds)"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/title_animation_exercise"
+            app:layout_constraintTop_toBottomOf="@id/title_animation_exercise" />
+
+        <ImageView
+            android:id="@+id/plus_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/plus_icon_exercise_animation"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_animation_exercise" />
+
+        <ImageView
+            android:id="@+id/minus_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/minus_icon_exercise_animation"
+            app:layout_constraintRight_toLeftOf="@id/duration_value_text"
+            app:layout_constraintTop_toTopOf="@id/plus_button" />
+
+        <TextView
+            android:id="@+id/duration_value_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="20"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/plus_button"
+            app:layout_constraintRight_toLeftOf="@id/plus_button"
+            app:layout_constraintTop_toTopOf="@id/plus_button" />
+
+        <TextView
+            android:id="@+id/text_detail_animation_exercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="5dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/animation_exercise_text_detail"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/duration_value_text" />
+
+        <TextView
+            android:id="@+id/last_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:lineSpacingExtra="5dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/second_text_detail_animation_exercise"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_detail_animation_exercise" />
+
+
+        <TextView
+            android:id="@+id/close_button_animation_exercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/cardview_background_gradient"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Close"
+            android:textColor="@color/white"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/last_label" />
 
-
-        <TextView
-            android:id="@+id/video_title"
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Video"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/animation_exercise_viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tab_bar_anim_exer">
-
-    </androidx.viewpager2.widget.ViewPager2>
-
-    <TextView
-        android:id="@+id/title_animation_exercise"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:text="JUMPING JACK"
-        android:textColor="@color/black"
-        android:textSize="23sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/animation_exercise_viewPager" />
-
-    <TextView
-        android:id="@+id/text_animation_exercise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Duration (Seconds)"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@id/title_animation_exercise"
-        app:layout_constraintTop_toBottomOf="@id/title_animation_exercise" />
-
-    <ImageView
-        android:id="@+id/plus_button"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/plus_icon_exercise_animation"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_animation_exercise" />
-
-    <ImageView
-        android:id="@+id/minus_button"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/minus_icon_exercise_animation"
-        app:layout_constraintRight_toLeftOf="@id/duration_value_text"
-        app:layout_constraintTop_toTopOf="@id/plus_button" />
-
-    <TextView
-        android:id="@+id/duration_value_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:text="20"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/plus_button"
-        app:layout_constraintRight_toLeftOf="@id/plus_button"
-        app:layout_constraintTop_toTopOf="@id/plus_button" />
-
-    <include
-        android:id="@+id/includedLayout"
-        layout="@layout/animation_exercise_description_layout"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@id/duration_value_text"
-        android:visibility="visible" />
-
-
-    <TextView
-        android:id="@+id/close_button_animation_exercise"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/cardview_background_gradient"
-        android:gravity="center"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="Close"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/includedLayout" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        app:layout_constraintTop_toBottomOf="@id/close_button_animation_exercise"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="30dp"
+            app:layout_constraintTop_toBottomOf="@id/close_button_animation_exercise" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,7 +1,5 @@
 package cf.khanhsb.icare_v2.StepCounter;
 
-import cf.khanhsb.icare_v2.StepListener;
-
 public class StepDetector {
 
     private static final int ACCEL_RING_SIZE = 50;

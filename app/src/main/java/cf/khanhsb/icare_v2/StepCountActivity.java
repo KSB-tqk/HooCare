@@ -41,7 +41,7 @@ import java.util.Date;
 import cf.khanhsb.icare_v2.Adapter.BarChartAdapter;
 import cf.khanhsb.icare_v2.Adapter.StepCountViewPagerAdapter;
 import cf.khanhsb.icare_v2.StepCounter.StepDetector;
-import cf.khanhsb.icare_v2.StepListener;
+import cf.khanhsb.icare_v2.StepCounter.StepListener;
 
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
@@ -92,7 +92,6 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
 
         //set up date
         Date calendar = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + calendar);
         String day = (String) DateFormat.format("dd", calendar); // 20
         String monthString = (String) DateFormat.format("MMM", calendar); // Jun
         String today = day + " " + monthString;

@@ -78,14 +78,16 @@ public class SleepTimeActivity extends AppCompatActivity {
         String tempSleepTime = intent.getStringExtra("sleepTime");
 
         if (tempSleepTime != null) {
-            String[] splitString = tempSleepTime.split(":");
-            if (!splitString[1].equals("0")) {
-                totalSleepTime.setText(splitString[0] + "h " + splitString[1] + "m");
-            } else {
-                totalSleepTime.setText(splitString[0] + "h");
+            if(tempSleepTime.contains(":")) {
+                String[] splitString = tempSleepTime.split(":");
+                if (!splitString[1].equals("0")) {
+                    totalSleepTime.setText(splitString[0] + "h " + splitString[1] + "m");
+                } else {
+                    totalSleepTime.setText(splitString[0] + "h");
+                }
             }
         } else {
-            totalSleepTime.setText("0h");
+            totalSleepTime.setText("0");
         }
 
         //set up date

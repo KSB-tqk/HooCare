@@ -407,6 +407,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void SetUpWaterCard(String theTempEmail) {
+
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
         docRef = firestore.collection("daily").

@@ -1,9 +1,11 @@
 package cf.khanhsb.icare_v2;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -34,38 +37,50 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
 
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
+
 public class WorkoutActivity extends AppCompatActivity {
 
     private ImageView backButton, gifExerciseWorkout, loadingIcon;
     private TextView countDownTextView, exerciseCounter, exerciseTimeCounter, exerciseTitleWorkout,
             excerciseNextTitleWorkout, afterStartWorkoutTitle, afterStartDuration, readyTextLabel,
-            workoutPartMainTitle, skipButton, plusSecondButton, restCountDownTimer,nextLabel,
-            finishedTitle,finishedTime,finishedKcal,totalFinishedExercise, addWeightLabel;
+            workoutPartMainTitle, skipButton, plusSecondButton, restCountDownTimer, nextLabel,
+            finishedTitle, finishedTime, finishedKcal, totalFinishedExercise, addWeightLabel,
+            doneWorkoutButton;
     private ProgressBar progressBar;
-    private int tempProgress = 15000, exercisePos, exerDuration,miniteOfWorkout,secondOfWorkout;
+    private int tempProgress = 15000, exercisePos, exerDuration, miniteOfWorkout, plusDuration,workoutImage;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private static final String tempEmail = "tempEmail";
-    private String exercise_contain, currentExercise, lastExercise;
+    private String exercise_contain, currentExercise, lastExercise,bigWorkoutDuration;
     private ArrayList<String> workoutTitleList, workoutDuration, workoutUri,
             workoutDurationValue, workoutDurationType, workoutVideoUrl;
     private String[] exerciseList;
     private boolean startTicking = true;
     private LinearLayout finishedLinear;
-    private CountDownTimer exerciseCountDown,restCountDown;
+    private CountDownTimer exerciseCountDown, restCountDown;
     private long countDownDuration;
     private ImageView finishExercise;
     private LottieAnimationView congratAnimation;
     private Handler timerHandler;
     private String workoutTitle;
+    private ConstraintLayout gifWorkoutConstaint;
     long startTime = 0;
 
 
@@ -76,6 +91,8 @@ public class WorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_workout);
 
         Intent intent = getIntent();
+        bigWorkoutDuration = intent.getStringExtra("workoutTime");
+        workoutImage = intent.getIntExtra("workoutImage", 0);
 
         countDownTextView = findViewById(R.id.count_down_text);
         backButton = findViewById(R.id.button_backtohomefrag_workout);
@@ -102,6 +119,8 @@ public class WorkoutActivity extends AppCompatActivity {
         finishedKcal = findViewById(R.id.kcal_of_exercise);
         totalFinishedExercise = findViewById(R.id.num_of_exercise);
         addWeightLabel = findViewById(R.id.add_weight_recommended);
+        gifWorkoutConstaint = findViewById(R.id.gif_exer_workout_constaint);
+        doneWorkoutButton = findViewById(R.id.done_button_workout);
 
         //thread pool to stop timer
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -119,14 +138,12 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 exerciseTimeCounter.setText(String.format("%02d:%02d", minutes, seconds));
                 miniteOfWorkout = minutes;
-                secondOfWorkout = seconds;
                 timerHandler.postDelayed(this, 500);
             }
         };
 
         countDownDuration = TimeUnit.SECONDS.toMillis(15);
         progressBar.setMax(15000);
-
 
 
         firestore = FirebaseFirestore.getInstance();
@@ -261,6 +278,8 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 loadingIcon.setVisibility(View.VISIBLE);
 
+                final Context context = getApplication().getApplicationContext();
+
                 Glide.with(WorkoutActivity.this)
                         .load(workoutUri.get(exercisePos))
                         .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
@@ -297,6 +316,7 @@ public class WorkoutActivity extends AppCompatActivity {
         result.start();
 
         finishExercise.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
@@ -330,13 +350,22 @@ public class WorkoutActivity extends AppCompatActivity {
             }
         });
 
+        plusSecondButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                restCountDown.cancel();
+                plusDuration += 9;
+                reverseTimerRest(plusDuration, restCountDownTimer, exerDuration,
+                        afterStartDuration, workoutDuration.get(exercisePos).contains(":"));
+            }
+        });
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WorkoutActivity.this, MainActivity.class);
                 intent.putExtra("fragmentPosition", 2);
                 startActivity(intent);
-                finish();
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
@@ -344,7 +373,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
     public void reverseTimer(int Seconds, final TextView tv) {
 
-        exerciseCountDown =  new CountDownTimer(Seconds * 1000 + 1000, 1000) {
+        exerciseCountDown = new CountDownTimer(Seconds * 1000 + 1000, 1000) {
 
             @SuppressLint({"SetTextI18n", "DefaultLocale"})
             public void onTick(long millisUntilFinished) {
@@ -355,6 +384,7 @@ public class WorkoutActivity extends AppCompatActivity {
                         + ":" + String.format("%02d", seconds));
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             public void onFinish() {
                 setUpNextExercise();
             }
@@ -369,6 +399,7 @@ public class WorkoutActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
                 int minutes = seconds / 60;
+                plusDuration = seconds;
                 seconds = seconds % 60;
                 tv.setText(String.format("%02d", minutes)
                         + ":" + String.format("%02d", seconds));
@@ -416,6 +447,7 @@ public class WorkoutActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     private void setUpNextExercise() {
         finishExercise.setVisibility(View.VISIBLE);
@@ -466,6 +498,7 @@ public class WorkoutActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void endExercise() {
         afterStartDuration.setVisibility(View.INVISIBLE);
         afterStartWorkoutTitle.setVisibility(View.INVISIBLE);
@@ -479,23 +512,41 @@ public class WorkoutActivity extends AppCompatActivity {
         nextLabel.setVisibility(View.INVISIBLE);
         finishedLinear.setVisibility(View.VISIBLE);
         finishedTime.setText(exerciseTimeCounter.getText());
+        gifWorkoutConstaint.setVisibility(View.INVISIBLE);
         totalFinishedExercise.setText(String.valueOf(workoutTitleList.size()));
+        finishedTitle.setText(workoutTitle);
+
+        doneWorkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WorkoutActivity.this, MainActivity.class);
+                intent.putExtra("fragmentPosition", 2);
+                startActivity(intent);
+                Glide.with(WorkoutActivity.this).clear(gifExerciseWorkout);
+                finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            }
+        });
 
         SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
-        String theTempWeight = sharedPreferences.getString("Weight","");
+        String theTempWeight = sharedPreferences.getString("Weight", "");
+        String theTempEmail = sharedPreferences.getString("Email", "");
 
-        if(!theTempWeight.equals("empty")){
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+
+        if (!theTempWeight.equals("empty")) {
             float MET = 0f;
             String[] levelOfWorkout = workoutTitle.split("-");
-            if(levelOfWorkout[1].equals(" Beginner")){
+            if (levelOfWorkout[1].equals(" Beginner")) {
                 MET = 2.8f;
-            } else if(levelOfWorkout[1].equals(" Advanced")) {
+            } else if (levelOfWorkout[1].equals(" Advanced")) {
                 MET = 8.0f;
-            } else if( levelOfWorkout[1].equals(" Intermidiate")){
+            } else if (levelOfWorkout[1].equals(" Intermidiate")) {
                 MET = 3.8f;
             }
 
-            if(miniteOfWorkout > 0){
+            if (miniteOfWorkout > 0) {
                 float kcalOfWorkout = (Float.parseFloat(theTempWeight) * MET) * miniteOfWorkout / 60;
                 finishedKcal.setText(String.valueOf((int) kcalOfWorkout));
             } else {
@@ -506,6 +557,56 @@ public class WorkoutActivity extends AppCompatActivity {
             finishedKcal.setText("No Data");
             addWeightLabel.setVisibility(View.VISIBLE);
         }
+
+        Runnable dataRunnable = new Runnable() {
+            @Override
+            public void run() {
+                firestore = FirebaseFirestore.getInstance();
+
+                String workoutTime = finishedTime.getText().toString();
+                String workoutKcal = finishedKcal.getText().toString();
+                String workoutDay = today.toString();
+                String totalWorkout = totalFinishedExercise.getText().toString();
+
+                Calendar cal = Calendar.getInstance();
+                Date currentLocalTime = cal.getTime();
+                DateFormat date = new SimpleDateFormat("HH:mm");
+                String localTime = date.format(currentLocalTime);
+
+                //set up date
+                Date calendar = Calendar.getInstance().getTime();
+                String day = (String) android.text.format.DateFormat.format("dd", calendar); // 20
+                String monthString = (String) android.text.format.DateFormat.format("MMM", calendar); // Jun
+                String today = day + " " + monthString;
+
+                long time= System.currentTimeMillis();
+
+                Map<String, Object> workoutData = new HashMap<>();
+                workoutData.put("workoutTime", workoutTime);
+                workoutData.put("workoutDay", workoutDay);
+                workoutData.put("workoutDate", today);
+                workoutData.put("firebaseTime", time);
+                workoutData.put("workoutDayTime", localTime);
+                workoutData.put("workoutTitle", workoutTitle);
+                workoutData.put("workoutKcal", workoutKcal);
+                workoutData.put("totalWorkout", totalWorkout);
+                String theWorkoutImage = String.valueOf(workoutImage);
+                workoutData.put("workoutImage",theWorkoutImage);
+
+                firestore.collection("workoutHistory").
+                        document(theTempEmail).collection("History").document().set(workoutData);
+
+                workoutData.put("workoutDuration",bigWorkoutDuration);
+
+                docRef = firestore.collection("workoutHistory").document(theTempEmail);
+                docRef.set(workoutData);
+
+
+            }
+        };
+
+        Thread uploadDataThread = new Thread(dataRunnable);
+        uploadDataThread.start();
 
         congratAnimation.setVisibility(View.VISIBLE);
         congratAnimation.playAnimation();

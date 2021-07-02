@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f2f2"
+    tools:context=".WorkoutHistoryActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/history_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchorGravity="top|center">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentInsetStart="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+                <ImageView
+                    android:id="@+id/button_backtohomefrag_history"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/back_button_contentDes"
+                    android:src="@drawable/back_image_button_anim" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/more_menu_waterfrag"
+                    android:layout_toEndOf="@id/button_backtohomefrag_history">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cardview_background_gradient"
+                        android:backgroundTint="@color/white"
+                        android:fontFamily="@font/momcakebold"
+                        android:padding="8dp"
+                        android:text="Workout History"
+                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                        android:textColor="@color/lime_200"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/more_menu_waterfrag"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="invisible"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/more_image_button_anim" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/history_recycler_view"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@id/history_toolbar"
+        app:layout_anchorGravity="bottom"
+        android:background="#f2f2f2" />
+
+    <TextView
+        android:id="@+id/no_history_label"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_workout_history"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textStyle="bold"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
