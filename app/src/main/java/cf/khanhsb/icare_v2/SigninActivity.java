@@ -80,7 +80,15 @@ public class SigninActivity extends AppCompatActivity {
     private Button btFacebook;
     CallbackManager mCallbackManager;
     private FirebaseAuth mAuth;
-    /////
+
+    @Override
+    public void onBackPressed(){
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

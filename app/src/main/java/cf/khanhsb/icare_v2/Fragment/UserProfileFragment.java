@@ -1,18 +1,29 @@
 package cf.khanhsb.icare_v2.Fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.facebook.login.LoginManager;
@@ -51,10 +62,6 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    public void callParentMethod(){
-        getActivity().onBackPressed();
     }
 
     @Nullable
@@ -137,6 +144,13 @@ public class UserProfileFragment extends Fragment {
 
         Thread backgroundThread = new Thread(getUserInfoFromFirebase);
         backgroundThread.start();
+
+        mName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).openEditNameDialog(Gravity.CENTER);
+            }
+        });
         return rootview;
     }
 }

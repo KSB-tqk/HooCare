@@ -26,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -374,8 +375,13 @@ public class MainActivity extends AppCompatActivity {
                     docRef.update("weight", String.valueOf(weightEditText.getText()));
                     docRef.update("height", String.valueOf(heightEditText.getText()));
 
-                    startActivity(getIntent());
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.putExtra("fragmentPosition", 2);
+                    startActivity(intent);
                     finish();
+
+//                    startActivity(getIntent());
+//                    finish();
                     overridePendingTransition(0, 0);
                 }
             }
@@ -580,5 +586,59 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void openEditNameDialog(int gravity) {
+        final Dialog nameDialog = new Dialog(this);
+        nameDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        nameDialog.setContentView(R.layout.layout_dialog_name);
+
+        Window window = nameDialog.getWindow();
+        if(window == null){
+            return ;
+        }
+
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = gravity;
+        window.setAttributes(windowAttributes);
+
+        if(Gravity.CENTER == gravity){
+            nameDialog.setCancelable(true);
+        } else {
+            nameDialog.setCancelable(false);
+        }
+
+        EditText editTextName = nameDialog.findViewById(R.id.edit_text_name);
+        AppCompatButton cancelButton = nameDialog.findViewById(R.id.cancel_button_name_edit);
+        Button saveButton = nameDialog.findViewById(R.id.save_button_name_edit);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
+
+        firestore = FirebaseFirestore.getInstance();
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nameDialog.dismiss();
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!editTextName.getText().toString().isEmpty()){
+                   docRef =  firestore.collection("users").document(theTempEmail);
+                   docRef.update("name",editTextName.getText().toString());
+                } else {
+                    Toast.makeText(MainActivity.this, "Name can not be empty!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+        nameDialog.show();
     }
 }
