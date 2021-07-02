@@ -136,7 +136,15 @@ public class SignupActivity extends Activity {
                 month = month + 1;
                 Log.d("AddToDoItemActivity","onDateSet: date" + dayOfMonth + "/" + month + "/" + year);
                 mDate = dayOfMonth + "/" + month + "/" + year;
-                mDisplayDate.setText(mDate);
+
+                Calendar calendar = Calendar.getInstance();
+                int currentYear = calendar.get(Calendar.YEAR);
+                int age = currentYear - year;
+                if(age >= 13){
+                    mDisplayDate.setText(mDate);
+                } else {
+                    Toast.makeText(SignupActivity.this, "You need to be older than 12 years old to use this application!", Toast.LENGTH_SHORT).show();
+                }
             }
         };
     }
@@ -167,7 +175,7 @@ public class SignupActivity extends Activity {
         if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             if (!pass.isEmpty()) {
                 if(!(!maleCheckbox.isChecked() && !femaleCheckbox.isChecked())){
-                    if(!mDate.equals("")){
+                    if(!mDisplayDate.getText().toString().equals("Select your date of birth")){
                         mAuth.createUserWithEmailAndPassword(email, pass)
                                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                     @Override

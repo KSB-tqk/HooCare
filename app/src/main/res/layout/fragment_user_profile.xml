@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/curved_background"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,9 +59,10 @@
                 android:background="@color/light_grey"
                 android:drawableLeft="@drawable/name"
                 android:padding="10dp"
+                android:text="@string/loading"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/id_email"
@@ -71,9 +73,10 @@
                 android:background="@color/light_grey"
                 android:drawableLeft="@drawable/email"
                 android:padding="10dp"
+                android:text="@string/loading"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/id_date_of_birth"
@@ -81,12 +84,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/id_email"
                 android:layout_margin="10dp"
+                android:text="@string/loading"
                 android:background="@color/light_grey"
                 android:drawableLeft="@drawable/ic_calendar"
                 android:padding="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/id_gender"
@@ -94,25 +98,26 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/id_date_of_birth"
                 android:layout_margin="10dp"
+                android:text="@string/loading"
                 android:background="@color/light_grey"
                 android:drawableLeft="@drawable/ic_gender"
                 android:padding="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:id="@+id/linearlogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/id_gender"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:background="@drawable/nav_menu_item_background"
-                android:layout_below="@id/id_gender">
+                android:paddingStart="20dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="5dp">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -124,8 +129,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:padding="5dp"
                     android:layout_margin="5dp"
+                    android:padding="5dp"
                     android:text="Log Out"
                     android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
             </LinearLayout>
