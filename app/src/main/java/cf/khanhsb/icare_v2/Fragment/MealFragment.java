@@ -60,6 +60,9 @@ public class MealFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public void callParentMethod(){
+        getActivity().onBackPressed();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

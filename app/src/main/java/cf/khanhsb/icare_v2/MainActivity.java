@@ -81,6 +81,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(sleepTime, MODE_PRIVATE);
     }
 
+    @Override
+    public void onBackPressed() {
+        //do nothing
+    }
+
     FloatingActionMenu add_floatbtn;
     FloatingActionButton set_weigh;
     FloatingActionButton drink_water_fltbtn;

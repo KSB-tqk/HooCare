@@ -77,6 +77,10 @@ public class GymFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public void callParentMethod(){
+        getActivity().onBackPressed();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -53,6 +53,10 @@ public class UserProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    public void callParentMethod(){
+        getActivity().onBackPressed();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -95,31 +99,44 @@ public class UserProfileFragment extends Fragment {
 
         mEmail.setText(theTempEmail);
         firestore = FirebaseFirestore.getInstance();
-        docRef = firestore.collection("users").document(theTempEmail);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+        Runnable getUserInfoFromFirebase = new Runnable() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-                        String temp = document.getString("name");
-                        String tempBirth = document.getString("date_of_birth");
-                        String tempGender = document.getString("gender");
-                        mName.setText(temp);
+            public void run() {
+                docRef = firestore.collection("users").document(theTempEmail);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null) {
+                                String temp = document.getString("name");
+                                String tempBirth = document.getString("date_of_birth");
+                                String tempGender = document.getString("gender");
+                                mName.setText(temp);
 
-                        assert tempBirth != null;
-                        if(!tempBirth.equals("empty")){
-                            mDateOfBirth.setText(tempBirth);
-                        }
+                                assert tempBirth != null;
+                                if(!tempBirth.equals("empty")){
+                                    mDateOfBirth.setText(tempBirth);
+                                } else {
+                                    mDateOfBirth.setText("Choose date of birth");
+                                }
 
-                        assert tempGender != null;
-                        if(!tempGender.equals("empty")){
-                            mGender.setText(tempGender);
+                                assert tempGender != null;
+                                if(!tempGender.equals("empty")){
+                                    mGender.setText(tempGender);
+                                }else {
+                                    mGender.setText("Choose Gender");
+                                }
+                            }
                         }
                     }
-                }
+                });
             }
-        });
+        };
+
+        Thread backgroundThread = new Thread(getUserInfoFromFirebase);
+        backgroundThread.start();
         return rootview;
     }
 }

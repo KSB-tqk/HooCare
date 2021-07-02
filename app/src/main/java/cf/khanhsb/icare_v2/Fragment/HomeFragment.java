@@ -79,6 +79,10 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         // Required empty public constructor
     }
 
+    public void callParentMethod(){
+        getActivity().onBackPressed();
+    }
+
     public HomeFragment(String userEmail) {
         this.userEmail = userEmail;
     }
