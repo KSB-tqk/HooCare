@@ -66,7 +66,8 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
 
-
+    private TextView km_step_count;
+    private TextView kcal_step_count_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,8 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         date_time_text = (TextView) findViewById(R.id.date_time_text);
         bottomSheetContainer = (ConstraintLayout) findViewById(R.id.bottom_sheet_container_step_count);
         step_count_text = (TextView) findViewById(R.id.step_count_text);
-
+        km_step_count = (TextView) findViewById(R.id.km_step_count_text);
+        kcal_step_count_text= (TextView) findViewById(R.id.kcal_step_count_text) ;
         //set up date
         Date calendar = Calendar.getInstance().getTime();
         String day = (String) DateFormat.format("dd", calendar); // 20
@@ -244,8 +246,14 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
                             DocumentSnapshot document = task.getResult();
                             if (document != null) {
                                 String temp = document.getString("steps");
+                                double to_km = Double.parseDouble(temp);
+                                double to_cal = Double.parseDouble(temp);
                                 if (!"empty".equals(temp)) {
                                     step_count_text.setText(String.valueOf(temp));
+                                    to_km = to_km * 0.000762;
+                                    to_cal= to_cal*0.0447;
+                                    km_step_count.setText(String.valueOf(to_km));
+                                    kcal_step_count_text.setText(String.valueOf(to_cal));
                                 }
                             } else {
                                 Log.d("LOGGER", "No such document");
