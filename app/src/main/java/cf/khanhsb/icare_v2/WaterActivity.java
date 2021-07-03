@@ -32,6 +32,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.john.waveview.WaveView;
 
 import java.time.LocalDate;
@@ -61,7 +63,7 @@ public class WaterActivity extends AppCompatActivity {
     private SeekBar seekBar;
     private static final String tempEmail = "tempEmail";
     private ViewPager2 verticalViewPager2;
-    BarChartAdapter adapter;
+    private BarChartAdapter adapter;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
@@ -495,6 +497,29 @@ public class WaterActivity extends AppCompatActivity {
                 week_tab.setTextColor(def_color);
             }
         });
+
+        Runnable getWaterListPerDay = new Runnable() {
+            @Override
+            public void run() {
+                LocalDate tempDate = monday;
+                for(int i = 0;i < 6; i++){
+
+                    firestore.collection("daily").
+                            document("week-of-" + monday.toString()).
+                            collection(tempDate.toString())
+                            .whereEqualTo("userEmail",theTempEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        }
+                    });
+
+
+                    tempDate.plusDays(1);
+                }
+
+            }
+        };
 
         ArrayList<BarDataSet> chartBarDataSetList = new ArrayList<>();
 

@@ -42,7 +42,9 @@ public class BarChartAdapter extends RecyclerView.Adapter<BarChartAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //set image on image_view
-        holder.barChart.setData(new BarData(new BarDataSet(this.barEntryArrayList,"")));
+        BarDataSet barDataSet = new BarDataSet(this.barEntryArrayList,"");
+        barDataSet.setValueTextSize(12f);
+        holder.barChart.setData(new BarData(barDataSet));
 
         holder.barChart.setDescription(null);
         holder.barChart.getLegend().setEnabled(false);

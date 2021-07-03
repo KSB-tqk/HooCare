@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,339 +7,344 @@
     android:background="#f2f2f2"
     tools:context=".WaterActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/water_toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/water_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentInsetStart="0dp">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <RelativeLayout
+            <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
+                app:contentInsetStart="0dp">
 
-                <ImageView
-                    android:id="@+id/button_backtohomefrag"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@string/back_button_contentDes"
-                    android:src="@drawable/back_image_button_anim" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/more_menu_waterfrag"
-                    android:layout_toEndOf="@id/button_backtohomefrag">
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
-                    <TextView
+                    <ImageView
+                        android:id="@+id/button_backtohomefrag"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/back_button_contentDes"
+                        android:src="@drawable/back_image_button_anim" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/cardview_background_gradient"
-                        android:backgroundTint="@color/white"
-                        android:fontFamily="@font/momcakebold"
-                        android:padding="8dp"
-                        android:text="@string/water_label"
-                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                        android:textColor="@color/lime_200"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_toStartOf="@id/more_menu_waterfrag"
+                        android:layout_toEndOf="@id/button_backtohomefrag">
 
-                <ImageView
-                    android:id="@+id/more_menu_waterfrag"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/more_image_button_anim" />
-            </RelativeLayout>
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/cardview_background_gradient"
+                            android:backgroundTint="@color/white"
+                            android:fontFamily="@font/momcakebold"
+                            android:padding="8dp"
+                            android:text="@string/water_label"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                            android:textColor="@color/lime_200"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/water_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:elevation="8dp"
-        app:cardCornerRadius="20dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintTop_toBottomOf="@id/water_toolbar">
+                    <ImageView
+                        android:id="@+id/more_menu_waterfrag"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/more_image_button_anim" />
+                </RelativeLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/water_card_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:elevation="8dp"
+            app:cardCornerRadius="20dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@id/water_toolbar">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/step_count_label_background"
-                android:orientation="vertical"
-                android:padding="10dp"
-                app:layout_constraintBottom_toBottomOf="@id/wave_view_water"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/wave_view_water"
-                app:layout_constraintTop_toTopOf="@id/wave_view_water">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:id="@+id/water_count_linear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:background="@drawable/step_count_label_background"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="@id/wave_view_water"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/wave_view_water"
+                    app:layout_constraintTop_toTopOf="@id/wave_view_water">
 
-                    <TextView
-                        android:id="@+id/water_count_text"
+                    <LinearLayout
+                        android:id="@+id/water_count_linear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/water_count_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="25sp"
+                            android:textStyle="bold"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/ml_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="ML"
+                            android:textColor="@color/lime_200"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/ml_text"
+                        android:id="@+id/water_daily_goal_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="ML"
-                        android:textColor="@color/lime_200"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="of 3.5L goal"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/water_daily_goal_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="of 3.5L goal"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/more_cup_linear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/step_count_label_background"
-                android:orientation="vertical"
-                android:padding="10dp"
-                app:layout_constraintBottom_toBottomOf="@id/wave_view_water"
-                app:layout_constraintLeft_toRightOf="@id/wave_view_water"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/wave_view_water">
-
                 <LinearLayout
-                    android:id="@+id/water_cup_count_linear"
+                    android:id="@+id/more_cup_linear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toTopOf="@id/water_daily_goal_text"
+                    android:background="@drawable/step_count_label_background"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="@id/wave_view_water"
                     app:layout_constraintLeft_toRightOf="@id/wave_view_water"
-                    app:layout_constraintRight_toRightOf="parent">
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/wave_view_water">
 
-                    <TextView
-                        android:id="@+id/water_cup_count_text"
+                    <LinearLayout
+                        android:id="@+id/water_cup_count_linear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toTopOf="@id/water_daily_goal_text"
+                        app:layout_constraintLeft_toRightOf="@id/wave_view_water"
+                        app:layout_constraintRight_toRightOf="parent">
+
+                        <TextView
+                            android:id="@+id/water_cup_count_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="25sp"
+                            android:textStyle="bold"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/cup_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="Cups"
+                            android:textColor="@color/lime_200"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/cup_text"
+                        android:id="@+id/water_cup_daily_goal_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="Cups"
-                        android:textColor="@color/lime_200"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="more to go"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/water_cup_daily_goal_text"
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/minus_water_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/minus_drink_water_circular_icon_unchecked"
+                    app:layout_constraintTop_toTopOf="@id/drink_water_button"
+                    app:layout_constraintRight_toLeftOf="@id/drink_water_button"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintBottom_toBottomOf="@id/drink_water_button" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/drink_water_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="more to go"
-                    android:textSize="15sp" />
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/cardview_background_gradient"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="10dp"
+                    android:text="Drink"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="@id/wave_view_water"
+                    app:layout_constraintRight_toRightOf="@id/wave_view_water"
+                    app:layout_constraintTop_toBottomOf="@id/wave_view_water" />
+
+                <com.john.waveview.WaveView
+                    android:id="@+id/wave_view_water"
+                    android:layout_width="80dp"
+                    android:layout_height="175dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/lime_200"
+                    app:above_wave_color="@color/white"
+                    app:blow_wave_color="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:progress="0"
+                    app:wave_height="large"
+                    app:wave_hz="normal"
+                    app:wave_length="middle" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="175dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/water_container_background"
+                    app:layout_constraintLeft_toLeftOf="@id/wave_view_water"
+                    app:layout_constraintRight_toRightOf="@id/wave_view_water"
+                    app:layout_constraintTop_toTopOf="@id/wave_view_water" />
+
+                <SeekBar
+                    android:id="@+id/seek_bar"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintLeft_toLeftOf="@id/wave_view_water"
+                    app:layout_constraintRight_toRightOf="@id/wave_view_water"
+                    app:layout_constraintTop_toTopOf="@id/wave_view_water"
+                    android:progress="80" />
+
+                <Space
+                    android:layout_width="20dp"
+                    android:layout_height="10dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/drink_water_button" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <FrameLayout
+            android:id="@+id/water_chart_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="23dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/tab_background"
+            app:layout_constraintTop_toBottomOf="@id/water_card_view">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/selected_background_tab_water_act"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/tab_item_background" />
+
+                <TextView
+                    android:id="@+id/textbackground2_water_act"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textbackground3_water_act"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
             </LinearLayout>
 
-            <ImageView
-                android:visibility="gone"
-                android:id="@+id/minus_water_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/minus_drink_water_circular_icon_unchecked"
-                app:layout_constraintTop_toTopOf="@id/drink_water_button"
-                app:layout_constraintRight_toLeftOf="@id/drink_water_button"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintBottom_toBottomOf="@id/drink_water_button" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/drink_water_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/cardview_background_gradient"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="10dp"
-                android:text="Drink"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="@id/wave_view_water"
-                app:layout_constraintRight_toRightOf="@id/wave_view_water"
-                app:layout_constraintTop_toBottomOf="@id/wave_view_water" />
-
-            <com.john.waveview.WaveView
-                android:id="@+id/wave_view_water"
-                android:layout_width="80dp"
-                android:layout_height="175dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/lime_200"
-                app:above_wave_color="@color/white"
-                app:blow_wave_color="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:progress="0"
-                app:wave_height="large"
-                app:wave_hz="normal"
-                app:wave_length="middle" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="175dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/water_container_background"
-                app:layout_constraintLeft_toLeftOf="@id/wave_view_water"
-                app:layout_constraintRight_toRightOf="@id/wave_view_water"
-                app:layout_constraintTop_toTopOf="@id/wave_view_water" />
-
-            <SeekBar
-                android:id="@+id/seek_bar"
-                android:visibility="gone"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintLeft_toLeftOf="@id/wave_view_water"
-                app:layout_constraintRight_toRightOf="@id/wave_view_water"
-                app:layout_constraintTop_toTopOf="@id/wave_view_water"
-                android:progress="80" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="10dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/drink_water_button" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/text_item1_water_act"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/day"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                    android:textColor="@color/white" />
 
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/text_item2_water_act"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/week"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
-    <FrameLayout
-        android:id="@+id/water_chart_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="23dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/tab_background"
-        app:layout_constraintTop_toBottomOf="@id/water_card_view">
+                <TextView
+                    android:id="@+id/text_item3_water_act"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/month"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+            </LinearLayout>
+        </FrameLayout>
 
-        <LinearLayout
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/water_barchart_viewPager2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="350dp"
+            android:orientation="horizontal"
+            android:paddingBottom="20dp"
+            app:layout_constraintTop_toBottomOf="@id/water_chart_nav">
+        </androidx.viewpager2.widget.ViewPager2>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/selected_background_tab_water_act"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/tab_item_background" />
-
-            <TextView
-                android:id="@+id/textbackground2_water_act"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/textbackground3_water_act"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/text_item1_water_act"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/day"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/text_item2_water_act"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/week"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
-
-            <TextView
-                android:id="@+id/text_item3_water_act"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/month"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
-        </LinearLayout>
-    </FrameLayout>
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/water_barchart_viewPager2"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:orientation="horizontal"
-        android:paddingBottom="20dp"
-        app:layout_constraintTop_toBottomOf="@id/water_chart_nav">
-    </androidx.viewpager2.widget.ViewPager2>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
