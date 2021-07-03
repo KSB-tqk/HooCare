@@ -148,7 +148,21 @@ public class UserProfileFragment extends Fragment {
         mName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getActivity()).openEditNameDialog(Gravity.CENTER);
+                ((MainActivity) getActivity()).openEditNameDialog(Gravity.CENTER,3);
+            }
+        });
+
+        mDateOfBirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).openEditBirthdayDialog(Gravity.CENTER,3);
+            }
+        });
+
+        mGender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).openEditGenderDialog(Gravity.CENTER,3);
             }
         });
         return rootview;

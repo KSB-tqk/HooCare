@@ -188,5 +188,9 @@
     <string name="duration">Duration</string>
     <string name="no_workout_history">No Workout History</string>
     <string name="loading">Loading...</string>
+    <string name="cancel">Cancel</string>
+    <string name="date_of_birth">Date Of Birth</string>
+    <string name="gender">Gender</string>
+    <string name="your_name">Your Name</string>
 
 </resources>

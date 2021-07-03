@@ -134,7 +134,7 @@ public class MealFragment extends Fragment {
         setUpBMIButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getActivity()).fillForm(Gravity.BOTTOM);
+                ((MainActivity) getActivity()).fillForm(Gravity.CENTER,1);
             }
         });
 

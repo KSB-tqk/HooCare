@@ -135,7 +135,7 @@
 
                 <LinearLayout
                     android:id="@+id/eye_condition_linear"
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/time_usage_eye_condition_box_background"
                     android:orientation="vertical"
