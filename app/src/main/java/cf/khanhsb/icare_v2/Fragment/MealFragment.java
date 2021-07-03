@@ -256,10 +256,10 @@ public class MealFragment extends Fragment {
             String[] realDate = tempDate.split("/");
             float year = (float) Calendar.getInstance().get(Calendar.YEAR);
             float age = year - Float.parseFloat(realDate[2]);
-            if(tempGender.equals("male")){
+            if(tempGender.equals("Male")){
                 bodyfat = ((1.2f * ans) + (0.23f * age)) - 16.2f;
                 bodyFatAns = String.format("%.0f", bodyfat) + "%";
-            } else if(tempGender.equals("female")){
+            } else if(tempGender.equals("Female")){
                 bodyfat = ((1.2f * ans) + (0.23f * age)) - 5.4f;
                 bodyFatAns = String.format("%.0f", bodyfat) + "%";
             }
