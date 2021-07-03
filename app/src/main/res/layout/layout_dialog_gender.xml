@@ -1,6 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background_white_corner_16"
+    android:layout_margin="16dp">
+    <TextView
+        android:id="@+id/edit_gender_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/gender"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/lime_200"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:background="@drawable/top_color_white_corner_16"/>
 
+
+    <LinearLayout
+        android:id="@+id/edit_gender_text_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/edit_gender_label">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:text="Please choose your gender"
+            android:textColor="@color/black"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <ImageView
+                android:id="@+id/male_image_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/male_checkbox_icon_black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/female_image_edit"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+
+            <CheckBox
+                android:id="@+id/male_checkbox_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="@id/male_image_edit"
+                app:layout_constraintTop_toTopOf="@id/male_image_edit"
+                android:visibility="invisible"/>
+
+            <CheckBox
+                android:id="@+id/female_checkbox_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="@id/female_image_edit"
+                app:layout_constraintTop_toTopOf="@id/female_image_edit"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/female_image_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/female_checkbox_icon_black"
+                app:layout_constraintTop_toTopOf="@id/male_image_edit"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/male_image_edit"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cancel_button_name_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:alpha="0.5"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_button_cancel_background"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/save_button_name_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="save"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:background="@drawable/edit_button_cancel_background"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
