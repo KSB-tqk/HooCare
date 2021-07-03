@@ -66,7 +66,6 @@
                         android:id="@+id/username_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/username"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -587,6 +586,7 @@
                         </ImageView>
 
                         <TextView
+                            android:id="@+id/num_of_exercise_home_frag"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
