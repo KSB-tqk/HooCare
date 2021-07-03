@@ -53,16 +53,14 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
             sleepCardView, trainingCardView, progressBar_text, timeOnScreenCardView;
     private ProgressBar progressBar;
     private ConstraintLayout setupStepGoal, setupWaterGoal;
-    private String userEmail;
+    private String userEmail, theTempEmail;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
-    private String step_goal, drink_goal;
+    private String step_goal, drink_goal, sleepTime, stepGoal;
     private TextView statusOfProgressBar, numOfWater, sleepTimeTextView, timeOnScreenTextView;
-    private int numberOfStep;
+
     private FirebaseAuth mAuth;
     private static final String tempEmail = "tempEmail";
-    private String sleepTime, stepGoal;
-
     private TextView userName, numOfExercise;
 
 
@@ -105,7 +103,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         simpleStepDetector.registerListener(this);
 
         sensorManager.registerListener(HomeFragment.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
-
+      
         waterCardview = (LinearLayout) rootView.findViewById(R.id.water_card_view_linear);
         stepCardView = (LinearLayout) rootView.findViewById(R.id.step_count_cardview_linear);
         caloCardView = (LinearLayout) rootView.findViewById(R.id.calo_card_view_linear);
@@ -125,7 +123,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
         SharedPreferences sharedPreferences = this.getActivity().
                 getSharedPreferences(tempEmail, MODE_PRIVATE);
-        String theTempEmail = sharedPreferences.getString("Email", "");
+        theTempEmail = sharedPreferences.getString("Email", "");
 
         waterCardview.setClickable(false);
         stepCardView.setClickable(false);
@@ -166,9 +164,11 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                 String temp = document.getString("steps");
                                 if (temp != null) {
                                     if (!"empty".equals(temp)) {
-                                        home_step_count.setText(String.valueOf(temp));
 
+                                        home_step_count.setText(String.valueOf(temp));
                                         numStepsHomeFrag = Integer.parseInt(temp);
+
+
                                     }
                                 }
                             } else {
@@ -186,6 +186,9 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
         Thread stepDataThread = new Thread(stepData);
         stepDataThread.start();
+
+
+
 
 
         waterCardview.setOnClickListener(new View.OnClickListener() {
@@ -400,14 +403,29 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                         userName.setText(mName);
 
                         step_goal = document.getString("step_goal");
-                        Log.i("LOGGER", "Here it is " + document.getString("step_goal"));
+
                         if ("empty".equals(step_goal)) {
-                            statusOfProgressBar.setText("step");
+                            statusOfProgressBar.setText("steps");
                             setupStepGoal.setVisibility(View.VISIBLE);
                         } else {
                             setupStepGoal.setVisibility(View.GONE);
                             statusOfProgressBar.setText("/" + step_goal);
-                            numberOfStep = Integer.parseInt("0");
+                            if (!statusOfProgressBar.getText().equals("steps")) {
+
+                                home_step_count.setText(TEXT_NUM_STEPS + numStepsHomeFrag);
+
+
+                                String tempStepGoal = statusOfProgressBar.getText().toString().substring(1);
+                                progressBar.setMax(Integer.parseInt(tempStepGoal));
+
+
+                                ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
+                                        numStepsHomeFrag - 1,
+                                        numStepsHomeFrag);
+                                anim.setDuration(100);
+                                progressBar.startAnimation(anim);
+                            }
+
                         }
 
                         drink_goal = document.getString("drink_goal");
@@ -549,7 +567,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
             String tempStepGoal = statusOfProgressBar.getText().toString().substring(1);
             progressBar.setMax(Integer.parseInt(tempStepGoal));
 
-            float progress = Float.parseFloat(String.valueOf(numStepsHomeFrag));
+
             ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
                     numStepsHomeFrag - 1,
                     numStepsHomeFrag);
@@ -559,12 +577,13 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
             Runnable stepCountRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    SharedPreferences sharedPreferences = getActivity().
-                            getSharedPreferences(tempEmail, MODE_PRIVATE);
-                    String theTempEmail = sharedPreferences.getString("Email", "");
-
                     LocalDate today = LocalDate.now();
                     LocalDate monday = today.with(previousOrSame(MONDAY));
+                    if (userEmail == null) {
+                        docRef = firestore.collection("users").document(theTempEmail);
+                    } else {
+                        docRef = firestore.collection("users").document(userEmail);
+                    }
                     docRef = firestore.collection("daily").
 
                             document("week-of-" + monday.toString()).
