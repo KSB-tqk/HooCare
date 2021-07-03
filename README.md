@@ -12,3 +12,7 @@ Tran Quoc Khanh - 19521686
 Nong Ngoc Xuan Hoang - 19521541
 
 Nguyen The Dan - 19521312
+
+## License
+
+HooCare is released under the Apache License 2.0. Copyright [2021] [See LICENSE](https://github.com/KSB-tqk/HooCare/blob/master/LICENSE) for details
