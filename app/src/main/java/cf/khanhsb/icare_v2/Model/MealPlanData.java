@@ -6,16 +6,14 @@ import java.util.ArrayList;
 
 public class MealPlanData {
     private ArrayList<String> titles;
-    private ArrayList<String> kcal;
     private ArrayList<String> detailOfMeal;
     private ArrayList<Integer> icons;
     private ArrayList<Drawable> backgrounds;
 
     public MealPlanData(ArrayList<String> titles,ArrayList<String> detailOfMeal,
-                        ArrayList<String> kcal, ArrayList<Integer> icons,
+                         ArrayList<Integer> icons,
                         ArrayList<Drawable> backgrounds){
         this.detailOfMeal = detailOfMeal;
-        this.kcal = kcal;
         this.titles = titles;
         this.icons = icons;
         this.backgrounds = backgrounds;
@@ -32,10 +30,6 @@ public class MealPlanData {
         this.detailOfMeal = detailOfMeal;
     }
 
-    public void setKcal(ArrayList<String> kcal) {
-        this.kcal = kcal;
-    }
-
     public void setTitles(ArrayList<String> titles) {
         this.titles = titles;
     }
@@ -50,10 +44,6 @@ public class MealPlanData {
 
     public ArrayList<String> getDetailOfMeal() {
         return detailOfMeal;
-    }
-
-    public ArrayList<String> getKcal() {
-        return kcal;
     }
 
     public ArrayList<String> getTitles() {

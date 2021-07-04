@@ -577,14 +577,14 @@ public class WorkoutActivity extends AppCompatActivity {
                 Date calendar = Calendar.getInstance().getTime();
                 String day = (String) android.text.format.DateFormat.format("dd", calendar); // 20
                 String monthString = (String) android.text.format.DateFormat.format("MMM", calendar); // Jun
-                String today = day + " " + monthString;
+                String todayFirebase = day + " " + monthString;
 
                 long time= System.currentTimeMillis();
 
                 Map<String, Object> workoutData = new HashMap<>();
                 workoutData.put("workoutTime", workoutTime);
                 workoutData.put("workoutDay", workoutDay);
-                workoutData.put("workoutDate", today);
+                workoutData.put("workoutDate", todayFirebase);
                 workoutData.put("firebaseTime", time);
                 workoutData.put("workoutDayTime", localTime);
                 workoutData.put("workoutTitle", workoutTitle);
@@ -601,7 +601,29 @@ public class WorkoutActivity extends AppCompatActivity {
                 docRef = firestore.collection("workoutHistory").document(theTempEmail);
                 docRef.set(workoutData);
 
+                docRef =  firestore.collection("daily").
+                        document("week-of-" + monday.toString()).
+                        collection(today.toString()).
+                        document(theTempEmail);
 
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null) {
+                                String tempNumOfExercise = document.getString("num_of_exercise");
+                                String tempAmountOfKcal = document.getString("kcal_workout");
+                                assert tempNumOfExercise != null;
+                                docRef.update("num_of_exercise",String.valueOf(Integer.parseInt(tempNumOfExercise)+1));
+
+                                if(!workoutKcal.equals("No Data")){
+                                    docRef.update("kcal_workout",String.valueOf(Integer.parseInt(workoutKcal)+Integer.parseInt(tempAmountOfKcal)));
+                                }
+                            }
+                        }
+                    }
+                });
             }
         };
 

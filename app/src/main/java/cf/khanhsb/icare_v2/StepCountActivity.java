@@ -34,9 +34,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,7 +45,6 @@ import cf.khanhsb.icare_v2.StepCounter.StepListener;
 
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
-
 
 public class StepCountActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -73,12 +69,6 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
     private TextView km_step_count;
     private TextView kcal_step_count_text;
 
-    private ImageView right_arrow_datetime;
-    private ImageView left_arrow_datetime;
-
-    int i =1;
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,9 +79,6 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         String theTempEmail = sharedPreferences.getString("Email", "");
 
         /**assign variable*/
-        left_arrow_datetime = (ImageView) findViewById(R.id.left_arrow_datetime);
-        right_arrow_datetime = (ImageView) findViewById(R.id.right_arrow_datetime);
-        statusOfProgressBar = (TextView) findViewById(R.id.progressbar_status);
         day_tab = (TextView) findViewById(R.id.text_item1);
         week_tab = (TextView) findViewById(R.id.text_item2);
         month_tab = (TextView) findViewById(R.id.text_item3);
@@ -103,20 +90,14 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         bottomSheetContainer = (ConstraintLayout) findViewById(R.id.bottom_sheet_container_step_count);
         step_count_text = (TextView) findViewById(R.id.step_count_text);
         km_step_count = (TextView) findViewById(R.id.km_step_count_text);
-        kcal_step_count_text = (TextView) findViewById(R.id.kcal_step_count_text);
+        kcal_step_count_text= (TextView) findViewById(R.id.kcal_step_count_text) ;
         //set up date
-//        Date calendar = Calendar.getInstance().getTime();
-//        String day = (String) DateFormat.format("dd", calendar); // 20
-//        String monthString = (String) DateFormat.format("MMM", calendar); // Jun
-//        String now = day + " " + monthString;
+        Date calendar = Calendar.getInstance().getTime();
+        String day = (String) DateFormat.format("dd", calendar); // 20
+        String monthString = (String) DateFormat.format("MMM", calendar); // Jun
+        String today = day + " " + monthString;
 
-        LocalDate now = LocalDate.now();
-
-
-        String formattedDate = now.format(DateTimeFormatter.ofPattern("dd-MMM-yy"));
-
-
-        date_time_text.setText(formattedDate);
+        date_time_text.setText(today);
 
 
         /**set tabview onclick listener*/
@@ -129,69 +110,6 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         String userEmail = infoIntent.getStringExtra("userEmail");
         String step_goal = infoIntent.getStringExtra("step_goal");
 
-        LocalDate today = LocalDate.now();
-        LocalDate monday = today.with(previousOrSame(MONDAY));
-
-        LocalDate yesterday = today.minusDays(i);
-
-        firestore = FirebaseFirestore.getInstance();
-
-        left_arrow_datetime.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                i++;
-                String format = yesterday.format(DateTimeFormatter.ofPattern("dd-MMM-yy"));
-                date_time_text.setText(format);
-                Runnable left_button_step = new Runnable() {
-
-                    @Override
-                    public void run() {
-
-                        docRef = firestore.collection("daily").
-                                document("week-of-" + monday.toString()).
-                                collection(yesterday.toString()).
-                                document(theTempEmail);
-
-                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document != null) {
-                                        String temp = document.getString("steps");
-                                        double to_km = Double.parseDouble(temp);
-                                        double to_cal = Double.parseDouble(temp);
-                                        if (!"empty".equals(temp)) {
-                                            step_count_text.setText(temp);
-                                            to_km = to_km * 0.000762;
-                                            to_cal = to_cal * 0.0447;
-
-                                            float f = (float) to_km;
-                                            String s = String.format("%.3f", f);
-
-                                            km_step_count.setText(s);
-                                            kcal_step_count_text.setText(String.valueOf(to_cal));
-
-                                            docRef = firestore.collection("daily").
-
-
-                                                    document("week-of-" + monday.toString()).
-                                                    collection(yesterday.toString()).
-                                                    document(theTempEmail);
-                                        }
-                                    }
-                                }
-                            }
-                        });
-
-                    }
-                };
-
-                Thread left_button_step_thread = new Thread(left_button_step);
-                left_button_step_thread.start();
-            }
-        });
 
 
         /**back button on the toolbar click event*/
@@ -239,7 +157,8 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
                             customTitle.setTextColor(getResources().getColor(R.color.black));
                             recommendTitle.setTextColor(Color.parseColor("#7E7E7E"));
                             selectedBackground.animate().x(size).setDuration(200);
-                        } else {
+                        }
+                        else {
                             customTitle.setTextColor(Color.parseColor("#7E7E7E"));
                             recommendTitle.setTextColor(getResources().getColor(R.color.black));
                             selectedBackground.animate().x(0).setDuration(200);
@@ -311,7 +230,9 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
-
+                LocalDate today = LocalDate.now();
+                LocalDate monday = today.with(previousOrSame(MONDAY));
+                firestore = FirebaseFirestore.getInstance();
                 docRef = firestore.collection("daily").
                         document("week-of-" + monday.toString()).
                         collection(today.toString()).
@@ -327,25 +248,11 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
                                 double to_km = Double.parseDouble(temp);
                                 double to_cal = Double.parseDouble(temp);
                                 if (!"empty".equals(temp)) {
-                                    step_count_text.setText(temp);
+                                    step_count_text.setText(String.valueOf(temp));
                                     to_km = to_km * 0.000762;
-                                    to_cal = to_cal * 0.0447;
-
-                                    float f = (float) to_km;
-                                    String s = String.format("%.3f", f);
-
-                                    km_step_count.setText(s);
+                                    to_cal= to_cal*0.0447;
+                                    km_step_count.setText(String.valueOf(to_km));
                                     kcal_step_count_text.setText(String.valueOf(to_cal));
-
-                                    docRef = firestore.collection("daily").
-
-                                            document("week-of-" + monday.toString()).
-                                            collection(today.toString()).
-                                            document(theTempEmail);
-
-
-                                    docRef.update("cal_step", kcal_step_count_text.getText());
-                                    docRef.update("km_step", km_step_count.getText());
                                 }
                             } else {
                                 Log.d("LOGGER", "No such document");
@@ -362,6 +269,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         };
         Thread backgroundThread = new Thread(stepCountRunnable);
         backgroundThread.start();
+
 
 
     }
