@@ -79,7 +79,6 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         String theTempEmail = sharedPreferences.getString("Email", "");
 
         /**assign variable*/
-        statusOfProgressBar = (TextView) findViewById(R.id.progressbar_status);
         day_tab = (TextView) findViewById(R.id.text_item1);
         week_tab = (TextView) findViewById(R.id.text_item2);
         month_tab = (TextView) findViewById(R.id.text_item3);

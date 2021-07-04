@@ -55,14 +55,13 @@ public class MealFragment extends Fragment {
     private MealViewPagerAdapter adapter;
     private MealPlanData mealPlanData;
     private TextView weightTextView, heightTextView, setUpBMIButton, bmiTextView,
-            bodyFatData, eatenKCal, burnedKcal, progressbarStatus, bmiTitle;
+            bodyFatData, eatenKCal, burnedKcal, bmiTitle;
 
     private static final String tempEmail = "tempEmail";
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private ConstraintLayout setUPContraint;
     private RelativeLayout bmiRelative;
-    private ProgressBar remainKcalReal, remainKcalFake;
 
     ///MealInputVariables
     private EditText mCarbsBreakfast, mProteinBreakfast, mFatBreakfast,
@@ -109,9 +108,6 @@ public class MealFragment extends Fragment {
         mealCardview = rootview.findViewById(R.id.MealCardView);
         expandableView = rootview.findViewById(R.id.inputmeallayout);
         burnedKcal = rootview.findViewById(R.id.burned_kcal_number);
-        progressbarStatus = rootview.findViewById(R.id.progressbar_status);
-        remainKcalFake = rootview.findViewById(R.id.fake_progressba_meal_frag);
-        remainKcalReal = rootview.findViewById(R.id.progressbar_meal_frag);
         ////Meal Input
         mCarbsBreakfast = rootview.findViewById(R.id.et_carbs_breakfast);
         mCarbsLunch = rootview.findViewById(R.id.et_carbs_lunch);
@@ -375,16 +371,12 @@ public class MealFragment extends Fragment {
         backgroundView = new ArrayList<Drawable>();
         titles.add("BreakFast");
         titles.add("Lunch");
-        titles.add("Snake");
+        titles.add("Snack");
         titles.add("Dinner");
-        detailOfMeals.add("Bread, \nDimsum, \nNoodle");
-        detailOfMeals.add("Rice, \nMeat, \nEgg");
-        detailOfMeals.add("Rice, \nMeat, \nVegetable");
-        detailOfMeals.add("Sushi, \nEnergy Drink, \nGrape");
-        kcalOfMeal.add("525");
-        kcalOfMeal.add("405");
-        kcalOfMeal.add("615");
-        kcalOfMeal.add("375");
+        detailOfMeals.add("Bread, \n\nDimsum, \n\nNoodle");
+        detailOfMeals.add("Rice,Pork,Egg \n\nNoddle,Beef \n\nSoup,Bread");
+        detailOfMeals.add("Sushi, \n\nEnergy Drink, \n\nGrape");
+        detailOfMeals.add("Rice,Meat \n\nNoodle,Seafood \n\nVegetable");
         icons.add(R.drawable.breakfast_meal_icon);
         icons.add(R.drawable.lucnch_meal_icon);
         icons.add(R.drawable.snake_meal_icon);
@@ -394,7 +386,7 @@ public class MealFragment extends Fragment {
         backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_dinner));
         backgroundView.add(getResources().getDrawable(R.drawable.meal_plan_detail_background_snake));
 
-        mealPlanData = new MealPlanData(titles, detailOfMeals, kcalOfMeal, icons, backgroundView);
+        mealPlanData = new MealPlanData(titles, detailOfMeals, icons, backgroundView);
 
         /**setting up the recyclerview*/
         recyclerView = rootview.findViewById(R.id.meal_plan_recyclerview);
