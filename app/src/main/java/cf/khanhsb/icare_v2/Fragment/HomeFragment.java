@@ -305,6 +305,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                         String height = document.getString("height");
                                         String step = document.getString("step_goal");
 
+
                                         //create dailyData
                                         docRef = firestore.collection("daily").
                                                 document("week-of-" + monday.toString()).
@@ -344,6 +345,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
 
                                         dailyGoal.put("time_on_screen", "0");
+                                        dailyGoal.put("cal_step","0");
+                                        dailyGoal.put("km_step","0");
 
                                         //update data to firestore
                                         firestore = FirebaseFirestore.getInstance();

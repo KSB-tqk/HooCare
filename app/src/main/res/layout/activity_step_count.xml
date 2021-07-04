@@ -116,7 +116,7 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/right_arrow_datetime"
+                    android:id="@+id/left_arrow_datetime"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginEnd="5dp"
@@ -126,7 +126,7 @@
                     app:layout_constraintTop_toTopOf="@id/calender_icon_linear" />
 
                 <ImageView
-                    android:id="@+id/left_arrow_datetime"
+                    android:id="@+id/right_arrow_datetime"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginStart="5dp"
@@ -165,7 +165,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="@string/_0"
-                        android:maxLength="4"
+                        android:maxLength="5"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
