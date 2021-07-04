@@ -161,13 +161,18 @@ public class MealFragment extends Fragment {
                             DocumentSnapshot document = task.getResult();
                             if(document != null){
                                 String kcal = document.getString("diet");
+                                String burned = document.getString("kcal_workout");
                                 eatenKCal.setText(String.valueOf(kcal));
+                                burnedKcal.setText(String.valueOf(burned));
                                 try {
                                     eaten = Integer.parseInt(String.valueOf(eatenKCal));
                                 }catch (NumberFormatException e1){
                                     eaten = 0;
                                 }
 
+                            }else{
+                                eatenKCal.setText("0");
+                                burnedKcal.setText("0");
                             }
                         }
                     }
@@ -177,38 +182,6 @@ public class MealFragment extends Fragment {
         Thread setUpDiet = new Thread(setUpDietRunnable);
         setUpDiet.start();
         ////
-
-        Runnable getBurnedKcalFromDB = new Runnable() {
-            @Override
-            public void run() {
-                firestore = FirebaseFirestore.getInstance();
-                docRef = firestore.collection("workoutHistory").document(theTempEmail);
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null){
-                                String burned = document.getString("workoutKcal");
-                                String date = document.getString("workoutDay");
-                                String todaystring = today.toString();
-                                if (date == todaystring){
-                                    burnedKcal.setText(String.valueOf(burned));
-                                }else{
-                                    burnedKcal.setText("0");
-                                }
-
-                            }else{
-                                burnedKcal.setText("0");
-                            }
-                        }
-                    }
-                });
-            }
-        };
-        Thread getBurned = new Thread(getBurnedKcalFromDB);
-        getBurned.start();
-
         Runnable setUpBMIRunnable = new Runnable() {
             @Override
             public void run() {
@@ -310,10 +283,9 @@ public class MealFragment extends Fragment {
                 if(fat_lunch.isEmpty()){fat_lunch="0";}
                 if(fat_snack.isEmpty()){fat_snack="0";}
                 if(fat_dinner.isEmpty()){fat_dinner="0";}
-                if (burn_string==null){burn_string="0";}
                 int finalcarb1,finalcarb2,finalcarb3,finalcarb4,
                         finalprotein1,finalprotein2,finalprotein3,finalprotein4,
-                        finalfat1,finalfat2,finalfat3,finalfat4,breakfast,lunch,snack,dinner,burned1,
+                        finalfat1,finalfat2,finalfat3,finalfat4,breakfast,lunch,snack,dinner,
                         sumary;
                 try {
                     finalcarb1 = Integer.parseInt(carb_breakfast);
@@ -328,7 +300,6 @@ public class MealFragment extends Fragment {
                     finalfat2 = Integer.parseInt(fat_lunch);
                     finalfat3 = Integer.parseInt(fat_snack);
                     finalfat4 = Integer.parseInt(fat_dinner);
-                    burned1 = Integer.parseInt(burn_string);
 
                 }catch (NumberFormatException e){
                     finalcarb1=0;
@@ -343,15 +314,15 @@ public class MealFragment extends Fragment {
                     finalfat2=0;
                     finalfat3=0;
                     finalfat4=0;
-                    burned1=0;
                 }
+
                 breakfast = finalcarb1*4 + finalprotein1*4 + finalfat1*9 ;
                 lunch = finalcarb2*4 + finalprotein2*4 + finalfat2*9 ;
                 snack = finalcarb3*4 + finalprotein3*4 + finalfat3*9 ;
                 dinner = finalcarb4*4 + finalprotein4*4 + finalfat4*9 ;
                 sumary = breakfast + lunch + snack + dinner;
                 eaten = eaten + sumary;
-                eatenKCal.setText(String.valueOf(eaten - burned1));
+                eatenKCal.setText(String.valueOf(eaten));
                 firestore.collection("daily").
                         document("week-of-" + monday.toString()).
                         collection(today.toString()).
