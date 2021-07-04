@@ -145,6 +145,7 @@ public class MealFragment extends Fragment {
         String theTempEmail = sharedPreferences.getString("Email", "");
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
+
         Runnable setUpDietRunnable = new Runnable() {
             @Override
             public void run() {
