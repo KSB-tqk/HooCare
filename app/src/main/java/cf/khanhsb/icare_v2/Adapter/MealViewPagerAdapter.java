@@ -39,7 +39,6 @@ public class MealViewPagerAdapter extends RecyclerView.Adapter {
         //error
         viewHolderClass.titles.setText(mealPlanData.getTitles().get(position));
         viewHolderClass.detailOfMeal.setText(mealPlanData.getDetailOfMeal().get(position));
-        viewHolderClass.numberOfKcal.setText(mealPlanData.getKcal().get(position));
         viewHolderClass.imageView.setImageResource(mealPlanData.getIcons().get(position));
         viewHolderClass.backgroundView.setBackground(mealPlanData.getBackgrounds().get(position));
 
@@ -54,7 +53,7 @@ public class MealViewPagerAdapter extends RecyclerView.Adapter {
 
         //initialize variable in the item container
         ImageView imageView;
-        TextView titles,numberOfKcal,detailOfMeal;
+        TextView titles,detailOfMeal;
         LinearLayout backgroundView;
 
         public ViewHolderClass(@NonNull View itemView) {
@@ -64,7 +63,6 @@ public class MealViewPagerAdapter extends RecyclerView.Adapter {
             backgroundView = itemView.findViewById(R.id.meal_detail_background_view);
             titles = itemView.findViewById(R.id.meal_title);
             detailOfMeal = itemView.findViewById(R.id.meal_detail);
-            numberOfKcal = itemView.findViewById(R.id.numberOfKcal_MealFrag_ViewPager);
         }
     }
 }

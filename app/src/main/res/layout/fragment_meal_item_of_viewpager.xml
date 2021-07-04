@@ -23,7 +23,7 @@
     <LinearLayout
         android:id="@+id/meal_detail_background_view"
         android:layout_width="135dp"
-        android:layout_height="230dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:translationZ="10dp"
@@ -32,11 +32,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:translationZ="30dp">
+            android:translationZ="30dp"
+            android:padding="10dp">
 
             <LinearLayout
                 android:id="@+id/meal_detail_view"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingTop="35dp"
@@ -70,35 +71,10 @@
                             android:textColor="@color/white"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="15dp"
                             android:lineSpacingExtra="2dp"
                             android:text="Bread, \nPeanut butter, \nApple"
-                            android:textSize="13sp"/>
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/linear_meal_item_detail"
-                        android:layout_marginTop="25dp">
-
-                        <TextView
-                            android:id="@+id/numberOfKcal_MealFrag_ViewPager"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:textColor="@color/white"
-                            android:text="525"
-                            android:textSize="30dp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:textColor="@color/white"
-                            android:text="kcal"
-                            android:textSize="13dp"/>
+                            android:textSize="16sp"/>
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

@@ -25,16 +25,6 @@
                 android:text="@string/your_diet"
                 android:textSize="19sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="@string/details"
-                android:textColor="@color/lime_200"
-                android:textSize="16sp" />
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
@@ -56,33 +46,17 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
-                    <ProgressBar
+                    <ImageView
                         android:id="@+id/progressbar_meal_frag"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_marginEnd="20dp"
-                        android:indeterminateOnly="false"
-                        android:progress="70"
-                        android:progressDrawable="@drawable/progress_bar_meal_fragment"
+                        android:src="@drawable/diet"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         tools:ignore="MissingConstraints">
 
-                    </ProgressBar>
-
-                    <ProgressBar
-                        android:id="@+id/fake_progressba_meal_frag"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:layout_marginEnd="20dp"
-                        android:indeterminateOnly="false"
-                        android:progress="70"
-                        android:progressDrawable="@drawable/fake_progress_bar_meal_fragment"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        tools:ignore="MissingConstraints" />
-
+                    </ImageView>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -92,23 +66,6 @@
                         app:layout_constraintEnd_toEndOf="@+id/progressbar_meal_frag"
                         app:layout_constraintStart_toStartOf="@+id/progressbar_meal_frag"
                         app:layout_constraintTop_toTopOf="@+id/progressbar_meal_frag">
-
-                        <TextView
-                            android:id="@+id/progressbar_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/_1500"
-                            android:textColor="@color/lime_200"
-                            android:textSize="32sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/kcal_left"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small">
-
-                        </TextView>
                     </LinearLayout>
 
                     <RelativeLayout
@@ -263,19 +220,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:text="@string/meals_today_header"
+                android:text="Meal Suggestion"
                 android:textSize="19sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="@string/meals_today_customize"
-                android:textColor="@color/lime_200"
-                android:textSize="16sp" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -297,16 +244,6 @@
                 android:text="@string/body_measurement_header"
                 android:textSize="19sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="@string/body_measurement_Detail"
-                android:textColor="@color/lime_200"
-                android:textSize="16sp" />
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
