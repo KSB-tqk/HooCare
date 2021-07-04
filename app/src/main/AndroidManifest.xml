@@ -10,14 +10,15 @@
         tools:ignore="ProtectedPermissions" />
 
     <application
-        android:screenOrientation="sensorPortrait"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="sensorPortrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.ICare_v2">
-        <activity android:name=".WorkoutHistoryActivity"></activity>
+        <activity android:name=".CompleteUserInfoActivity"></activity>
+        <activity android:name=".WorkoutHistoryActivity" />
         <activity android:name=".WorkoutActivity" />
 
         <receiver android:name=".Model.AlertReceiver" />
