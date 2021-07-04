@@ -126,10 +126,11 @@ public class MealFragment extends Fragment {
         mFatSnack = rootview.findViewById(R.id.et_fat_snack);
         mFatDinner = rootview.findViewById(R.id.et_fat_dinner);
         mConsumed = rootview.findViewById(R.id.btConsume);
+        mOpenMealInput = rootview.findViewById(R.id.btOpenMealInput);
         ///
         bmiTitle = rootview.findViewById(R.id.BMI_title);
 
-        mConsumed.setOnClickListener(new View.OnClickListener() {
+        mOpenMealInput.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
