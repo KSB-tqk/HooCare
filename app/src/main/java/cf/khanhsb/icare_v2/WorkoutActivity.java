@@ -613,7 +613,13 @@ public class WorkoutActivity extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document != null) {
                                 String tempNumOfExercise = document.getString("num_of_exercise");
+                                String tempAmountOfKcal = document.getString("kcal_workout");
+                                assert tempNumOfExercise != null;
                                 docRef.update("num_of_exercise",String.valueOf(Integer.parseInt(tempNumOfExercise)+1));
+
+                                if(!workoutKcal.equals("No Data")){
+                                    docRef.update("kcal_workout",String.valueOf(Integer.parseInt(workoutKcal)+Integer.parseInt(tempAmountOfKcal)));
+                                }
                             }
                         }
                     }
