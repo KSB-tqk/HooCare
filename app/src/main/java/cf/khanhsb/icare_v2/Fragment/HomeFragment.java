@@ -367,6 +367,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                         dailyGoal.put("diet", "0");
 
                                         dailyGoal.put("num_of_exercise", "0");
+                                        dailyGoal.put("kcal_workout","0");
                                         dailyGoal.put("userEmail", userEmail);
                                         dailyGoal.put("datetime",today.toString());
 
