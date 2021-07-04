@@ -92,7 +92,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
 
         left_arrow_datetime = (ImageView) findViewById(R.id.left_arrow_datetime);
         right_arrow_datetime = (ImageView) findViewById(R.id.right_arrow_datetime);
-        statusOfProgressBar = (TextView) findViewById(R.id.progressbar_status);
+
         day_tab = (TextView) findViewById(R.id.text_item1);
         week_tab = (TextView) findViewById(R.id.text_item2);
         month_tab = (TextView) findViewById(R.id.text_item3);
@@ -133,66 +133,11 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
 
-        LocalDate yesterday = today.minusDays(i);
+
 
         firestore = FirebaseFirestore.getInstance();
 
-        left_arrow_datetime.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                i++;
-                String format = yesterday.format(DateTimeFormatter.ofPattern("dd-MMM-yy"));
-                date_time_text.setText(format);
-                Runnable left_button_step = new Runnable() {
-
-                    @Override
-                    public void run() {
-
-                        docRef = firestore.collection("daily").
-                                document("week-of-" + monday.toString()).
-                                collection(yesterday.toString()).
-                                document(theTempEmail);
-
-                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document != null) {
-                                        String temp = document.getString("steps");
-                                        double to_km = Double.parseDouble(temp);
-                                        double to_cal = Double.parseDouble(temp);
-                                        if (!"empty".equals(temp)) {
-                                            step_count_text.setText(temp);
-                                            to_km = to_km * 0.000762;
-                                            to_cal = to_cal * 0.0447;
-
-                                            float f = (float) to_km;
-                                            String s = String.format("%.3f", f);
-
-                                            km_step_count.setText(s);
-                                            kcal_step_count_text.setText(String.valueOf(to_cal));
-
-                                            docRef = firestore.collection("daily").
-
-
-                                                    document("week-of-" + monday.toString()).
-                                                    collection(yesterday.toString()).
-                                                    document(theTempEmail);
-                                        }
-                                    }
-                                }
-                            }
-                        });
-
-                    }
-                };
-
-                Thread left_button_step_thread = new Thread(left_button_step);
-                left_button_step_thread.start();
-            }
-        });
 
 
         /**back button on the toolbar click event*/
@@ -325,9 +270,10 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
                             DocumentSnapshot document = task.getResult();
                             if (document != null) {
                                 String temp = document.getString("steps");
-                                double to_km = Double.parseDouble(temp);
-                                double to_cal = Double.parseDouble(temp);
+
                                 if (!"empty".equals(temp)) {
+                                    double to_km = Double.parseDouble(temp);
+                                    double to_cal = Double.parseDouble(temp);
                                     step_count_text.setText(temp);
                                     to_km = to_km * 0.000762;
                                     to_cal = to_cal * 0.0447;
