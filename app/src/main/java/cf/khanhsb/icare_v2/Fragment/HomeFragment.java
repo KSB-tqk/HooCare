@@ -39,6 +39,7 @@ import cf.khanhsb.icare_v2.R;
 import cf.khanhsb.icare_v2.SleepTimeActivity;
 import cf.khanhsb.icare_v2.StepCountActivity;
 import cf.khanhsb.icare_v2.StepCounter.StepDetector;
+
 import cf.khanhsb.icare_v2.StepCounter.StepListener;
 import cf.khanhsb.icare_v2.UsageStatisticActivity;
 import cf.khanhsb.icare_v2.WaterActivity;
@@ -56,9 +57,9 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     private String userEmail, theTempEmail;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
-    private String step_goal, drink_goal, sleepTime, stepGoal;
-    private TextView statusOfProgressBar, numOfWater, sleepTimeTextView, timeOnScreenTextView;
 
+    private String step_goal, drink_goal, sleepTime, stepGoal;
+    private TextView statusOfProgressBar, numOfWater, sleepTimeTextView, timeOnScreenTextView,caloTextView;
     private FirebaseAuth mAuth;
     private static final String tempEmail = "tempEmail";
     private TextView userName, numOfExercise;
@@ -118,9 +119,9 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         numOfWater = (TextView) rootView.findViewById(R.id.num_of_water);
         sleepTimeTextView = (TextView) rootView.findViewById(R.id.sleep_time_text_view);
         timeOnScreenTextView = (TextView) rootView.findViewById(R.id.time_on_screen_text_view);
+        caloTextView = (TextView) rootView.findViewById(R.id.calo_text_view);
         userName = (TextView) rootView.findViewById(R.id.username_text_view);
         numOfExercise = (TextView) rootView.findViewById(R.id.num_of_exercise_home_frag);
-
         SharedPreferences sharedPreferences = this.getActivity().
                 getSharedPreferences(tempEmail, MODE_PRIVATE);
         theTempEmail = sharedPreferences.getString("Email", "");
@@ -128,13 +129,13 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         waterCardview.setClickable(false);
         stepCardView.setClickable(false);
         sleepCardView.setClickable(false);
+        caloTextView.setClickable(false);
 
         Runnable homeBackGroundRunnable = new Runnable() {
             @Override
             public void run() {
                 try {
                     SetUpFirebase(theTempEmail);
-
                 } catch (Exception err) {
                     err.printStackTrace();
                 }
@@ -216,6 +217,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
             @Override
             public void onClick(View v) {
                 ((MainActivity) getActivity()).replaceFragment(1);
+
             }
         });
 
@@ -295,6 +297,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                         SetUpWaterCard(userEmail);
                         SetUpSleepCard(userEmail);
                         SetUpTimeCard(userEmail);
+                        SetUpCaloCard(userEmail);
                     } else {
                         //check if goal exist or not
                         docRef = firestore.collection("users").document(userEmail);
@@ -353,8 +356,12 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
 
                                         dailyGoal.put("time_on_screen", "0");
+
+                                        dailyGoal.put("diet","0");
+
                                         dailyGoal.put("num_of_exercise", "0");
                                         dailyGoal.put("userEmail",userEmail);
+
 
                                         //update data to firestore
                                         firestore = FirebaseFirestore.getInstance();
@@ -369,6 +376,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                         editor.apply();
                                         SetUpStepCountCard(userEmail);
                                         SetUpWaterCard(userEmail);
+                                        SetUpCaloCard(userEmail);
                                     } else {
                                         Log.d("LOGGER", "No such document");
                                     }
@@ -385,6 +393,36 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void SetUpCaloCard(String theTempEmail) {
+
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String calo = document.getString("diet");
+                        if (!"empty".equals(calo)) {
+                            float calories = Float.parseFloat(calo);
+                            caloTextView.setText(String.valueOf(calories));
+                        }
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
     private void SetUpStepCountCard(String theTempEmail) {
         firestore = FirebaseFirestore.getInstance();
         if (userEmail == null) {

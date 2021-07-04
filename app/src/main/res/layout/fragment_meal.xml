@@ -38,6 +38,7 @@
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/MealCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -150,7 +151,6 @@
                                 android:id="@+id/eaten_kcal_number_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/_0"
                                 android:textSize="23sp"
                                 android:textStyle="bold" />
 
@@ -196,7 +196,6 @@
                                 android:id="@+id/burned_kcal_number"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/_620"
                                 android:textSize="23sp"
                                 android:textStyle="bold" />
 
@@ -210,84 +209,48 @@
                         </LinearLayout>
                     </RelativeLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/carbs_text"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-                        <EditText
-                            android:id="@+id/et_carbs"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="###"
-                            android:inputType="number"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/protein"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/et_protein"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="###"
-                            android:inputType="number"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/fat"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/et_fat"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="###"
-                            android:inputType="number"/>
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_height="wrap_content">
                 <Button
-                    android:id="@+id/btConsume"
+                    android:id="@+id/btOpenMealInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="CONSUMED"
-                    android:layout_margin="10dp"/>
+                    android:text=" MEAL CONSUMED TODAY"
+                    android:layout_margin="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/inputmeallayout"
+                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_down_24"/>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        app:layout_constraintTop_toBottomOf="@+id/btOpenMealInput"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:id="@+id/inputmeallayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+                    <LinearLayout
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:id="@+id/mealconsumelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include
+                        android:id="@+id/meal_today_include_layout"
+                        layout="@layout/meal_today_field_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    </RelativeLayout>
+                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
