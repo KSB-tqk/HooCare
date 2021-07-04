@@ -325,6 +325,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                         userName.setText(mName);
                                         numOfExercise.setText("No Workout");
 
+
                                         //create dailyData
                                         docRef = firestore.collection("daily").
                                                 document("week-of-" + monday.toString()).
@@ -363,6 +364,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                         }
 
                                         dailyGoal.put("time_on_screen", "0");
+                                        dailyGoal.put("cal_step","0");
+                                        dailyGoal.put("km_step","0");
 
                                         dailyGoal.put("diet", "0");
 
