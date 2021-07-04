@@ -127,8 +127,6 @@ public class MealFragment extends Fragment {
         mFatDinner = rootview.findViewById(R.id.et_fat_dinner);
         mConsumed = rootview.findViewById(R.id.btConsume);
         ///
-        mOpenMealInput.setOnClickListener(new View.OnClickListener() {
-
         bmiTitle = rootview.findViewById(R.id.BMI_title);
 
         mConsumed.setOnClickListener(new View.OnClickListener() {
@@ -181,6 +179,8 @@ public class MealFragment extends Fragment {
         };
         Thread setUpDiet = new Thread(setUpDietRunnable);
         setUpDiet.start();
+        ////
+
         Runnable getBurnedKcalFromDB = new Runnable() {
             @Override
             public void run() {
