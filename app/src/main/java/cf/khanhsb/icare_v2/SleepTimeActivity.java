@@ -69,10 +69,8 @@ public class SleepTimeActivity extends AppCompatActivity {
         bottomSheetContainer = findViewById(R.id.bottom_sheet_container_sleep_time);
         setupButton = findViewById(R.id.open_button_sleep_time);
         setUpGoal = findViewById(R.id.setup_sleep_goal);
-        sleepTimeConstaint = findViewById(R.id.sleep_time_constaint);
         setUpSleepGoalConstraint = findViewById(R.id.setup_sleep_goal_constaint);
         dateTextView = findViewById(R.id.date_time_statistic);
-        totalSleepTime = findViewById(R.id.total_sleep_time_text);
 
         Intent intent = getIntent();
         String tempSleepTime = intent.getStringExtra("sleepTime");
@@ -128,48 +126,6 @@ public class SleepTimeActivity extends AppCompatActivity {
                             numOfHours = Integer.parseInt(temp);
                         }
 
-                        if (timeToSleep.equals("empty")) {
-                            setTimeHour = 22;
-                            setTimeMin = 30;
-                        } else {
-                            String[] splitString = timeToSleep.split(":");
-                            setTimeHour = Integer.parseInt(splitString[0]);
-                            setTimeMin = Integer.parseInt(splitString[1]);
-                        }
-
-                        if (timeToWake.equals("empty")) {
-                            wakeTimeHour = 6;
-                            wakeTimeMin = 30;
-                        } else {
-                            String[] splitString = timeToWake.split(":");
-                            wakeTimeHour = Integer.parseInt(splitString[0]);
-                            wakeTimeMin = Integer.parseInt(splitString[1]);
-                        }
-
-//                        docRef = firestore.collection("daily").
-//                                document("week-of-" + monday.toString()).
-//                                collection(today.toString()).
-//                                document(theTempEmail);
-//                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                                if (task.isSuccessful()) {
-//                                    DocumentSnapshot document = task.getResult();
-//                                    if (document != null) {
-//                                        String sleepTimeDatabase = document.getString("sleep_time");
-//                                        if (sleepTimeDatabase.equals("empty")) {
-//
-//                                        } else {
-//
-//                                        }
-//                                    } else {
-//                                        Log.d("LOGGER", "No such document");
-//                                    }
-//                                } else {
-//                                    Log.d("LOGGER", "get failed with ", task.getException());
-//                                }
-//                            }
-//                        });
 
                     } else {
                         Log.d("LOGGER", "No such document");
@@ -227,19 +183,11 @@ public class SleepTimeActivity extends AppCompatActivity {
         progressBar = (ProgressBar) bottomSheetView.findViewById(R.id.progressbar_sleep_time);
         numOfHoursTextView = (TextView) bottomSheetView.findViewById(R.id.num_of_hours_progress);
         doneButton = (TextView) bottomSheetView.findViewById(R.id.close_button_sleep_time);
-        timePicker = (TimePicker) bottomSheetView.findViewById(R.id.time_picker);
-        wakeTimePicker = (TimePicker) bottomSheetView.findViewById(R.id.wake_time_picker);
 
         final Date[] dates = new Date[2];
         String[] splitDate = today.toString().split("-");
         String tempDate = splitDate[2] + "/" + splitDate[1] + "/" + splitDate[0];
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
-
-        //set timepicker
-        timePicker.setHour(setTimeHour);
-        timePicker.setMinute(setTimeMin);
-        timePicker.setIs24HourView(true);
-        wakeTimePicker.setIs24HourView(true);
 
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
@@ -358,19 +306,14 @@ public class SleepTimeActivity extends AppCompatActivity {
                     Toast.makeText(SleepTimeActivity.this, "You should not sleep too much", Toast.LENGTH_SHORT).show();
                 }
 
-                if (setTimeHour != wakeTimeHour) {
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    Intent intent = new Intent(SleepTimeActivity.this, AlertReceiver.class);
-                    intent.putExtra("time", String.valueOf(tempHour) + ":" + String.valueOf(tempMin));
-                    intent.putExtra("userEmail", theTempEmail);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(SleepTimeActivity.this, 1, intent, 0);
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
-//                    firestore = FirebaseFirestore.getInstance();
-//                    firestore.collection("daily").
-//                            document("week-of-" + monday.toString()).
-//                            collection(today.toString()).
-//                            document(theTempEmail).update("sleep_time", String.valueOf(tempHour) + ":" + String.valueOf(tempMin));
+                //sleep Alert
+//                if (setTimeHour != wakeTimeHour) {
+//                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//                    Intent intent = new Intent(SleepTimeActivity.this, AlertReceiver.class);
+//                    intent.putExtra("time", String.valueOf(tempHour) + ":" + String.valueOf(tempMin));
+//                    intent.putExtra("userEmail", theTempEmail);
+//                    PendingIntent pendingIntent = PendingIntent.getBroadcast(SleepTimeActivity.this, 1, intent, 0);
+//                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
                     //update value
                     firestore.collection("users").document(theTempEmail).
@@ -401,7 +344,6 @@ public class SleepTimeActivity extends AppCompatActivity {
                         }
                     });
                     bottomSheetDialog.dismiss();
-                }
             }
         });
 

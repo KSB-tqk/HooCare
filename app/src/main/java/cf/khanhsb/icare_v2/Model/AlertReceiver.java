@@ -25,7 +25,7 @@ public class AlertReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         NotificationHelper notificationHelper = new NotificationHelper(context);
-        NotificationCompat.Builder nb = notificationHelper.getChannel1Notification("Alarm Alert!","Time to wake up");
+        NotificationCompat.Builder nb = notificationHelper.getChannel1Notification("Sleep Reminder","It's time for your to go to sleep");
         notificationHelper.getManager().notify(1,nb.build());
 
         String timeOfSleep = intent.getStringExtra("time");

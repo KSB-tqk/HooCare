@@ -178,7 +178,6 @@ public class CompleteUserInfoActivity extends AppCompatActivity {
                     editGender.setText(tempGender);
                     editGender.setTextColor(getResources().getColor(R.color.lime_100));
                     editGender.setBackground(AppCompatResources.getDrawable(CompleteUserInfoActivity.this,R.drawable.step_count_label_background));
-                    editGender.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.check_icon_user_profile, 0, 0);
 
                     if(allDone){
                         continueButton.setText("Continue");
@@ -286,7 +285,6 @@ public class CompleteUserInfoActivity extends AppCompatActivity {
                     editDateOfBirth.setText(mDate);
                     editDateOfBirth.setTextColor(getResources().getColor(R.color.lime_100));
                     editDateOfBirth.setBackground(AppCompatResources.getDrawable(CompleteUserInfoActivity.this,R.drawable.step_count_label_background));
-                    editDateOfBirth.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.check_icon_user_profile, 0, 0);
 
                     if(allDone){
                         continueButton.setText("Continue");

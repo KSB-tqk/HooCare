@@ -44,6 +44,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
@@ -207,23 +208,38 @@ public class SigninActivity extends AppCompatActivity {
                     FirebaseUser user = mAuth.getCurrentUser();
                     email = object.getString("email");
                     name = object.getString("name");
-                    //set up shareRef
-                    SharedPreferences sharedPreferences = getSharedPreferences(
-                            tempEmail, MODE_PRIVATE);
-                    String theTempEmail = sharedPreferences.getString("Email", "");
 
-                    CreateUserOnFirebase(email, name, false);
+                    SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
 
-                    Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SigninActivity.this, CompleteUserInfoActivity.class);
+                    firestore = FirebaseFirestore.getInstance();
+                    docRef = firestore.collection("users").document(email);
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    CreateUserOnFirebase(email, name);
+                                    Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(SigninActivity.this, CompleteUserInfoActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
 
-                    SharedPreferences.Editor editor;
-                    editor = sharedPreferences.edit();
-                    editor.putString("Email", email);
-                    editor.apply();
+                                SharedPreferences.Editor editor;
+                                editor = sharedPreferences.edit();
+                                editor.putString("Email", email);
+                                editor.apply();
+                            }
+                        }
+                    });
 
-                    startActivity(intent);
-                    finish();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -257,27 +273,43 @@ public class SigninActivity extends AppCompatActivity {
                     GoogleSignInAccount account = task.getResult(ApiException.class);
                     Log.d("SigninActivity", "firebaseAuthWithGoogle:" + account.getId());
                     firebaseAuthWithGoogle(account.getIdToken());
+                    SharedPreferences sharedPreferences = getSharedPreferences(
+                            tempEmail, MODE_PRIVATE);
 
                     GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
                     if (acct != null) {
                         String googleEmail = acct.getEmail();
                         String userName = acct.getDisplayName();
 
-                        CreateUserOnFirebase(googleEmail, userName, false);
+                        firestore = FirebaseFirestore.getInstance();
+                        docRef = firestore.collection("users").document(googleEmail);
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        CreateUserOnFirebase(googleEmail, userName);
+                                        Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(SigninActivity.this, CompleteUserInfoActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+                            }
+                        });
+
+
                         //set up shareRef
-                        SharedPreferences sharedPreferences = getSharedPreferences(
-                                tempEmail, MODE_PRIVATE);
-
-                        Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(SigninActivity.this, CompleteUserInfoActivity.class);
-
                         SharedPreferences.Editor editor;
                         editor = sharedPreferences.edit();
                         editor.putString("Email", googleEmail);
                         editor.apply();
-
-                        startActivity(intent);
-                        finish();
                     }
                 } catch (ApiException e) {
                     // Google Sign In failed, update UI appropriately
@@ -348,7 +380,7 @@ public class SigninActivity extends AppCompatActivity {
         }
     }
 
-    private void CreateUserOnFirebase(String userEmail, String userName, boolean isEmail) {
+    private void CreateUserOnFirebase(String userEmail, String userName) {
         //Set up firestore
         firestore = FirebaseFirestore.getInstance();
 
