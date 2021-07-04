@@ -33,7 +33,7 @@
                 android:background="@drawable/edittext_border"
                 android:hint="Your weight"
                 android:inputType="number"
-                android:maxLength="5"
+                android:maxLength="3"
                 android:padding="12dp"
                 app:layout_constraintRight_toLeftOf="@id/kg_text_view"
                 app:layout_constraintTop_toTopOf="@id/weight_image_icon"

@@ -89,6 +89,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         String theTempEmail = sharedPreferences.getString("Email", "");
 
         /**assign variable*/
+
         left_arrow_datetime = (ImageView) findViewById(R.id.left_arrow_datetime);
         right_arrow_datetime = (ImageView) findViewById(R.id.right_arrow_datetime);
         statusOfProgressBar = (TextView) findViewById(R.id.progressbar_status);

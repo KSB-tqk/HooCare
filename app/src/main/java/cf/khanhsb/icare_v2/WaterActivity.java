@@ -7,6 +7,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +34,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.john.waveview.WaveView;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import cf.khanhsb.icare_v2.Adapter.BarChartAdapter;
@@ -46,7 +51,7 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 public class WaterActivity extends AppCompatActivity {
 
     private ArrayList<BarEntry> dataValue = new ArrayList<BarEntry>();
-    private int waterHadDrink = 0, numOfCup = 0, waterHaveToDrink = 0;
+    private int waterHadDrink = 0, numOfCup = 0, waterHaveToDrink = 0, i, waterDataPos;
     private WaveView waveView;
     private ImageView backButton, moreButton, plusButton, minusButton, minusWaterButton;
     private AppCompatButton drinkWater;
@@ -55,13 +60,15 @@ public class WaterActivity extends AppCompatActivity {
     private ColorStateList def_color;
     private TextView statusOfProgressBar, day_tab, week_tab, month_tab, select_background,
             numberOfCups_text_view, doneButton, dailyWaterGoal_text_view, waterCupDailyGoal,
-            waterCountText, waterCupCountText;
+            waterCountText, waterCupCountText,noData;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private SeekBar seekBar;
     private static final String tempEmail = "tempEmail";
     private ViewPager2 verticalViewPager2;
-    BarChartAdapter adapter;
+    private BarChartAdapter adapter;
+    private boolean hasValue;
+    private LocalDate tempDate;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
@@ -69,6 +76,16 @@ public class WaterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water);
+
+        /**create bardata and add bardataset to bardata*/
+        ArrayList<String> daylist = new ArrayList<String>();
+        daylist.add("Mon");
+        daylist.add("Tue");
+        daylist.add("Wed");
+        daylist.add("Thur");
+        daylist.add("Fri");
+        daylist.add("Sat");
+        daylist.add("Sun");
 
         waveView = findViewById(R.id.wave_view_water);
         backButton = findViewById(R.id.button_backtohomefrag);
@@ -80,13 +97,14 @@ public class WaterActivity extends AppCompatActivity {
         waterCountText = findViewById(R.id.water_count_text);
         minusWaterButton = findViewById(R.id.minus_water_button);
         waterCupCountText = findViewById(R.id.water_cup_count_text);
+        noData = findViewById(R.id.no_data_text_label_water);
 
-        day_tab = (TextView) findViewById(R.id.text_item1_water_act);
-        week_tab = (TextView) findViewById(R.id.text_item2_water_act);
-        month_tab = (TextView) findViewById(R.id.text_item3_water_act);
+//        day_tab = (TextView) findViewById(R.id.text_item1_water_act);
+//        week_tab = (TextView) findViewById(R.id.text_item2_water_act);
+//        month_tab = (TextView) findViewById(R.id.text_item3_water_act);
         select_background = (TextView) findViewById(R.id.selected_background_tab_water_act);
         verticalViewPager2 = (ViewPager2) findViewById(R.id.water_barchart_viewPager2);
-        def_color = week_tab.getTextColors();
+//        def_color = week_tab.getTextColors();
 
         SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
         String theTempEmail = sharedPreferences.getString("Email", "");
@@ -95,6 +113,80 @@ public class WaterActivity extends AppCompatActivity {
         LocalDate monday = today.with(previousOrSame(MONDAY));
 
         firestore = FirebaseFirestore.getInstance();
+
+        ArrayList<String> tempDrink = new ArrayList<>();
+        ArrayList<BarDataSet> chartBarDataSetList = new ArrayList<>();
+        ArrayList<String> dayInWeek = new ArrayList<String>();
+        ArrayList<String> dateInWeek = new ArrayList<String>();
+        ArrayList<String> dayThatHasValue = new ArrayList<String>();
+        ArrayList<String> realDrinkValue = new ArrayList<String>();
+
+        Runnable getWaterListPerDay = new Runnable() {
+            @Override
+            public void run() {
+                long diffInDays = ChronoUnit.DAYS.between(monday, today);
+                waterDataPos = 0;
+                tempDate = monday;
+                for (i = 0; i <= diffInDays; i++) {
+                    dateInWeek.add(tempDate.toString());
+                    realDrinkValue.add("0");
+
+                    firestore.collection("daily").
+                            document("week-of-" + monday.toString()).
+                            collection(tempDate.toString())
+                            .whereEqualTo("userEmail", theTempEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String drink = document.getString("drink");
+                                    String dayOnFirebase = document.getString("datetime");
+                                    dayThatHasValue.add(dayOnFirebase);
+                                    if (drink.equals("empty")) {
+                                        tempDrink.add("0");
+                                    } else {
+                                        tempDrink.add(drink);
+                                    }
+
+                                    assert dayOnFirebase != null;
+                                    if(dayOnFirebase.equals(today.toString())){
+                                        final Handler handler = new Handler(Looper.getMainLooper());
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                for(int j = 0; j < dateInWeek.size();j++){
+                                                    for(int z = 0;z < dayThatHasValue.size();z++){
+                                                        if(dateInWeek.get(j).equals(dayThatHasValue.get(z))){
+                                                            realDrinkValue.set(j,tempDrink.get(z));
+                                                        }
+                                                    }
+                                                }
+
+                                                for(int k = 0; k < realDrinkValue.size();k++){
+                                                    dataValue.add(new BarEntry(k, Float.parseFloat(realDrinkValue.get(k))));
+                                                    dayInWeek.add(daylist.get(k));
+                                                }
+
+                                                //initialize testadapter
+                                                adapter = new BarChartAdapter(dataValue, dayInWeek);
+                                                //setting adapter on to the viewpager2
+                                                verticalViewPager2.setUserInputEnabled(false);
+                                                verticalViewPager2.setAdapter(adapter);
+                                            }
+                                        }, 100);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    tempDate = tempDate.plusDays(1);
+                }
+
+            }
+        };
+
+        Thread getDailyDrinkThread = new Thread(getWaterListPerDay);
+
         docRef = firestore.collection("users").document(theTempEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -106,7 +198,11 @@ public class WaterActivity extends AppCompatActivity {
                         assert temp != null;
                         if (temp.equals("empty")) {
                             minusWaterButton.setVisibility(View.GONE);
+                            noData.setVisibility(View.VISIBLE);
+                            verticalViewPager2.setVisibility(View.GONE);
                         } else {
+                            getDailyDrinkThread.start();
+                            noData.setVisibility(View.GONE);
                             numOfCup = Integer.parseInt(temp);
                             float amountOfWater = Float.parseFloat(String.valueOf(numOfCup));
                             dailyWaterGoal_text_view.setText("of " + (amountOfWater * 250 / 1000) + "L goal");
@@ -140,14 +236,12 @@ public class WaterActivity extends AppCompatActivity {
 
                                             float hadDrink = waterHadDrink, haveToDrink = waterHaveToDrink;
 
-                                            if(waterHadDrink <= waterHaveToDrink && waterHadDrink!= 0) {
+                                            if (waterHadDrink <= waterHaveToDrink && waterHadDrink != 0) {
                                                 String numOfCupHasToDrink = String.valueOf((int) Math.floor((double) ((haveToDrink / 250) - (hadDrink / 250))));
                                                 waterCupCountText.setText(numOfCupHasToDrink);
-                                            }
-                                            else if(waterHadDrink == 0){
+                                            } else if (waterHadDrink == 0) {
                                                 waterCupCountText.setText(String.valueOf(numOfCup));
-                                            }
-                                            else {
+                                            } else {
                                                 waterCupCountText.setText("0");
                                             }
                                             float ans = hadDrink / haveToDrink * 100;
@@ -274,7 +368,7 @@ public class WaterActivity extends AppCompatActivity {
                     doneButton.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(waterHaveToDrink != 0){
+                            if (waterHaveToDrink != 0) {
                                 waterCupDailyGoal.setVisibility(View.VISIBLE);
                                 dailyWaterGoal_text_view.setVisibility(View.VISIBLE);
                                 drinkWater.setText("drink");
@@ -307,11 +401,10 @@ public class WaterActivity extends AppCompatActivity {
                     float hasDrink = waterHadDrink, haveToDrink = waterHaveToDrink, ans = hasDrink / haveToDrink * 100;
 
                     waveView.setProgress((int) ans);
-                    if(waterHadDrink <= waterHaveToDrink) {
+                    if (waterHadDrink <= waterHaveToDrink) {
                         String numOfCupHasToDrink = String.valueOf((waterHaveToDrink / 250) - (waterHadDrink / 250));
                         waterCupCountText.setText(numOfCupHasToDrink);
-                    }
-                    else {
+                    } else {
                         waterCupCountText.setText("0");
                     }
                 }
@@ -342,11 +435,10 @@ public class WaterActivity extends AppCompatActivity {
 
                     waveView.setProgress((int) ans);
 
-                    if(waterHadDrink <= waterHaveToDrink) {
+                    if (waterHadDrink <= waterHaveToDrink) {
                         String numOfCupHasToDrink = String.valueOf((waterHaveToDrink / 250) - (waterHadDrink / 250));
                         waterCupCountText.setText(numOfCupHasToDrink);
-                    }
-                    else {
+                    } else {
                         waterCupCountText.setText("0");
                     }
                 }
@@ -369,7 +461,7 @@ public class WaterActivity extends AppCompatActivity {
                 minusButton = (ImageView) bottomSheetView.findViewById(R.id.minus_button_water_menu);
                 progressBar = (ProgressBar) bottomSheetView.findViewById(R.id.progressbar_water);
                 numberOfCups_text_view = (TextView) bottomSheetView.findViewById(R.id.num_of_cup_progress);
-                doneButton = (TextView) bottomSheetView.findViewById(R.id.close_button_animation_exercise);
+                doneButton = (TextView) bottomSheetView.findViewById(R.id.close_button_water);
 
                 progressBar.setMax(12000);
                 progressBar.setProgress(numOfCup * 1000);
@@ -446,11 +538,10 @@ public class WaterActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         float hasDrink = waterHadDrink, haveToDrink = waterHaveToDrink, ans = hasDrink / haveToDrink * 100;
                         waveView.setProgress((int) ans);
-                        if(waterHadDrink <= waterHaveToDrink) {
+                        if (waterHadDrink <= waterHaveToDrink) {
                             String numOfCupHasToDrink = String.valueOf((waterHaveToDrink / 250) - (waterHadDrink / 250));
                             waterCupCountText.setText(numOfCupHasToDrink);
-                        }
-                        else {
+                        } else {
                             waterCupCountText.setText("0");
                         }
                         bottomSheetDialog.dismiss();
@@ -461,66 +552,40 @@ public class WaterActivity extends AppCompatActivity {
             }
         });
 
-        day_tab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                select_background.animate().x(0).setDuration(200);
-                day_tab.setTextColor(Color.WHITE);
-                verticalViewPager2.setCurrentItem(0);
-                week_tab.setTextColor(def_color);
-                month_tab.setTextColor(def_color);
-            }
-        });
+//        day_tab.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                select_background.animate().x(0).setDuration(200);
+//                day_tab.setTextColor(Color.WHITE);
+//                verticalViewPager2.setCurrentItem(0);
+//                week_tab.setTextColor(def_color);
+//                month_tab.setTextColor(def_color);
+//            }
+//        });
+//
+//        week_tab.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int size = week_tab.getWidth();
+//                select_background.animate().x(size).setDuration(200);
+//                week_tab.setTextColor(Color.WHITE);
+//                verticalViewPager2.setCurrentItem(1);
+//                day_tab.setTextColor(def_color);
+//                month_tab.setTextColor(def_color);
+//            }
+//        });
+//
+//        month_tab.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int size0fMonthTab = month_tab.getWidth() * 2;
+//                select_background.animate().x(size0fMonthTab).setDuration(200);
+//                month_tab.setTextColor(Color.WHITE);
+//                verticalViewPager2.setCurrentItem(2);
+//                day_tab.setTextColor(def_color);
+//                week_tab.setTextColor(def_color);
+//            }
+//        });
 
-        week_tab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int size = week_tab.getWidth();
-                select_background.animate().x(size).setDuration(200);
-                week_tab.setTextColor(Color.WHITE);
-                verticalViewPager2.setCurrentItem(1);
-                day_tab.setTextColor(def_color);
-                month_tab.setTextColor(def_color);
-            }
-        });
-
-        month_tab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int size0fMonthTab = month_tab.getWidth() * 2;
-                select_background.animate().x(size0fMonthTab).setDuration(200);
-                month_tab.setTextColor(Color.WHITE);
-                verticalViewPager2.setCurrentItem(2);
-                day_tab.setTextColor(def_color);
-                week_tab.setTextColor(def_color);
-            }
-        });
-
-        ArrayList<BarDataSet> chartBarDataSetList = new ArrayList<>();
-
-        /**add data to barchart*/
-        dataValue.add(new BarEntry(0, 3000));
-        dataValue.add(new BarEntry(1, 4000));
-        dataValue.add(new BarEntry(2, 6000));
-        dataValue.add(new BarEntry(3, 1000));
-        dataValue.add(new BarEntry(4, 1200));
-        dataValue.add(new BarEntry(5, 7200));
-        dataValue.add(new BarEntry(6, 125));
-
-        /**create bardata and add bardataset to bardata*/
-        ArrayList<String> daylist = new ArrayList<String>();
-        daylist.add("Mon");
-        daylist.add("Tue");
-        daylist.add("Wed");
-        daylist.add("Thur");
-        daylist.add("Fri");
-        daylist.add("Sat");
-        daylist.add("Sun");
-
-        //initialize testadapter
-        adapter = new BarChartAdapter(dataValue, daylist);
-        //setting adapter on to the viewpager2
-        verticalViewPager2.setUserInputEnabled(false);
-        verticalViewPager2.setAdapter(adapter);
     }
 }

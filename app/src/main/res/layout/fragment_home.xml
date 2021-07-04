@@ -66,8 +66,8 @@
                         android:id="@+id/username_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/username"
                         android:textColor="@color/white"
+                        android:layout_marginStart="5dp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -279,6 +279,7 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/calo_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -587,6 +588,7 @@
                         </ImageView>
 
                         <TextView
+                            android:id="@+id/num_of_exercise_home_frag"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

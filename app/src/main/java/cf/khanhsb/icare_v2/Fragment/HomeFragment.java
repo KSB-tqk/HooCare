@@ -1,7 +1,6 @@
 package cf.khanhsb.icare_v2.Fragment;
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
@@ -10,7 +9,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -33,6 +30,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +40,6 @@ import cf.khanhsb.icare_v2.R;
 import cf.khanhsb.icare_v2.SleepTimeActivity;
 import cf.khanhsb.icare_v2.StepCountActivity;
 import cf.khanhsb.icare_v2.StepCounter.StepDetector;
-
 import cf.khanhsb.icare_v2.StepCounter.StepListener;
 import cf.khanhsb.icare_v2.UsageStatisticActivity;
 import cf.khanhsb.icare_v2.WaterActivity;
@@ -60,27 +57,25 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     private String userEmail, theTempEmail;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
-    private String step_goal, drink_goal, sleepTime, stepGoal;
-    private TextView statusOfProgressBar, numOfWater, sleepTimeTextView, timeOnScreenTextView;
 
+    private String step_goal, drink_goal, sleepTime, stepGoal;
+    private TextView statusOfProgressBar, numOfWater, sleepTimeTextView, timeOnScreenTextView, caloTextView;
     private FirebaseAuth mAuth;
     private static final String tempEmail = "tempEmail";
-
-
-
+    private TextView userName, numOfExercise;
 
 
     private StepDetector simpleStepDetector;
     private static final String TEXT_NUM_STEPS = "";
     private int numStepsHomeFrag;
-    private TextView home_step_count;
+    private TextView home_step_count, greetingTextView;
 
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    public void callParentMethod(){
+    public void callParentMethod() {
         getActivity().onBackPressed();
     }
 
@@ -110,7 +105,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
         sensorManager.registerListener(HomeFragment.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
 
-
         waterCardview = (LinearLayout) rootView.findViewById(R.id.water_card_view_linear);
         stepCardView = (LinearLayout) rootView.findViewById(R.id.step_count_cardview_linear);
         caloCardView = (LinearLayout) rootView.findViewById(R.id.calo_card_view_linear);
@@ -125,6 +119,10 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         numOfWater = (TextView) rootView.findViewById(R.id.num_of_water);
         sleepTimeTextView = (TextView) rootView.findViewById(R.id.sleep_time_text_view);
         timeOnScreenTextView = (TextView) rootView.findViewById(R.id.time_on_screen_text_view);
+        caloTextView = (TextView) rootView.findViewById(R.id.calo_text_view);
+        userName = (TextView) rootView.findViewById(R.id.username_text_view);
+        numOfExercise = (TextView) rootView.findViewById(R.id.num_of_exercise_home_frag);
+        greetingTextView = (TextView) rootView.findViewById(R.id.gudmorning);
 
         SharedPreferences sharedPreferences = this.getActivity().
                 getSharedPreferences(tempEmail, MODE_PRIVATE);
@@ -133,15 +131,28 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         waterCardview.setClickable(false);
         stepCardView.setClickable(false);
         sleepCardView.setClickable(false);
+        caloTextView.setClickable(false);
 
         Runnable homeBackGroundRunnable = new Runnable() {
             @Override
             public void run() {
                 try {
+
+                    Calendar c = Calendar.getInstance();
+                    int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+
+                    if (timeOfDay >= 0 && timeOfDay < 12) {
+                        greetingTextView.setText("Good Morning");
+                    } else if (timeOfDay >= 12 && timeOfDay < 16) {
+                        greetingTextView.setText("Good Afternoon");
+                    } else if (timeOfDay >= 16 && timeOfDay < 21) {
+                        greetingTextView.setText("Good Evening");
+                    } else if (timeOfDay >= 21 && timeOfDay < 24) {
+                        greetingTextView.setText("Good Night");
+                    }
+
                     SetUpFirebase(theTempEmail);
-                    waterCardview.setClickable(true);
-                    stepCardView.setClickable(true);
-                    sleepCardView.setClickable(true);
+
                 } catch (Exception err) {
                     err.printStackTrace();
                 }
@@ -171,11 +182,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                 String temp = document.getString("steps");
                                 if (temp != null) {
                                     if (!"empty".equals(temp)) {
-
                                         home_step_count.setText(String.valueOf(temp));
                                         numStepsHomeFrag = Integer.parseInt(temp);
-
-
                                     }
                                 }
                             } else {
@@ -193,10 +201,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
         Thread stepDataThread = new Thread(stepData);
         stepDataThread.start();
-
-
-
-
 
         waterCardview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,6 +227,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
             @Override
             public void onClick(View v) {
                 ((MainActivity) getActivity()).replaceFragment(1);
+
             }
         });
 
@@ -253,8 +258,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         });
 
         return rootView;
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -272,7 +275,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         docRef = firestore.collection("daily").
                 document("week-of-" + monday.toString()).
                 collection(today.toString()).
-                document(userEmail);
+//                collection("2021-06-30").
+        document(userEmail);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -286,10 +290,22 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                         editor = sharedPreferences.edit();
                         editor.putString("Email", userEmail);
                         editor.apply();
+
+                        String tempNumOfExercise = document.getString("num_of_exercise");
+                        int tempNum = Integer.parseInt(tempNumOfExercise);
+                        if (tempNum == 0) {
+                            numOfExercise.setText("No Workout");
+                        } else if (tempNum == 1) {
+                            numOfExercise.setText(tempNumOfExercise + " Workout");
+                        } else {
+                            numOfExercise.setText(tempNumOfExercise + " Workouts");
+                        }
+
                         SetUpStepCountCard(userEmail);
                         SetUpWaterCard(userEmail);
                         SetUpSleepCard(userEmail);
                         SetUpTimeCard(userEmail);
+                        SetUpCaloCard(userEmail);
                     } else {
                         //check if goal exist or not
                         docRef = firestore.collection("users").document(userEmail);
@@ -304,6 +320,10 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                         String weight = document.getString("weight");
                                         String height = document.getString("height");
                                         String step = document.getString("step_goal");
+                                        String mName = document.getString("name");
+
+                                        userName.setText(mName);
+                                        numOfExercise.setText("No Workout");
 
 
                                         //create dailyData
@@ -343,10 +363,16 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                             dailyGoal.put("steps", step);
                                         }
 
-
                                         dailyGoal.put("time_on_screen", "0");
                                         dailyGoal.put("cal_step","0");
                                         dailyGoal.put("km_step","0");
+
+                                        dailyGoal.put("diet", "0");
+
+                                        dailyGoal.put("num_of_exercise", "0");
+                                        dailyGoal.put("kcal_workout","0");
+                                        dailyGoal.put("userEmail", userEmail);
+                                        dailyGoal.put("datetime",today.toString());
 
                                         //update data to firestore
                                         firestore = FirebaseFirestore.getInstance();
@@ -361,6 +387,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                         editor.apply();
                                         SetUpStepCountCard(userEmail);
                                         SetUpWaterCard(userEmail);
+                                        SetUpCaloCard(userEmail);
                                     } else {
                                         Log.d("LOGGER", "No such document");
                                     }
@@ -369,6 +396,37 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                 }
                             }
                         });
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void SetUpCaloCard(String theTempEmail) {
+
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String calo = document.getString("diet");
+                        if (!"empty".equals(calo)) {
+                            float calories = Float.parseFloat(calo);
+                            caloTextView.setText(String.valueOf(calories));
+                        }
+                    } else {
+                        Log.d("LOGGER", "No such document");
                     }
                 } else {
                     Log.d("LOGGER", "get failed with ", task.getException());
@@ -391,6 +449,9 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
+                        String mName = document.getString("name");
+                        userName.setText(mName);
+
                         step_goal = document.getString("step_goal");
 
                         if ("empty".equals(step_goal)) {
@@ -400,13 +461,10 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                             setupStepGoal.setVisibility(View.GONE);
                             statusOfProgressBar.setText("/" + step_goal);
                             if (!statusOfProgressBar.getText().equals("steps")) {
-
                                 home_step_count.setText(TEXT_NUM_STEPS + numStepsHomeFrag);
-
 
                                 String tempStepGoal = statusOfProgressBar.getText().toString().substring(1);
                                 progressBar.setMax(Integer.parseInt(tempStepGoal));
-
 
                                 ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
                                         numStepsHomeFrag - 1,
@@ -423,6 +481,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                         } else {
                             setupWaterGoal.setVisibility(View.GONE);
                         }
+
+                        stepCardView.setClickable(true);
                     } else {
                         Log.d("LOGGER", "No such document");
                     }
@@ -453,6 +513,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                         if (!"empty".equals(temp)) {
                             float waterHadDrink = Float.parseFloat(temp) / 1000;
                             numOfWater.setText(String.valueOf(waterHadDrink));
+                            waterCardview.setClickable(true);
                         }
                     } else {
                         Log.d("LOGGER", "No such document");
@@ -485,6 +546,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                             String[] splitString = temp.split(":");
                             sleepTimeTextView.setText(splitString[0] + "h");
                             sleepTime = temp;
+                            sleepCardView.setClickable(true);
                         }
                     } else {
                         Log.d("LOGGER", "No such document");
@@ -547,12 +609,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         if (!statusOfProgressBar.getText().equals("steps")) {
             numStepsHomeFrag++;
             home_step_count.setText(TEXT_NUM_STEPS + numStepsHomeFrag);
-
-
             String tempStepGoal = statusOfProgressBar.getText().toString().substring(1);
             progressBar.setMax(Integer.parseInt(tempStepGoal));
-
-
             ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
                     numStepsHomeFrag - 1,
                     numStepsHomeFrag);
