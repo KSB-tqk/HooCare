@@ -2,7 +2,6 @@ package cf.khanhsb.icare_v2;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +23,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
@@ -44,24 +44,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.FacebookSdk;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import cf.khanhsb.icare_v2.SignupActivity;
-import io.grpc.okhttp.internal.framed.FrameReader;
-
-import static java.time.DayOfWeek.MONDAY;
-import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 public class SigninActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 120;
@@ -82,7 +72,7 @@ public class SigninActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         Intent a = new Intent(Intent.ACTION_MAIN);
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -110,7 +100,7 @@ public class SigninActivity extends AppCompatActivity {
         btFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().logInWithReadPermissions(SigninActivity.this, Arrays.asList("email","public_profile"));
+                LoginManager.getInstance().logInWithReadPermissions(SigninActivity.this, Arrays.asList("email", "public_profile"));
                 LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
@@ -171,21 +161,21 @@ public class SigninActivity extends AppCompatActivity {
 
         //Move to sign after sign up
         signinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                                            @Override
+                                            public void onClick(View v) {
 
-                        loginUser();
-                        mProgressbarAuth.setVisibility(View.VISIBLE);
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mProgressbarAuth.setVisibility(View.INVISIBLE);
-                            }
-                        }, 4000);
-                    }
-                }
+                                                loginUser();
+                                                mProgressbarAuth.setVisibility(View.VISIBLE);
+                                                new Handler().postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        mProgressbarAuth.setVisibility(View.INVISIBLE);
+                                                    }
+                                                }, 4000);
+                                            }
+                                        }
         );
-        }
+    }
 
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -212,19 +202,20 @@ public class SigninActivity extends AppCompatActivity {
         GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
-                String email,name;
+                String email, name;
                 try {
                     FirebaseUser user = mAuth.getCurrentUser();
                     email = object.getString("email");
                     name = object.getString("name");
-
-                    CreateUserOnFirebase(email,name);
                     //set up shareRef
                     SharedPreferences sharedPreferences = getSharedPreferences(
                             tempEmail, MODE_PRIVATE);
+                    String theTempEmail = sharedPreferences.getString("Email", "");
+
+                    CreateUserOnFirebase(email, name, false);
 
                     Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SigninActivity.this, CompleteUserInfoActivity.class);
 
                     SharedPreferences.Editor editor;
                     editor = sharedPreferences.edit();
@@ -233,15 +224,14 @@ public class SigninActivity extends AppCompatActivity {
 
                     startActivity(intent);
                     finish();
-                }
-                catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
 
         Bundle bundle = new Bundle();
-        bundle.putString("fields","email , name");
+        bundle.putString("fields", "email , name");
         request.setParameters(bundle);
         request.executeAsync();
     }
@@ -272,13 +262,14 @@ public class SigninActivity extends AppCompatActivity {
                     if (acct != null) {
                         String googleEmail = acct.getEmail();
                         String userName = acct.getDisplayName();
-                        CreateUserOnFirebase(googleEmail,userName);
+
+                        CreateUserOnFirebase(googleEmail, userName, false);
                         //set up shareRef
                         SharedPreferences sharedPreferences = getSharedPreferences(
                                 tempEmail, MODE_PRIVATE);
 
                         Toast.makeText(SigninActivity.this, "Login Successfully !!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                        Intent intent = new Intent(SigninActivity.this, CompleteUserInfoActivity.class);
 
                         SharedPreferences.Editor editor;
                         editor = sharedPreferences.edit();
@@ -344,7 +335,7 @@ public class SigninActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(SigninActivity.this,"Login Fail ! Please try again.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SigninActivity.this, "Login Fail ! Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
@@ -357,7 +348,7 @@ public class SigninActivity extends AppCompatActivity {
         }
     }
 
-    private void CreateUserOnFirebase(String userEmail, String userName) {
+    private void CreateUserOnFirebase(String userEmail, String userName, boolean isEmail) {
         //Set up firestore
         firestore = FirebaseFirestore.getInstance();
 
@@ -365,8 +356,8 @@ public class SigninActivity extends AppCompatActivity {
         Map<String, Object> user = new HashMap<>();
         user.put("name", userName);
         user.put("email", userEmail);
-        user.put("gender","empty");
-        user.put("date_of_birth","empty");
+        user.put("gender", "empty");
+        user.put("date_of_birth", "empty");
         user.put("weight", "empty");
         user.put("height", "empty");
         user.put("step_goal", "empty");
@@ -375,8 +366,8 @@ public class SigninActivity extends AppCompatActivity {
         user.put("sleep_goal", "empty");
         user.put("on_screen_goal", "empty");
         user.put("recent_workout", "empty");
-        user.put("time_to_sleep","empty");
-        user.put("time_to_wake","empty");
+        user.put("time_to_sleep", "empty");
+        user.put("time_to_wake", "empty");
         firestore.collection("users").document(userEmail)
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
