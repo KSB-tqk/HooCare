@@ -192,5 +192,9 @@
     <string name="date_of_birth">Date Of Birth</string>
     <string name="gender">Gender</string>
     <string name="your_name">Your Name</string>
+    <string name="complete_your_infomation">Complete Your Infomation</string>
+    <string name="skip">Skip</string>
+    <string name="set_your_date_of_birth">Set your date of birth</string>
+    <string name="set_your_gender">Set your gender</string>
 
 </resources>

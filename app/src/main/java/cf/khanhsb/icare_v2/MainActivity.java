@@ -43,11 +43,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.internal.$Gson$Preconditions;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 
 import java.time.LocalDate;
@@ -145,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             toolBarTitle.setTextColor(Color.WHITE);
             toolBarTitle.getBackground().setTint(Color.parseColor("#58C892"));
             toolbar.setBackground(getDrawable(R.color.light_grey));
-        } else if (fragmentPosition == 3){
+        } else if (fragmentPosition == 3) {
             btmNav.getMenu().findItem(R.id.nav_archie).setChecked(true);
             toolBarTitle.setText(getString(R.string.ArchieveFragTitle));
             toolBarTitle.getBackground().setTint(Color.WHITE);
@@ -230,14 +228,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                fillForm(Gravity.CENTER,pagePos);
+                fillForm(Gravity.CENTER, pagePos);
             }
         });
 
         drink_water_fltbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wateredit(Gravity.CENTER,pagePos);
+                wateredit(Gravity.CENTER, pagePos);
             }
         });
 
@@ -344,31 +342,6 @@ public class MainActivity extends AppCompatActivity {
         EditText heightEditText = dialog.findViewById(R.id.edit_height);
         Button saveButton = dialog.findViewById(R.id.save_btn_dialog);
 
-        weightEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() > 2 && !String.valueOf(weightEditText.getText()).contains(".")) {
-                    String weightInput = weightEditText.getText().toString();
-                    String bigWeight = weightInput.substring(0, 2);
-                    String smallWeight = weightInput.substring(2);
-                    weightEditText.setText(bigWeight + "." + smallWeight);
-                    weightEditText.setSelection(4);
-                }
-            }
-        });
-
         Runnable setUpBMIRunnable = new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -386,10 +359,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String checkWeight = weightEditText.getText().toString();
                 String checkHeight = heightEditText.getText().toString();
-                if(checkHeight.trim().equals("") || checkWeight.trim().equals("")){
+                if (checkHeight.trim().equals("") || checkWeight.trim().equals("")) {
                     Toast.makeText(MainActivity.this, "Please fill out the form!", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else if (Integer.parseInt(checkHeight) <= 0) {
+                    Toast.makeText(MainActivity.this, "Please fill in a normal Weight", Toast.LENGTH_SHORT).show();
+                } else if (Integer.parseInt(checkWeight) <= 0) {
+                    Toast.makeText(MainActivity.this, "Please fill in a normal Height", Toast.LENGTH_SHORT).show();
+                } else {
                     SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
                     String theTempEmail = sharedPreferences.getString("Email", "");
 
@@ -409,12 +385,14 @@ public class MainActivity extends AppCompatActivity {
                     docRef.update("weight", String.valueOf(weightEditText.getText()));
                     docRef.update("height", String.valueOf(heightEditText.getText()));
 
-                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.putExtra("fragmentPosition", fragmentPos);
-                    startActivity(intent);
-                    finish();
+                    if (fragmentPos != 5) {
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent.putExtra("fragmentPosition", fragmentPos);
+                        startActivity(intent);
+                        finish();
+                        overridePendingTransition(0, 0);
+                    }
 
-                    overridePendingTransition(0, 0);
                 }
             }
         });
@@ -575,15 +553,15 @@ public class MainActivity extends AppCompatActivity {
                         String tempHeight = document.getString("height");
 
                         assert tempWeight != null;
-                        if(!tempWeight.equals("empty")) {
+                        if (!tempWeight.equals("empty")) {
                             weightEditText.setText(tempWeight);
                         }
                         assert tempHeight != null;
-                        if(!tempHeight.equals("empty")) {
+                        if (!tempHeight.equals("empty")) {
                             heightEditText.setText(tempHeight);
                         }
 
-                        if(tempHeight.equals("empty") && tempWeight.equals("empty")){
+                        if (tempHeight.equals("empty") && tempWeight.equals("empty")) {
                             docRef = firestore.collection("daily").
                                     document("week-of-" + monday.toString()).
                                     collection(today.toString()).
@@ -626,18 +604,18 @@ public class MainActivity extends AppCompatActivity {
         nameDialog.setContentView(R.layout.layout_dialog_name);
 
         Window window = nameDialog.getWindow();
-        if(window == null){
-            return ;
+        if (window == null) {
+            return;
         }
 
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = gravity;
         window.setAttributes(windowAttributes);
 
-        if(Gravity.CENTER == gravity){
+        if (Gravity.CENTER == gravity) {
             nameDialog.setCancelable(true);
         } else {
             nameDialog.setCancelable(false);
@@ -662,13 +640,13 @@ public class MainActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!editTextName.getText().toString().isEmpty()){
-                   docRef =  firestore.collection("users").document(theTempEmail);
-                   docRef.update("name",editTextName.getText().toString());
-                   Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                   intent.putExtra("fragmentPosition", fragmentPos);
-                   startActivity(intent);
-                   finish();
+                if (!editTextName.getText().toString().isEmpty()) {
+                    docRef = firestore.collection("users").document(theTempEmail);
+                    docRef.update("name", editTextName.getText().toString());
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.putExtra("fragmentPosition", fragmentPos);
+                    startActivity(intent);
+                    finish();
                 } else {
                     Toast.makeText(MainActivity.this, "Name can not be empty!", Toast.LENGTH_SHORT).show();
                 }
@@ -684,18 +662,18 @@ public class MainActivity extends AppCompatActivity {
         genderDialog.setContentView(R.layout.layout_dialog_gender);
 
         Window window = genderDialog.getWindow();
-        if(window == null){
-            return ;
+        if (window == null) {
+            return;
         }
 
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = gravity;
         window.setAttributes(windowAttributes);
 
-        if(Gravity.CENTER == gravity){
+        if (Gravity.CENTER == gravity) {
             genderDialog.setCancelable(true);
         } else {
             genderDialog.setCancelable(false);
@@ -712,7 +690,7 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(maleCheckbox.isChecked()){
+                if (maleCheckbox.isChecked()) {
                     femaleCheckbox.setChecked(false);
                     maleImage.setImageDrawable(getResources().getDrawable(R.drawable.male_checkbox_icon_color));
                     femaleImage.setImageDrawable(getResources().getDrawable(R.drawable.female_checkbox_icon_black));
@@ -725,7 +703,7 @@ public class MainActivity extends AppCompatActivity {
         femaleCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(femaleCheckbox.isChecked()){
+                if (femaleCheckbox.isChecked()) {
                     maleCheckbox.setChecked(false);
                     maleImage.setImageDrawable(getResources().getDrawable(R.drawable.male_checkbox_icon_black));
                     femaleImage.setImageDrawable(getResources().getDrawable(R.drawable.female_checkbox_icon_color));
@@ -764,15 +742,17 @@ public class MainActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!(!maleCheckbox.isChecked() && !femaleCheckbox.isChecked())){
-                    docRef =  firestore.collection("users").document(theTempEmail);
-                    String tempGender =  getGender(maleCheckbox,femaleCheckbox);
+                if (!(!maleCheckbox.isChecked() && !femaleCheckbox.isChecked())) {
+                    docRef = firestore.collection("users").document(theTempEmail);
+                    String tempGender = getGender(maleCheckbox, femaleCheckbox);
 
-                    docRef.update("gender",tempGender);
+                    docRef.update("gender", tempGender);
+
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
                     intent.putExtra("fragmentPosition", fragmentPos);
                     startActivity(intent);
                     finish();
+                    overridePendingTransition(0, 0);
                 } else {
                     Toast.makeText(MainActivity.this, "Please choose a gender", Toast.LENGTH_SHORT).show();
                 }
@@ -788,18 +768,18 @@ public class MainActivity extends AppCompatActivity {
         birthDayDialog.setContentView(R.layout.layout_dialog_date_of_birth);
 
         Window window = birthDayDialog.getWindow();
-        if(window == null){
-            return ;
+        if (window == null) {
+            return;
         }
 
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = gravity;
         window.setAttributes(windowAttributes);
 
-        if(Gravity.CENTER == gravity){
+        if (Gravity.CENTER == gravity) {
             birthDayDialog.setCancelable(true);
         } else {
             birthDayDialog.setCancelable(false);
@@ -821,7 +801,7 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this,
                         android.R.style.Theme_Holo_Dialog_MinWidth,
                         mDateSetListener,
-                        year,month,day);
+                        year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -831,13 +811,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                Log.d("AddToDoItemActivity","onDateSet: date" + dayOfMonth + "/" + month + "/" + year);
+                Log.d("AddToDoItemActivity", "onDateSet: date" + dayOfMonth + "/" + month + "/" + year);
                 mDate = dayOfMonth + "/" + month + "/" + year;
 
                 Calendar calendar = Calendar.getInstance();
                 int currentYear = calendar.get(Calendar.YEAR);
                 int age = currentYear - year;
-                if(age >= 13){
+                if (age >= 13) {
                     datePicker.setText(mDate);
                 } else {
                     Toast.makeText(MainActivity.this,
@@ -862,9 +842,15 @@ public class MainActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!datePicker.getText().toString().equals("Select your date of birth")){
-                    docRef =  firestore.collection("users").document(theTempEmail);
-                    docRef.update("date_of_birth",mDate);
+                if (!datePicker.getText().toString().equals("Select your date of birth")) {
+                    docRef = firestore.collection("users").document(theTempEmail);
+                    docRef.update("date_of_birth", mDate);
+
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.putExtra("fragmentPosition", fragmentPos);
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(0, 0);
                 } else {
                     Toast.makeText(MainActivity.this, "Please choose your date of birth", Toast.LENGTH_SHORT).show();
                 }
@@ -873,11 +859,10 @@ public class MainActivity extends AppCompatActivity {
         birthDayDialog.show();
     }
 
-    private String getGender(CheckBox maleCheckbox,CheckBox femaleCheckbox){
-        if(maleCheckbox.isChecked()){
+    private String getGender(CheckBox maleCheckbox, CheckBox femaleCheckbox) {
+        if (maleCheckbox.isChecked()) {
             return "Male";
-        }
-        else {
+        } else {
             return "Female";
         }
     }
