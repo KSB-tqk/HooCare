@@ -275,7 +275,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         docRef = firestore.collection("daily").
                 document("week-of-" + monday.toString()).
                 collection(today.toString()).
-//                collection("2021-06-28").
+//                collection("2021-06-30").
         document(userEmail);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -368,6 +368,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
                                         dailyGoal.put("num_of_exercise", "0");
                                         dailyGoal.put("userEmail", userEmail);
+                                        dailyGoal.put("datetime",today.toString());
 
                                         //update data to firestore
                                         firestore = FirebaseFirestore.getInstance();
