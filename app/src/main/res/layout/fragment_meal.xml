@@ -361,31 +361,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@id/view_white_weight_detail"
-                    android:layout_below="@id/weight_headline"
-                    android:layout_alignParentEnd="true"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/clock_icon_contentDes"
-                        android:src="@drawable/today_timeline_icon_mealfrag" />
-
-                    <TextView
-                        android:id="@+id/weight_updatetime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:gravity="center"
-                        android:text="@string/today_8_26_am"
-                        android:textSize="13sp" />
-                </LinearLayout>
 
                 <View
                     android:id="@+id/view_white_weight_detail"
@@ -401,7 +376,7 @@
                     android:layout_below="@id/view_white_weight_detail"
                     android:paddingTop="10dp"
                     android:text="@string/_185_cm"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -412,8 +387,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_toEndOf="@id/BMI_title"
                     android:paddingTop="10dp"
-                    android:text="No Data"
-                    android:textSize="15sp"
+                    android:text="20%"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -426,7 +401,7 @@
                     android:gravity="center"
                     android:paddingTop="10dp"
                     android:text="@string/_27_3_bmi"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView

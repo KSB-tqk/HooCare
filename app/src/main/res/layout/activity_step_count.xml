@@ -165,6 +165,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="@string/_0"
+                        android:maxLength="4"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -197,6 +198,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="@string/_0"
+                        android:maxLength="4"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 

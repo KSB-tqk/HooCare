@@ -55,7 +55,8 @@ public class MealFragment extends Fragment {
     private MealViewPagerAdapter adapter;
     private MealPlanData mealPlanData;
     private TextView weightTextView, heightTextView, setUpBMIButton, bmiTextView,
-            bodyFatData, eatenKCal, burnedKcal, progressbarStatus;
+            bodyFatData, eatenKCal, burnedKcal, progressbarStatus, bmiTitle;
+
     private static final String tempEmail = "tempEmail";
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
@@ -127,6 +128,11 @@ public class MealFragment extends Fragment {
         mConsumed = rootview.findViewById(R.id.btConsume);
         ///
         mOpenMealInput.setOnClickListener(new View.OnClickListener() {
+
+        bmiTitle = rootview.findViewById(R.id.BMI_title);
+
+        mConsumed.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 if (expandableView.getVisibility()==View.GONE){
@@ -230,14 +236,32 @@ public class MealFragment extends Fragment {
 
                                 assert tempWeight != null;
                                 if (!tempWeight.equals("empty")) {
+
                                     String bmiData = getBMI_And_getBodyFat(tempHeight, tempWeight , tempGender,tempDate);
                                     weightTextView.setText(tempWeight);
                                     heightTextView.setText(tempHeight + " cm");
                                     String[] splitString = bmiData.split("-");
                                     bmiTextView.setText(splitString[0] + " BMI");
                                     bodyFatData.setText(splitString[1]);
+
+                                    float tempBmiStatus = Float.parseFloat(splitString[0]);
+                                    if(tempBmiStatus < 18.5f){
+                                        bmiTitle.setText("Underweight");
+                                    } else if(tempBmiStatus >= 18.5f && tempBmiStatus < 24.9f) {
+                                        bmiTitle.setText("Normal");
+                                    } else if(tempBmiStatus >= 24.9f && tempBmiStatus < 29.9f) {
+                                        bmiTitle.setText("Overweight");
+                                    } else if(tempBmiStatus > 29.9f && tempBmiStatus < 34.9f) {
+                                        bmiTitle.setText("Obese");
+                                    } else {
+                                        bmiTitle.setText("Extremely Obese");
+                                    }
+
                                     if(splitString[1].equals("No Data")){
                                         bodyFatData.setTextSize(13);
+                                        heightTextView.setTextSize(13);
+                                        bmiTextView.setTextSize(13);
+
                                     }
                                     bmiRelative.setVisibility(View.VISIBLE);
                                     setUPContraint.setVisibility(View.GONE);
@@ -395,10 +419,10 @@ public class MealFragment extends Fragment {
             String[] realDate = tempDate.split("/");
             float year = (float) Calendar.getInstance().get(Calendar.YEAR);
             float age = year - Float.parseFloat(realDate[2]);
-            if(tempGender.equals("male")){
+            if(tempGender.equals("Male")){
                 bodyfat = ((1.2f * ans) + (0.23f * age)) - 16.2f;
                 bodyFatAns = String.format("%.0f", bodyfat) + "%";
-            } else if(tempGender.equals("female")){
+            } else if(tempGender.equals("Female")){
                 bodyfat = ((1.2f * ans) + (0.23f * age)) - 5.4f;
                 bodyFatAns = String.format("%.0f", bodyfat) + "%";
             }
