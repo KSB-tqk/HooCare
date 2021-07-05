@@ -90,50 +90,36 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:background="@drawable/edit_button_cancel_background"
+                    android:padding="10dp"
+                    android:backgroundTint="#DDDDDD"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent">
+                    app:layout_constraintTop_toTopOf="parent">
+
 
                     <ImageView
-                        android:id="@+id/calender_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:id="@+id/calender_icon_time_usage"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_marginEnd="5dp"
                         android:src="@drawable/calendar_icon"
-                        app:layout_constraintRight_toLeftOf="@id/date_time_text" />
+                        app:layout_constraintBottom_toBottomOf="@id/date_time_statistic"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/date_time_text"
+                        android:id="@+id/date_time_step"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/_12_november"
-                        android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:text="Today, 9 June"
                         android:textColor="@color/black"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@id/calender_icon"
-                        app:layout_constraintRight_toRightOf="@id/step_count_text"
-                        app:layout_constraintTop_toTopOf="@id/calender_icon" />
+                        app:layout_constraintTop_toTopOf="parent" />
                 </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/left_arrow_datetime"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginEnd="5dp"
-                    android:src="@drawable/left_arrow_datetime_icon"
-                    app:layout_constraintBottom_toBottomOf="@id/calender_icon_linear"
-                    app:layout_constraintRight_toLeftOf="@id/calender_icon_linear"
-                    app:layout_constraintTop_toTopOf="@id/calender_icon_linear" />
-
-                <ImageView
-                    android:id="@+id/right_arrow_datetime"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginStart="5dp"
-                    android:src="@drawable/right_arrow_datetime_icon"
-                    app:layout_constraintBottom_toBottomOf="@id/calender_icon_linear"
-                    app:layout_constraintLeft_toRightOf="@id/calender_icon_linear"
-                    app:layout_constraintTop_toTopOf="@id/calender_icon_linear" />
 
                 <TextView
                     android:id="@+id/step_count_text"

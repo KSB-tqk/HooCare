@@ -9,8 +9,4 @@
 
         <item name="android:buttonStyle">@color/black</item>
     </style>
-
-    <declare-styleable name="RoundedBarChart">
-        <attr name="radius" format="dimension" />
-    </declare-styleable>
 </resources>

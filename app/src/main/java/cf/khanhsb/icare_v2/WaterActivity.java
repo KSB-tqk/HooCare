@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,8 @@ import com.john.waveview.WaveView;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import cf.khanhsb.icare_v2.Adapter.BarChartAdapter;
 import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
@@ -60,7 +63,7 @@ public class WaterActivity extends AppCompatActivity {
     private ColorStateList def_color;
     private TextView statusOfProgressBar, day_tab, week_tab, month_tab, select_background,
             numberOfCups_text_view, doneButton, dailyWaterGoal_text_view, waterCupDailyGoal,
-            waterCountText, waterCupCountText,noData;
+            waterCountText, waterCupCountText,noData,dateTimeLabel;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private SeekBar seekBar;
@@ -98,6 +101,7 @@ public class WaterActivity extends AppCompatActivity {
         minusWaterButton = findViewById(R.id.minus_water_button);
         waterCupCountText = findViewById(R.id.water_cup_count_text);
         noData = findViewById(R.id.no_data_text_label_water);
+        dateTimeLabel = findViewById(R.id.date_time_water);
 
 //        day_tab = (TextView) findViewById(R.id.text_item1_water_act);
 //        week_tab = (TextView) findViewById(R.id.text_item2_water_act);
@@ -105,6 +109,15 @@ public class WaterActivity extends AppCompatActivity {
         select_background = (TextView) findViewById(R.id.selected_background_tab_water_act);
         verticalViewPager2 = (ViewPager2) findViewById(R.id.water_barchart_viewPager2);
 //        def_color = week_tab.getTextColors();
+
+        //set up date
+        Date calendar = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + calendar);
+        String day = (String) DateFormat.format("dd", calendar); // 20
+        String monthString = (String) DateFormat.format("MMM", calendar); // Jun
+        String realDate = day + " " + monthString;
+
+        dateTimeLabel.setText("Today, " + realDate);
 
         SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
         String theTempEmail = sharedPreferences.getString("Email", "");
