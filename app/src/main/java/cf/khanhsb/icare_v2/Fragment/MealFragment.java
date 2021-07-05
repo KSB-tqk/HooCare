@@ -74,6 +74,7 @@ public class MealFragment extends Fragment {
     private ConstraintLayout expandableView;
     private CardView mealCardview;
     private int eaten;
+    private float tempBmiStatus;
     public MealFragment() {
         // Required empty public constructor
     }
@@ -215,7 +216,13 @@ public class MealFragment extends Fragment {
                                     bmiTextView.setText(splitString[0] + " BMI");
                                     bodyFatData.setText(splitString[1]);
 
-                                    float tempBmiStatus = Float.parseFloat(splitString[0]);
+                                    if(splitString[0].contains(",")){
+                                        String[] realFloat = splitString[0].split(",");
+                                        tempBmiStatus = Float.parseFloat(realFloat[0]+"."+realFloat[1]);
+                                    } else {
+                                        tempBmiStatus = Float.parseFloat(splitString[0]);
+                                    }
+
                                     if(tempBmiStatus < 18.5f){
                                         bmiTitle.setText("Underweight");
                                     } else if(tempBmiStatus >= 18.5f && tempBmiStatus < 24.9f) {
