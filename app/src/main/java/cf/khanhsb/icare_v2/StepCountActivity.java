@@ -92,7 +92,6 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
 
         left_arrow_datetime = (ImageView) findViewById(R.id.left_arrow_datetime);
         right_arrow_datetime = (ImageView) findViewById(R.id.right_arrow_datetime);
-
         day_tab = (TextView) findViewById(R.id.text_item1);
         week_tab = (TextView) findViewById(R.id.text_item2);
         month_tab = (TextView) findViewById(R.id.text_item3);

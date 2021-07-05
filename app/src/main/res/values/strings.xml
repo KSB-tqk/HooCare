@@ -196,5 +196,8 @@
     <string name="skip">Skip</string>
     <string name="set_your_date_of_birth">Set your date of birth</string>
     <string name="set_your_gender">Set your gender</string>
+    <string name="set_your_sleep_goal_to_track_your_sleep_time">Set your sleep goal to track your sleep time</string>
+    <string name="set_sleep_goal">Set Sleep Goal</string>
+    <string name="choose_time_to_sleep">Choose time to sleep</string>
 
 </resources>

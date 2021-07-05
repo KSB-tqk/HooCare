@@ -421,7 +421,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
                         String calo = document.getString("diet");
-                        if (!"empty".equals(calo)) {
+                        if (!"0".equals(calo)) {
                             float calories = Float.parseFloat(calo);
                             caloTextView.setText(String.valueOf(calories));
                         }
@@ -511,7 +511,11 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                     if (document != null) {
                         String temp = document.getString("drink");
                         if (!"empty".equals(temp)) {
-                            float waterHadDrink = Float.parseFloat(temp) / 1000;
+                            assert temp != null;
+                            float waterHadDrink = Float.parseFloat(temp);
+                            if(!temp.equals("0")){
+                               waterHadDrink = Float.parseFloat(temp) / 1000;
+                            }
                             numOfWater.setText(String.valueOf(waterHadDrink));
                             waterCardview.setClickable(true);
                         }
