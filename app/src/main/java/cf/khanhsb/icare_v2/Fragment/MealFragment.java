@@ -73,7 +73,7 @@ public class MealFragment extends Fragment {
     private Thread backgroundThread;
     private ConstraintLayout expandableView;
     private CardView mealCardview;
-    private int eaten, burned;
+    private float eaten, burned;
     private float tempBmiStatus;
     public MealFragment() {
         // Required empty public constructor
@@ -165,10 +165,10 @@ public class MealFragment extends Fragment {
                                 String kcal = document.getString("diet");
                                 String burned_workout = document.getString("kcal_workout");
                                 String burned_step = document.getString("cal_step");
-                                int burngym, burnstep;
+                                float burngym, burnstep;
                                 try {
-                                    burngym = Integer.parseInt(String.valueOf(burned_workout));
-                                    burnstep = Integer.parseInt(String.valueOf(burned_step));
+                                    burngym = Float.parseFloat(String.valueOf(burned_workout));
+                                    burnstep = Float.parseFloat(String.valueOf(burned_step));
                                 }catch (NumberFormatException e2){
                                     burngym = 0;
                                     burnstep = 0;
@@ -177,7 +177,7 @@ public class MealFragment extends Fragment {
                                 eatenKCal.setText(String.valueOf(kcal));
                                 burnedKcal.setText(String.valueOf(burned));
                                 try {
-                                    eaten = Integer.parseInt(String.valueOf(eatenKCal));
+                                    eaten = Float.parseFloat(String.valueOf(eatenKCal));
                                 }catch (NumberFormatException e1){
                                     eaten = 0;
                                 }
