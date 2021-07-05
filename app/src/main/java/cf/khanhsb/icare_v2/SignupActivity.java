@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -186,6 +189,7 @@ public class SignupActivity extends Activity {
                     if(!mDisplayDate.getText().toString().equals("Select your date of birth")){
                         mAuth.createUserWithEmailAndPassword(email, pass)
                                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @RequiresApi(api = Build.VERSION_CODES.O)
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         String tempGender =  getGender(maleCheckbox,femaleCheckbox);
@@ -219,15 +223,18 @@ public class SignupActivity extends Activity {
         }
     }
 
-    private void CreateUserOnFirebase(String userEmail, String userName,String password,String gender,String dateOfBirth) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void CreateUserOnFirebase(String userEmail, String userName, String password, String gender, String dateOfBirth) {
         //Set up firestore
         firestore = FirebaseFirestore.getInstance();
+        LocalDate today = LocalDate.now();
 
         // Save user data to firestore
         Map<String, Object> user = new HashMap<>();
         user.put("name", userName);
         user.put("email", userEmail);
         user.put("gender",gender);
+        user.put("join_date",today.toString());
         user.put("date_of_birth",dateOfBirth);
         user.put("weight", "empty");
         user.put("height", "empty");

@@ -199,5 +199,8 @@
     <string name="set_your_sleep_goal_to_track_your_sleep_time">Set your sleep goal to track your sleep time</string>
     <string name="set_sleep_goal">Set Sleep Goal</string>
     <string name="choose_time_to_sleep">Choose time to sleep</string>
+    <string name="back_button"><![CDATA[<]]></string>
+    <string name="forward_button"><![CDATA[>]]></string>
+    <string name="this_week">This Week</string>
 
 </resources>

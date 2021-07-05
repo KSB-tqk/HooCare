@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
+import android.graphics.RenderNode;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,10 +39,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.john.waveview.WaveView;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import cf.khanhsb.icare_v2.Adapter.BarChartAdapter;
 import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
@@ -53,25 +54,26 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 public class WaterActivity extends AppCompatActivity {
 
-    private ArrayList<BarEntry> dataValue = new ArrayList<BarEntry>();
-    private int waterHadDrink = 0, numOfCup = 8, waterHaveToDrink = 0, i, waterDataPos;
+    private ArrayList<BarEntry> dataValue;
+    private int waterHadDrink = 0, numOfCup = 8, waterHaveToDrink = 0, i;
     private WaveView waveView;
     private ImageView backButton, moreButton, plusButton, minusButton, minusWaterButton;
     private AppCompatButton drinkWater;
     private ConstraintLayout bottomSheetContainer;
     private ProgressBar progressBar;
     private ColorStateList def_color;
-    private TextView statusOfProgressBar, day_tab, week_tab, month_tab, select_background,
+    private TextView backToPreviusWeek, nextToFollowingWeek,
             numberOfCups_text_view, doneButton, dailyWaterGoal_text_view, waterCupDailyGoal,
-            waterCountText, waterCupCountText,noData,dateTimeLabel;
+            waterCountText, waterCupCountText, noData, dateTimeLabel, weekLabel;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
-    private SeekBar seekBar;
     private static final String tempEmail = "tempEmail";
     private ViewPager2 verticalViewPager2;
     private BarChartAdapter adapter;
-    private boolean hasValue;
     private LocalDate tempDate;
+    private ArrayList<String> daylist;
+    private String joinDate, beginDay, endDay;
+    private String[] beginDaySplit, endDaySplit;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
@@ -81,15 +83,6 @@ public class WaterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_water);
 
         /**create bardata and add bardataset to bardata*/
-        ArrayList<String> daylist = new ArrayList<String>();
-        daylist.add("Mon");
-        daylist.add("Tue");
-        daylist.add("Wed");
-        daylist.add("Thur");
-        daylist.add("Fri");
-        daylist.add("Sat");
-        daylist.add("Sun");
-
         waveView = findViewById(R.id.wave_view_water);
         backButton = findViewById(R.id.button_backtohomefrag);
         drinkWater = findViewById(R.id.drink_water_button);
@@ -102,11 +95,10 @@ public class WaterActivity extends AppCompatActivity {
         waterCupCountText = findViewById(R.id.water_cup_count_text);
         noData = findViewById(R.id.no_data_text_label_water);
         dateTimeLabel = findViewById(R.id.date_time_water);
+        weekLabel = findViewById(R.id.week_label_water);
 
-//        day_tab = (TextView) findViewById(R.id.text_item1_water_act);
-//        week_tab = (TextView) findViewById(R.id.text_item2_water_act);
-//        month_tab = (TextView) findViewById(R.id.text_item3_water_act);
-        select_background = (TextView) findViewById(R.id.selected_background_tab_water_act);
+        backToPreviusWeek = (TextView) findViewById(R.id.back_to_last_week_button);
+        nextToFollowingWeek = (TextView) findViewById(R.id.next_to_next_week_button);
         verticalViewPager2 = (ViewPager2) findViewById(R.id.water_barchart_viewPager2);
 //        def_color = week_tab.getTextColors();
 
@@ -127,89 +119,6 @@ public class WaterActivity extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        ArrayList<String> tempDrink = new ArrayList<>();
-        ArrayList<BarDataSet> chartBarDataSetList = new ArrayList<>();
-        ArrayList<String> dayInWeek = new ArrayList<String>();
-        ArrayList<String> dateInWeek = new ArrayList<String>();
-        ArrayList<String> dayThatHasValue = new ArrayList<String>();
-        ArrayList<String> realDrinkValue = new ArrayList<String>();
-
-        Runnable getWaterListPerDay = new Runnable() {
-            @Override
-            public void run() {
-                long diffInDays = ChronoUnit.DAYS.between(monday, today);
-                waterDataPos = 0;
-                tempDate = monday;
-                for (i = 0; i <= diffInDays; i++) {
-                    dateInWeek.add(tempDate.toString());
-                    realDrinkValue.add("0");
-
-                    firestore.collection("daily").
-                            document("week-of-" + monday.toString()).
-                            collection(tempDate.toString())
-                            .whereEqualTo("userEmail", theTempEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    String drink = document.getString("drink");
-                                    String dayOnFirebase = document.getString("datetime");
-                                    dayThatHasValue.add(dayOnFirebase);
-                                    if (drink.equals("empty")) {
-                                        tempDrink.add("0");
-                                    } else {
-                                        tempDrink.add(drink);
-                                    }
-
-                                    assert dayOnFirebase != null;
-                                    if(dayOnFirebase.equals(today.toString())){
-                                        final Handler handler = new Handler(Looper.getMainLooper());
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                for(int j = 0; j < dateInWeek.size();j++){
-                                                    for(int z = 0;z < dayThatHasValue.size();z++){
-                                                        if(dateInWeek.get(j).equals(dayThatHasValue.get(z))){
-                                                            realDrinkValue.set(j,tempDrink.get(z));
-                                                        }
-                                                    }
-                                                }
-
-                                                for(int k = 0; k < realDrinkValue.size();k++){
-                                                    dataValue.add(new BarEntry(k, Float.parseFloat(realDrinkValue.get(k))));
-                                                    dayInWeek.add(daylist.get(k));
-                                                }
-
-                                                int allDayContain = dayInWeek.size();
-
-                                                if(allDayContain < 7){
-                                                    while(allDayContain < 7){
-                                                        dataValue.add(new BarEntry(allDayContain, 0));
-                                                        dayInWeek.add(daylist.get(allDayContain));
-                                                        allDayContain++;
-                                                    }
-                                                }
-
-                                                //initialize testadapter
-                                                adapter = new BarChartAdapter(dataValue, dayInWeek);
-                                                //setting adapter on to the viewpager2
-                                                verticalViewPager2.setUserInputEnabled(false);
-                                                verticalViewPager2.setAdapter(adapter);
-                                            }
-                                        }, 100);
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    tempDate = tempDate.plusDays(1);
-                }
-
-            }
-        };
-
-        Thread getDailyDrinkThread = new Thread(getWaterListPerDay);
-
         docRef = firestore.collection("users").document(theTempEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -224,7 +133,7 @@ public class WaterActivity extends AppCompatActivity {
                             noData.setVisibility(View.VISIBLE);
                             verticalViewPager2.setVisibility(View.GONE);
                         } else {
-                            getDailyDrinkThread.start();
+                            setUpWeekData(monday, today);
                             noData.setVisibility(View.GONE);
                             numOfCup = Integer.parseInt(temp);
                             float amountOfWater = Float.parseFloat(String.valueOf(numOfCup));
@@ -575,40 +484,200 @@ public class WaterActivity extends AppCompatActivity {
             }
         });
 
-//        day_tab.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                select_background.animate().x(0).setDuration(200);
-//                day_tab.setTextColor(Color.WHITE);
-//                verticalViewPager2.setCurrentItem(0);
-//                week_tab.setTextColor(def_color);
-//                month_tab.setTextColor(def_color);
-//            }
-//        });
-//
-//        week_tab.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int size = week_tab.getWidth();
-//                select_background.animate().x(size).setDuration(200);
-//                week_tab.setTextColor(Color.WHITE);
-//                verticalViewPager2.setCurrentItem(1);
-//                day_tab.setTextColor(def_color);
-//                month_tab.setTextColor(def_color);
-//            }
-//        });
-//
-//        month_tab.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int size0fMonthTab = month_tab.getWidth() * 2;
-//                select_background.animate().x(size0fMonthTab).setDuration(200);
-//                month_tab.setTextColor(Color.WHITE);
-//                verticalViewPager2.setCurrentItem(2);
-//                day_tab.setTextColor(def_color);
-//                week_tab.setTextColor(def_color);
-//            }
-//        });
+        backToPreviusWeek.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Runnable backDataOfWeekRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        docRef = firestore.collection("users").document(theTempEmail);
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document != null) {
+                                        joinDate = document.getString("join_date");
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                        formatter = formatter.withLocale(Locale.ENGLISH);  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
+                                        LocalDate theJoinDate = LocalDate.parse(joinDate, formatter);
 
+
+                                        if (weekLabel.getText().toString().equals("This Week")) {
+                                            LocalDate beginOfWeek = monday.minusDays(7);
+                                            LocalDate endOfWeek = monday.minusDays(1);
+
+                                            if (theJoinDate.isBefore(beginOfWeek)) {
+                                                setUpWeekData(beginOfWeek, endOfWeek);
+
+                                                beginDaySplit = monday.minusDays(7).toString().split("-");
+                                                beginDay = beginDaySplit[2] + "/" + beginDaySplit[1];
+                                                endDaySplit = monday.minusDays(1).toString().split("-");
+                                                endDay = endDaySplit[2] + "/" + endDaySplit[1];
+
+                                                weekLabel.setText(beginDay + " - " + endDay);
+                                                nextToFollowingWeek.setVisibility(View.VISIBLE);
+                                            } else {
+                                                Toast.makeText(WaterActivity.this, "No Data", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        } else {
+                                            LocalDate beginDayOfData = LocalDate.parse(
+                                                    beginDaySplit[0] + "-" + beginDaySplit[1] + "-" + beginDaySplit[2], formatter);
+                                            LocalDate endDayOfData = LocalDate.parse(
+                                                    endDaySplit[0] + "-" + endDaySplit[1] + "-" + endDaySplit[2], formatter);
+                                            if (theJoinDate.isBefore(beginDayOfData)) {
+                                                setUpWeekData(beginDayOfData.minusDays(7), endDayOfData.minusDays(7));
+
+                                                beginDaySplit = beginDayOfData.minusDays(7).toString().split("-");
+                                                beginDay = beginDaySplit[2] + "/" + beginDaySplit[1];
+                                                endDaySplit = endDayOfData.minusDays(7).toString().split("-");
+                                                endDay = endDaySplit[2] + "/" + endDaySplit[1];
+
+                                                weekLabel.setText(beginDay + " - " + endDay);
+                                            } else {
+                                                Toast.makeText(WaterActivity.this, "No Data", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                };
+                Thread backDataOfWeekThread = new Thread(backDataOfWeekRunnable);
+                backDataOfWeekThread.start();
+            }
+        });
+
+        nextToFollowingWeek.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!weekLabel.getText().toString().equals("This Week")) {
+                    String[] splitBeginAndEnd = weekLabel.getText().toString().split("-");
+                    String[] beginDaySplit = splitBeginAndEnd[0].trim().split("/");
+                    String[] endDaySplit = splitBeginAndEnd[1].trim().split("/");
+
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    formatter = formatter.withLocale(Locale.ENGLISH);
+
+                    LocalDate beginDay = LocalDate.parse("2021-" + beginDaySplit[1] + "-" + beginDaySplit[0], formatter);
+                    LocalDate endDay = LocalDate.parse("2021-" + endDaySplit[1] + "-" + endDaySplit[0], formatter);
+
+                    setUpWeekData(beginDay.plusDays(7), endDay.plusDays(7));
+
+                    String[] plusBeginDaySplit = beginDay.plusDays(7).toString().split("-");
+                    String plusBeginDay = beginDaySplit[2] + "/" + beginDaySplit[1];
+                    String[] plusEndDaySplit = endDay.plusDays(7).toString().split("-");
+                    String plusEndDay = endDaySplit[2] + "/" + endDaySplit[1];
+
+                    weekLabel.setText(plusBeginDay + " - " + plusEndDay);
+                }
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setUpWeekData(LocalDate thisWeekMonday, LocalDate thisWeekToday) {
+        daylist = new ArrayList<String>();
+        dataValue = new ArrayList<BarEntry>();
+        daylist.add("Mon");
+        daylist.add("Tue");
+        daylist.add("Wed");
+        daylist.add("Thur");
+        daylist.add("Fri");
+        daylist.add("Sat");
+        daylist.add("Sun");
+
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
+
+        firestore = FirebaseFirestore.getInstance();
+
+        ArrayList<String> tempDrink = new ArrayList<>();
+        ArrayList<BarDataSet> chartBarDataSetList = new ArrayList<>();
+        ArrayList<String> dayInWeek = new ArrayList<String>();
+        ArrayList<String> dateInWeek = new ArrayList<String>();
+        ArrayList<String> dayThatHasValue = new ArrayList<String>();
+        ArrayList<String> realDrinkValue = new ArrayList<String>();
+
+        Runnable getWaterListPerDay = new Runnable() {
+            @Override
+            public void run() {
+                long diffInDays = ChronoUnit.DAYS.between(thisWeekMonday, thisWeekToday);
+
+                tempDate = thisWeekMonday;
+                for (i = 0; i <= diffInDays; i++) {
+                    dateInWeek.add(tempDate.toString());
+                    realDrinkValue.add("0");
+
+                    firestore.collection("daily").
+                            document("week-of-" + thisWeekMonday.toString()).
+                            collection(tempDate.toString())
+                            .whereEqualTo("userEmail", theTempEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String drink = document.getString("drink");
+                                    String dayOnFirebase = document.getString("datetime");
+                                    dayThatHasValue.add(dayOnFirebase);
+                                    if (drink.equals("empty")) {
+                                        tempDrink.add("0");
+                                    } else {
+                                        tempDrink.add(drink);
+                                    }
+
+                                    assert dayOnFirebase != null;
+                                    if (dayOnFirebase.equals(thisWeekToday.toString())) {
+                                        final Handler handler = new Handler(Looper.getMainLooper());
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                for (int j = 0; j < dateInWeek.size(); j++) {
+                                                    for (int z = 0; z < dayThatHasValue.size(); z++) {
+                                                        if (dateInWeek.get(j).equals(dayThatHasValue.get(z))) {
+                                                            realDrinkValue.set(j, tempDrink.get(z));
+                                                        }
+                                                    }
+                                                }
+
+                                                for (int k = 0; k < realDrinkValue.size(); k++) {
+                                                    dataValue.add(new BarEntry(k, Float.parseFloat(realDrinkValue.get(k))));
+                                                    dayInWeek.add(daylist.get(k));
+                                                }
+
+                                                int allDayContain = dayInWeek.size();
+
+                                                if (allDayContain < 7) {
+                                                    while (allDayContain < 7) {
+                                                        dataValue.add(new BarEntry(allDayContain, 0));
+                                                        dayInWeek.add(daylist.get(allDayContain));
+                                                        allDayContain++;
+                                                    }
+                                                }
+
+                                                //initialize testadapter
+                                                adapter = new BarChartAdapter(dataValue, dayInWeek);
+                                                //setting adapter on to the viewpager2
+                                                verticalViewPager2.setUserInputEnabled(false);
+                                                verticalViewPager2.setAdapter(adapter);
+                                            }
+                                        }, 100);
+                                    }
+                                }
+                            } else {
+
+                            }
+                        }
+                    });
+                    tempDate = tempDate.plusDays(1);
+                }
+
+            }
+        };
+
+        Thread getDailyDrinkThread = new Thread(getWaterListPerDay);
+        getDailyDrinkThread.start();
     }
 }

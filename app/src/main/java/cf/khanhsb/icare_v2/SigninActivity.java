@@ -50,6 +50,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -214,6 +215,7 @@ public class SigninActivity extends AppCompatActivity {
                     firestore = FirebaseFirestore.getInstance();
                     docRef = firestore.collection("users").document(email);
                     docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
@@ -380,9 +382,11 @@ public class SigninActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void CreateUserOnFirebase(String userEmail, String userName) {
         //Set up firestore
         firestore = FirebaseFirestore.getInstance();
+        LocalDate today = LocalDate.now();
 
         // Save user data to firestore
         Map<String, Object> user = new HashMap<>();
@@ -390,6 +394,7 @@ public class SigninActivity extends AppCompatActivity {
         user.put("email", userEmail);
         user.put("gender", "empty");
         user.put("date_of_birth", "empty");
+        user.put("join_date",today.toString());
         user.put("weight", "empty");
         user.put("height", "empty");
         user.put("step_goal", "empty");
