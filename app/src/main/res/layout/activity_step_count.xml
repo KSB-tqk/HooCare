@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/big_constranitlayout"
@@ -8,287 +8,289 @@
     android:background="#f2f2f2"
     tools:context=".StepCountActivity">
 
-    <LinearLayout
-        android:id="@+id/uptop_linearlayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:contentInsetStart="0dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp">
-
-                    <ImageView
-                        android:id="@+id/button_backtohomefrag"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@string/back_button_contentDes"
-                        android:src="@drawable/back_image_button_anim" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toStartOf="@id/more_menu_stepcount"
-                        android:layout_toEndOf="@id/button_backtohomefrag">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/cardview_background_gradient"
-                            android:backgroundTint="@color/white"
-                            android:fontFamily="@font/momcakebold"
-                            android:padding="8dp"
-                            android:text="@string/steps_label"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                            android:textColor="@color/lime_200"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <ImageView
-                        android:id="@+id/more_menu_stepcount"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/more_image_button_anim" />
-                </RelativeLayout>
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.cardview.widget.CardView
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/uptop_linearlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="8dp"
-            app:cardUseCompatPadding="true">
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:contentInsetStart="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp">
+
+                        <ImageView
+                            android:id="@+id/button_backtohomefrag"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@string/back_button_contentDes"
+                            android:src="@drawable/back_image_button_anim" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@id/more_menu_stepcount"
+                            android:layout_toEndOf="@id/button_backtohomefrag">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/cardview_background_gradient"
+                                android:backgroundTint="@color/white"
+                                android:fontFamily="@font/momcakebold"
+                                android:padding="8dp"
+                                android:text="@string/steps_label"
+                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                                android:textColor="@color/lime_200"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <ImageView
+                            android:id="@+id/more_menu_stepcount"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/more_image_button_anim" />
+                    </RelativeLayout>
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:paddingBottom="20dp">
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                app:cardUseCompatPadding="true">
 
-                <LinearLayout
-                    android:id="@+id/calender_icon_linear"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/edit_button_cancel_background"
-                    android:padding="10dp"
-                    android:backgroundTint="#DDDDDD"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_marginTop="15dp"
+                    android:paddingBottom="20dp">
 
+                    <LinearLayout
+                        android:id="@+id/calender_icon_linear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/edit_button_cancel_background"
+                        android:padding="10dp"
+                        android:backgroundTint="#DDDDDD"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <ImageView
+                            android:id="@+id/calender_icon_time_usage"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginEnd="5dp"
+                            android:src="@drawable/calendar_icon"
+                            app:layout_constraintBottom_toBottomOf="@id/date_time_statistic"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/date_time_step"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:gravity="center"
+                            android:text="Today, 9 June"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/step_count_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:text="@string/_0"
+                        android:textSize="40sp"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/calender_icon_linear" />
+
+                    <LinearLayout
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/step_count_label_background"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/step_count_text"
+                        app:layout_constraintTop_toTopOf="@id/step_count_text">
+
+                        <TextView
+                            android:id="@+id/km_step_count_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/_0"
+                            android:maxLength="5"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/km_step_count_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="KM"
+                            android:textColor="@color/lime_200"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/step_count_label_background"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        app:layout_constraintLeft_toRightOf="@id/step_count_text"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/step_count_text">
+
+                        <TextView
+                            android:id="@+id/kcal_step_count_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/_0"
+                            android:maxLength="4"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/kcal_step_count_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="KCAL"
+                            android:textColor="@color/lime_200"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/calender_icon_time_usage"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginEnd="5dp"
-                        android:src="@drawable/calendar_icon"
-                        app:layout_constraintBottom_toBottomOf="@id/date_time_statistic"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_running_cardview"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/date_time_step"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:gravity="center"
-                        android:text="Today, 9 June"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/step_count_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="@string/_0"
-                    android:textSize="40sp"
-                    android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/calender_icon_linear" />
-
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/step_count_label_background"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/step_count_text"
-                    app:layout_constraintTop_toTopOf="@id/step_count_text">
-
-                    <TextView
-                        android:id="@+id/km_step_count_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/_0"
-                        android:maxLength="5"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/km_step_count_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="KM"
-                        android:textColor="@color/lime_200"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/step_count_label_background"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    app:layout_constraintLeft_toRightOf="@id/step_count_text"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/step_count_text">
-
-                    <TextView
-                        android:id="@+id/kcal_step_count_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/_0"
-                        android:maxLength="4"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/kcal_step_count_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="KCAL"
-                        android:textColor="@color/lime_200"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_running_cardview"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/step_count_text"
-                    app:tint="@color/lime_200" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/step_count_text"
+                        app:tint="@color/lime_200" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
         <FrameLayout
+            android:id="@+id/step_chart_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="23dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="23dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/tab_background">
+            android:background="@drawable/tab_background"
+            app:layout_constraintTop_toBottomOf="@id/uptop_linearlayout">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/tab_item_background"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/selected_background_tab"
+                    android:id="@+id/back_to_last_week_button_step"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/back_button"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/week_label_step"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/tab_item_background" />
+                    android:text="@string/this_week"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/textbackground2"
+                    android:id="@+id/next_to_next_week_button_step"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/textbackground3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:text="@string/forward_button"
+                    android:gravity="center"
+                    android:visibility="invisible"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
                     android:layout_weight="1" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/text_item1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/day"
-                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:id="@+id/text_item2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/week"
-                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
-
-                <TextView
-                    android:id="@+id/text_item3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/month"
-                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
-            </LinearLayout>
         </FrameLayout>
-    </LinearLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/step_count_barchart_viewPager2"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:orientation="horizontal"
-        android:paddingBottom="20dp"
-        app:layout_constraintTop_toBottomOf="@id/uptop_linearlayout"
-        app:layout_constraintBottom_toBottomOf="parent">
-    </androidx.viewpager2.widget.ViewPager2>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/no_data_text_label_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/step_chart_nav"
+            android:text="No Data"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            android:visibility="gone"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:background="@color/white"
+            android:textSize="20sp"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/step_count_barchart_viewPager2"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:orientation="horizontal"
+            android:paddingBottom="20dp"
+            app:layout_constraintTop_toBottomOf="@id/step_chart_nav">
+        </androidx.viewpager2.widget.ViewPager2>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
