@@ -421,7 +421,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
                         String calo = document.getString("diet");
-                        if (!"empty".equals(calo)) {
+                        if (!"0".equals(calo)) {
                             float calories = Float.parseFloat(calo);
                             caloTextView.setText(String.valueOf(calories));
                         }
