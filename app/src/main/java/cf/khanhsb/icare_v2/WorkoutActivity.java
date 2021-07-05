@@ -62,7 +62,7 @@ public class WorkoutActivity extends AppCompatActivity {
             excerciseNextTitleWorkout, afterStartWorkoutTitle, afterStartDuration, readyTextLabel,
             workoutPartMainTitle, skipButton, plusSecondButton, restCountDownTimer, nextLabel,
             finishedTitle, finishedTime, finishedKcal, totalFinishedExercise, addWeightLabel,
-            doneWorkoutButton;
+            doneWorkoutButton,tutorialLabel;
     private ProgressBar progressBar;
     private int tempProgress = 15000, exercisePos, exerDuration, miniteOfWorkout, plusDuration,workoutImage;
     private FirebaseFirestore firestore;
@@ -121,6 +121,7 @@ public class WorkoutActivity extends AppCompatActivity {
         addWeightLabel = findViewById(R.id.add_weight_recommended);
         gifWorkoutConstaint = findViewById(R.id.gif_exer_workout_constaint);
         doneWorkoutButton = findViewById(R.id.done_button_workout);
+        tutorialLabel = findViewById(R.id.tutorial_label);
 
         //thread pool to stop timer
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -305,11 +306,14 @@ public class WorkoutActivity extends AppCompatActivity {
                     } else {
                         exerDuration = Integer.parseInt(splitDuration[1]);
                     }
+                    finishExercise.setVisibility(View.VISIBLE);
+                    tutorialLabel.setVisibility(View.VISIBLE);
                     reverseTimer(exerDuration, afterStartDuration);
                 } else {
                     afterStartDuration.setAllCaps(false);
                     afterStartDuration.setText(workoutDuration.get(exercisePos));
                     finishExercise.setVisibility(View.VISIBLE);
+                    tutorialLabel.setVisibility(View.VISIBLE);
                 }
             }
         };
@@ -338,6 +342,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 plusSecondButton.setVisibility(View.INVISIBLE);
                 skipButton.setVisibility(View.INVISIBLE);
                 finishExercise.setVisibility(View.VISIBLE);
+                tutorialLabel.setVisibility(View.VISIBLE);
 
                 if (exercisePos == workoutTitleList.size() - 1) {
                     excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos));
@@ -413,6 +418,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 plusSecondButton.setVisibility(View.INVISIBLE);
                 skipButton.setVisibility(View.INVISIBLE);
                 finishExercise.setVisibility(View.VISIBLE);
+                tutorialLabel.setVisibility(View.VISIBLE);
 
                 if (exercisePos == workoutTitleList.size() - 1) {
                     excerciseNextTitleWorkout.setText(workoutTitleList.get(exercisePos));
@@ -429,6 +435,7 @@ public class WorkoutActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void setUpRestTime(int nextExerDuration, TextView nextExerTextView) {
         finishExercise.setVisibility(View.INVISIBLE);
+        tutorialLabel.setVisibility(View.GONE);
         restCountDownTimer.setVisibility(View.VISIBLE);
         afterStartDuration.setVisibility(View.INVISIBLE);
         afterStartWorkoutTitle.setVisibility(View.INVISIBLE);
@@ -451,6 +458,7 @@ public class WorkoutActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void setUpNextExercise() {
         finishExercise.setVisibility(View.VISIBLE);
+        tutorialLabel.setVisibility(View.VISIBLE);
         if (exercisePos < workoutTitleList.size() - 1) {
             exercisePos++;
             exerciseCounter.setText("Exercise " + String.valueOf(exercisePos + 1) + "/" + workoutTitleList.size());
@@ -478,6 +486,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             if (workoutDuration.get(exercisePos).contains(":")) {
                 finishExercise.setVisibility(View.INVISIBLE);
+                tutorialLabel.setVisibility(View.GONE);
                 String[] splitDuration = workoutDuration.get(exercisePos).split(":");
                 if (Integer.parseInt(splitDuration[0]) > 0) {
                     exerDuration = Integer.parseInt(splitDuration[0]) * 60 + Integer.parseInt(splitDuration[1]);
@@ -489,6 +498,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 afterStartDuration.setAllCaps(false);
                 afterStartDuration.setText(workoutDuration.get(exercisePos));
                 finishExercise.setVisibility(View.VISIBLE);
+                tutorialLabel.setVisibility(View.VISIBLE);
             }
 
             setUpRestTime(exerDuration, afterStartDuration);
@@ -507,6 +517,7 @@ public class WorkoutActivity extends AppCompatActivity {
         plusSecondButton.setVisibility(View.INVISIBLE);
         skipButton.setVisibility(View.INVISIBLE);
         finishExercise.setVisibility(View.INVISIBLE);
+        tutorialLabel.setVisibility(View.GONE);
         gifExerciseWorkout.setVisibility(View.INVISIBLE);
         excerciseNextTitleWorkout.setVisibility(View.INVISIBLE);
         nextLabel.setVisibility(View.INVISIBLE);
