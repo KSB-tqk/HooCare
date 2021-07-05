@@ -126,11 +126,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
 
-        LocalDate yesterday = today.minusDays(i);
-
         firestore = FirebaseFirestore.getInstance();
-
-
         /*back button on the toolbar click event*/
         backtohomefrag_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,6 +257,7 @@ public class StepCountActivity extends AppCompatActivity implements View.OnClick
                             DocumentSnapshot document = task.getResult();
                             if (document != null) {
                                 String temp = document.getString("steps");
+                              
                                 if (!"empty".equals(temp)) {
                                     double to_km = Double.parseDouble(temp);
                                     double to_cal = Double.parseDouble(temp);
