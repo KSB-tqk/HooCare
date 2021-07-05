@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.graphics.RenderNode;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -507,7 +506,7 @@ public class WaterActivity extends AppCompatActivity {
                                             LocalDate beginOfWeek = monday.minusDays(7);
                                             LocalDate endOfWeek = monday.minusDays(1);
 
-                                            if (theJoinDate.isBefore(beginOfWeek)) {
+                                            if (theJoinDate.isBefore(beginOfWeek) && theJoinDate.isBefore((endOfWeek))) {
                                                 setUpWeekData(beginOfWeek, endOfWeek);
 
                                                 beginDaySplit = monday.minusDays(7).toString().split("-");
@@ -554,6 +553,7 @@ public class WaterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!weekLabel.getText().toString().equals("This Week")) {
+
                     String[] splitBeginAndEnd = weekLabel.getText().toString().split("-");
                     String[] beginDaySplit = splitBeginAndEnd[0].trim().split("/");
                     String[] endDaySplit = splitBeginAndEnd[1].trim().split("/");
@@ -564,14 +564,20 @@ public class WaterActivity extends AppCompatActivity {
                     LocalDate beginDay = LocalDate.parse("2021-" + beginDaySplit[1] + "-" + beginDaySplit[0], formatter);
                     LocalDate endDay = LocalDate.parse("2021-" + endDaySplit[1] + "-" + endDaySplit[0], formatter);
 
-                    setUpWeekData(beginDay.plusDays(7), endDay.plusDays(7));
+                    if (beginDay.plusDays(7).isEqual(monday)) {
+                        setUpWeekData(monday, today);
+                        weekLabel.setText("This Week");
+                        nextToFollowingWeek.setVisibility(View.INVISIBLE);
+                    } else {
+                        setUpWeekData(beginDay.plusDays(7), endDay.plusDays(7));
 
-                    String[] plusBeginDaySplit = beginDay.plusDays(7).toString().split("-");
-                    String plusBeginDay = beginDaySplit[2] + "/" + beginDaySplit[1];
-                    String[] plusEndDaySplit = endDay.plusDays(7).toString().split("-");
-                    String plusEndDay = endDaySplit[2] + "/" + endDaySplit[1];
+                        String[] plusBeginDaySplit = beginDay.plusDays(7).toString().split("-");
+                        String plusBeginDay = plusBeginDaySplit[2] + "/" + plusBeginDaySplit[1];
+                        String[] plusEndDaySplit = endDay.plusDays(7).toString().split("-");
+                        String plusEndDay = plusEndDaySplit[2] + "/" + plusEndDaySplit[1];
 
-                    weekLabel.setText(plusBeginDay + " - " + plusEndDay);
+                        weekLabel.setText(plusBeginDay + " - " + plusEndDay);
+                    }
                 }
             }
         });
