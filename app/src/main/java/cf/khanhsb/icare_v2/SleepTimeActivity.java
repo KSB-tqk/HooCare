@@ -1,9 +1,7 @@
 package cf.khanhsb.icare_v2;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -14,10 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -36,7 +34,6 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
-import cf.khanhsb.icare_v2.Model.AlertReceiver;
 import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
 
 import static java.time.DayOfWeek.MONDAY;
@@ -47,15 +44,13 @@ public class SleepTimeActivity extends AppCompatActivity {
     private ImageView backButton, moreButton, plusButton, minusButton;
     private ConstraintLayout bottomSheetContainer, setUpSleepGoalConstraint;
     private ProgressBar progressBar;
-    private int numOfHours = 0, setTimeHour, setTimeMin, wakeTimeHour, wakeTimeMin;
+    private int sleepGoal = 8,sleepHour = 10,sleepMin = 30;
     private FirebaseFirestore firestore;
     private static final String tempEmail = "tempEmail";
-    private TextView numOfHoursTextView, doneButton, setUpGoal, dateTextView, totalSleepTime;
+    private TextView numOfHoursTextView, doneButton, setUpGoal, dateTextView, recommendLabel;
     private DocumentReference docRef;
-    private Button setupButton;
-    private ConstraintLayout sleepTimeConstaint;
-    private TimePicker timePicker, wakeTimePicker;
-    private String mTime, wakeTime;
+    private Button setupButton, chooseTimeToSleepButton;
+    private LinearLayout sleepTimeLinear, wakeTimeLinear;
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -71,22 +66,13 @@ public class SleepTimeActivity extends AppCompatActivity {
         setUpGoal = findViewById(R.id.setup_sleep_goal);
         setUpSleepGoalConstraint = findViewById(R.id.setup_sleep_goal_constaint);
         dateTextView = findViewById(R.id.date_time_statistic);
+        chooseTimeToSleepButton = findViewById(R.id.choose_button_sleep_time);
+        recommendLabel = findViewById(R.id.recommend_label_sleep_time);
+        sleepTimeLinear = findViewById(R.id.sleep_time_linear);
+        wakeTimeLinear = findViewById(R.id.wake_time_linear);
 
         Intent intent = getIntent();
         String tempSleepTime = intent.getStringExtra("sleepTime");
-
-        if (tempSleepTime != null) {
-            if(tempSleepTime.contains(":")) {
-                String[] splitString = tempSleepTime.split(":");
-                if (!splitString[1].equals("0")) {
-                    totalSleepTime.setText(splitString[0] + "h " + splitString[1] + "m");
-                } else {
-                    totalSleepTime.setText(splitString[0] + "h");
-                }
-            }
-        } else {
-            totalSleepTime.setText("0");
-        }
 
         //set up date
         Date calendar = Calendar.getInstance().getTime();
@@ -104,37 +90,51 @@ public class SleepTimeActivity extends AppCompatActivity {
         LocalDate monday = today.with(previousOrSame(MONDAY));
 
         firestore = FirebaseFirestore.getInstance();
-        docRef = firestore.collection("users").document(theTempEmail);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+        Runnable setUpSleepTimeRunnable = new Runnable() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-                        String temp = document.getString("sleep_goal");
-                        String timeToSleep = document.getString("time_to_sleep");
-                        String timeToWake = document.getString("time_to_wake");
-                        assert temp != null;
-                        if (temp.equals("empty")) {
-                            sleepTimeConstaint.setVisibility(View.INVISIBLE);
-                            setUpSleepGoalConstraint.setVisibility(View.VISIBLE);
-                            setUpGoal.bringToFront();
-                            setupButton.bringToFront();
+            public void run() {
+                docRef = firestore.collection("users").document(theTempEmail);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null) {
+                                String temp = document.getString("sleep_goal");
+                                String timeToSleep = document.getString("time_to_sleep");
+                                assert temp != null;
+                                if (temp.equals("empty")) {
+                                    setUpSleepGoalConstraint.setVisibility(View.VISIBLE);
+                                    setUpGoal.bringToFront();
+                                    setupButton.bringToFront();
+                                } else {
+                                    setUpSleepGoalConstraint.setVisibility(View.VISIBLE);
+                                    setUpGoal.setVisibility(View.GONE);
+                                    setupButton.setVisibility(View.GONE);
+                                    sleepGoal = Integer.parseInt(temp);
+
+                                    if (timeToSleep.equals("empty")) {
+                                        chooseTimeToSleepButton.setVisibility(View.VISIBLE);
+                                    } else {
+                                        sleepTimeLinear.setVisibility(View.VISIBLE);
+                                        wakeTimeLinear.setVisibility(View.VISIBLE);
+                                        recommendLabel.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            } else {
+                                Log.d("LOGGER", "No such document");
+                            }
                         } else {
-                            setUpSleepGoalConstraint.setVisibility(View.GONE);
-                            sleepTimeConstaint.setVisibility(View.VISIBLE);
-                            numOfHours = Integer.parseInt(temp);
+                            Log.d("LOGGER", "get failed with ", task.getException());
                         }
-
-
-                    } else {
-                        Log.d("LOGGER", "No such document");
                     }
-                } else {
-                    Log.d("LOGGER", "get failed with ", task.getException());
-                }
+                });
             }
-        });
+        };
+
+        Thread setUpSleepTimeThread = new Thread(setUpSleepTimeRunnable);
+        setUpSleepTimeThread.start();
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +157,32 @@ public class SleepTimeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SetUpDialog(theTempEmail, true);
+            }
+        });
+
+        chooseTimeToSleepButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        SleepTimeActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                sleepHour = hourOfDay;
+                                sleepMin = minute;
+
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(0,0,0,sleepHour,sleepMin);
+                                chooseTimeToSleepButton.setVisibility(View.GONE);
+                                sleepTimeLinear.setVisibility(View.VISIBLE);
+                                wakeTimeLinear.setVisibility(View.VISIBLE);
+                                recommendLabel.setVisibility(View.VISIBLE);
+
+                            }
+                        },12,0,false
+                );
+                timePickerDialog.updateTime(sleepHour,sleepMin);
+                timePickerDialog.show();
             }
         });
     }
@@ -189,48 +215,25 @@ public class SleepTimeActivity extends AppCompatActivity {
         String tempDate = splitDate[2] + "/" + splitDate[1] + "/" + splitDate[0];
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
 
-        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                setTimeHour = hourOfDay;
-                setTimeMin = minute;
-            }
-        });
-        Calendar calendar = Calendar.getInstance();
-        wakeTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                wakeTimeHour = hourOfDay;
-                wakeTimeMin = minute;
-                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                calendar.set(Calendar.MINUTE, minute);
-                calendar.set(Calendar.SECOND, 0);
-
-                if (calendar.before(Calendar.getInstance())) {
-                    calendar.add(Calendar.DATE, 1);
-                }
-            }
-        });
-
         progressBar.setMax(12000);
-        progressBar.setProgress(numOfHours * 1000);
+        progressBar.setProgress(sleepGoal * 1000);
 
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                numOfHours = Integer.parseInt(numOfHoursTextView.getText().toString());
-                if (numOfHours == 11) {
+                sleepGoal = Integer.parseInt(numOfHoursTextView.getText().toString());
+                if (sleepGoal == 11) {
                     plusButton.setVisibility(View.GONE);
                 }
-                if (numOfHours < 12) {
-                    numOfHours += 1;
-                    if (numOfHours == 5) {
+                if (sleepGoal < 12) {
+                    sleepGoal += 1;
+                    if (sleepGoal == 5) {
                         minusButton.setVisibility(View.VISIBLE);
                     }
-                    numOfHoursTextView.setText(String.valueOf(numOfHours));
+                    numOfHoursTextView.setText(String.valueOf(sleepGoal));
 
                     //progress bar animation
-                    float progress = Float.parseFloat(String.valueOf(numOfHours)) * 1000;
+                    float progress = Float.parseFloat(String.valueOf(sleepGoal)) * 1000;
                     ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
                             progress - 1000,
                             progress);
@@ -239,7 +242,7 @@ public class SleepTimeActivity extends AppCompatActivity {
 
                     //update value
                     firestore.collection("users").document(theTempEmail).
-                            update("sleep_goal", String.valueOf(numOfHours));
+                            update("sleep_goal", String.valueOf(sleepGoal));
 
                 }
             }
@@ -248,19 +251,19 @@ public class SleepTimeActivity extends AppCompatActivity {
         minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                numOfHours = Integer.parseInt(numOfHoursTextView.getText().toString());
-                if (numOfHours == 5) {
+                sleepGoal = Integer.parseInt(numOfHoursTextView.getText().toString());
+                if (sleepGoal == 5) {
                     minusButton.setVisibility(View.GONE);
                 }
-                if (numOfHours > 4) {
-                    numOfHours -= 1;
-                    if (numOfHours == 11) {
+                if (sleepGoal > 4) {
+                    sleepGoal -= 1;
+                    if (sleepGoal == 11) {
                         plusButton.setVisibility(View.VISIBLE);
                     }
-                    numOfHoursTextView.setText(String.valueOf(numOfHours));
+                    numOfHoursTextView.setText(String.valueOf(sleepGoal));
 
                     //progress bar animation
-                    float progress = Float.parseFloat(String.valueOf(numOfHours)) * 1000;
+                    float progress = Float.parseFloat(String.valueOf(sleepGoal)) * 1000;
                     ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
                             progress + 1000,
                             progress);
@@ -269,7 +272,7 @@ public class SleepTimeActivity extends AppCompatActivity {
 
                     //update value
                     firestore.collection("users").document(theTempEmail).
-                            update("sleep_goal", String.valueOf(numOfHours));
+                            update("sleep_goal", String.valueOf(sleepGoal));
                 }
             }
         });
@@ -279,32 +282,6 @@ public class SleepTimeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                long tempHour = 0L, tempMin = 0L;
-                if (setTimeHour > wakeTimeHour) {
-                    if (setTimeMin > wakeTimeMin) {
-                        tempHour = (24 - setTimeHour + wakeTimeHour - 1);
-                        tempMin = (setTimeMin + wakeTimeMin);
-                    } else if (setTimeMin == wakeTimeMin) {
-                        tempHour = (24 - setTimeHour + wakeTimeHour);
-                        tempMin = 0;
-                    } else {
-                        tempHour = (24 - setTimeHour + wakeTimeHour);
-                        tempMin = (wakeTimeMin - setTimeMin);
-                    }
-                } else if (setTimeHour < wakeTimeHour) {
-                    if (setTimeMin > wakeTimeMin) {
-                        tempHour = (wakeTimeHour - setTimeHour - 1);
-                        tempMin = (60 - wakeTimeMin + setTimeMin);
-                    } else if (setTimeMin == wakeTimeMin) {
-                        tempHour = (wakeTimeHour - setTimeHour);
-                        tempMin = 0;
-                    } else {
-                        tempHour = (wakeTimeHour - setTimeHour);
-                        tempMin = (wakeTimeMin - setTimeMin);
-                    }
-                } else {
-                    Toast.makeText(SleepTimeActivity.this, "You should not sleep too much", Toast.LENGTH_SHORT).show();
-                }
 
                 //sleep Alert
 //                if (setTimeHour != wakeTimeHour) {
@@ -315,35 +292,46 @@ public class SleepTimeActivity extends AppCompatActivity {
 //                    PendingIntent pendingIntent = PendingIntent.getBroadcast(SleepTimeActivity.this, 1, intent, 0);
 //                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
-                    //update value
-                    firestore.collection("users").document(theTempEmail).
-                            update("time_to_sleep", String.valueOf(setTimeHour) + ":" + String.valueOf(setTimeMin));
-                    firestore.collection("users").document(theTempEmail).
-                            update("time_to_wake", String.valueOf(wakeTimeHour) + ":" + String.valueOf(wakeTimeMin));
+                //update value
+//                    firestore.collection("users").document(theTempEmail).
+//                            update("time_to_sleep", String.valueOf(setTimeHour) + ":" + String.valueOf(setTimeMin));
+//                    firestore.collection("users").document(theTempEmail).
+//                            update("time_to_wake", String.valueOf(wakeTimeHour) + ":" + String.valueOf(wakeTimeMin));
 
-                    docRef = firestore.collection("users").document(theTempEmail);
-                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document != null) {
-                                    String temp = document.getString("sleep_goal");
-                                    if (temp.equals("empty")) {
-                                        sleepTimeConstaint.setVisibility(View.INVISIBLE);
-                                        setUpSleepGoalConstraint.setVisibility(View.VISIBLE);
-                                        setUpGoal.bringToFront();
-                                        setupButton.bringToFront();
+                docRef = firestore.collection("users").document(theTempEmail);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null) {
+                                String temp = document.getString("sleep_goal");
+                                String timeToSleep = document.getString("time_to_sleep");
+                                if (temp.equals("empty")) {
+                                    setUpSleepGoalConstraint.setVisibility(View.VISIBLE);
+                                    setUpGoal.setVisibility(View.VISIBLE);
+                                    setupButton.setVisibility(View.VISIBLE);
+                                    setUpGoal.bringToFront();
+                                    setupButton.bringToFront();
+                                } else {
+                                    setUpSleepGoalConstraint.setVisibility(View.VISIBLE);
+                                    setUpGoal.setVisibility(View.GONE);
+                                    setupButton.setVisibility(View.GONE);
+                                    sleepGoal = Integer.parseInt(temp);
+
+                                    if (timeToSleep.equals("empty")) {
+                                        chooseTimeToSleepButton.setVisibility(View.VISIBLE);
                                     } else {
-                                        setUpSleepGoalConstraint.setVisibility(View.GONE);
-                                        sleepTimeConstaint.setVisibility(View.VISIBLE);
-                                        numOfHours = Integer.parseInt(temp);
+                                        sleepTimeLinear.setVisibility(View.VISIBLE);
+                                        wakeTimeLinear.setVisibility(View.VISIBLE);
+                                        recommendLabel.setVisibility(View.VISIBLE);
                                     }
                                 }
                             }
                         }
-                    });
-                    bottomSheetDialog.dismiss();
+                    }
+                });
+                bottomSheetDialog.dismiss();
             }
         });
 

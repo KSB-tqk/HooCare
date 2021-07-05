@@ -121,6 +121,21 @@
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/datetime_linear_sleep_time" />
+
+            <TextView
+                android:id="@+id/loading_title_sleep_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/loading"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/datetime_linear_sleep_time" />
@@ -137,10 +152,116 @@
                 android:text="@string/set_sleep_goal"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/setup_sleep_goal" />
+
+
+            <Button
+                android:id="@+id/choose_button_sleep_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_button_cancel_background"
+                android:fontFamily="@font/momcakebold"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/choose_time_to_sleep"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/setup_sleep_goal" />
+
+
+            <LinearLayout
+                android:id="@+id/sleep_time_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                app:layout_constraintRight_toRightOf="parent"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/datetime_linear_sleep_time"
+                app:layout_constraintLeft_toLeftOf="parent">
+                <TextView
+                    android:id="@+id/time_to_sleep_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sleep at: "
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/time_to_sleep"
+                    app:layout_constraintTop_toTopOf="@id/time_to_sleep"
+                    app:layout_constraintBottom_toBottomOf="@id/time_to_sleep"/>
+
+                <TextView
+                    android:id="@+id/time_to_sleep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_button_cancel_background"
+                    android:backgroundTint="@color/lime_200"
+                    android:padding="10dp"
+                    android:text="10:00"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                     />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/recommend_label_sleep_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Suggest time to wake up"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="#f2f2f2"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/sleep_time_linear"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <LinearLayout
+                android:id="@+id/wake_time_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                app:layout_constraintRight_toRightOf="@id/sleep_time_linear"
+                app:layout_constraintTop_toBottomOf="@id/recommend_label_sleep_time">
+                <TextView
+                    android:id="@+id/time_to_wake_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wake up at: "
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="10dp" />
+
+                <TextView
+                    android:id="@+id/time_to_wake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_button_cancel_background"
+                    android:backgroundTint="@color/lime_200"
+                    android:padding="10dp"
+                    android:text="10:00"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    />
+            </LinearLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

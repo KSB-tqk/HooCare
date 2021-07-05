@@ -51,7 +51,7 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 public class WaterActivity extends AppCompatActivity {
 
     private ArrayList<BarEntry> dataValue = new ArrayList<BarEntry>();
-    private int waterHadDrink = 0, numOfCup = 0, waterHaveToDrink = 0, i, waterDataPos;
+    private int waterHadDrink = 0, numOfCup = 8, waterHaveToDrink = 0, i, waterDataPos;
     private WaveView waveView;
     private ImageView backButton, moreButton, plusButton, minusButton, minusWaterButton;
     private AppCompatButton drinkWater;
@@ -165,6 +165,16 @@ public class WaterActivity extends AppCompatActivity {
                                                 for(int k = 0; k < realDrinkValue.size();k++){
                                                     dataValue.add(new BarEntry(k, Float.parseFloat(realDrinkValue.get(k))));
                                                     dayInWeek.add(daylist.get(k));
+                                                }
+
+                                                int allDayContain = dayInWeek.size();
+
+                                                if(allDayContain < 7){
+                                                    while(allDayContain < 7){
+                                                        dataValue.add(new BarEntry(allDayContain, 0));
+                                                        dayInWeek.add(daylist.get(allDayContain));
+                                                        allDayContain++;
+                                                    }
                                                 }
 
                                                 //initialize testadapter
