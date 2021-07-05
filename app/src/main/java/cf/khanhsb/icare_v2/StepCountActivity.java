@@ -125,8 +125,6 @@ public class StepCountActivity extends AppCompatActivity {
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
 
-        LocalDate yesterday = today.minusDays(i);
-
         firestore = FirebaseFirestore.getInstance();
 
         docRef = firestore.collection("users").document(theTempEmail);
@@ -149,7 +147,6 @@ public class StepCountActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         /*back button on the toolbar click event*/
         backtohomefrag_button.setOnClickListener(new View.OnClickListener() {
@@ -254,6 +251,7 @@ public class StepCountActivity extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document != null) {
                                 String temp = document.getString("steps");
+                              
                                 if (!"empty".equals(temp)) {
                                     double to_km = Double.parseDouble(temp);
                                     double to_cal = Double.parseDouble(temp);
