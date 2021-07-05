@@ -94,10 +94,11 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/time_picker"/>
+        app:layout_constraintTop_toBottomOf="@id/grey_blank_view_small"/>
 
     <ImageView
         android:id="@+id/minus_button_sleep_menu"
@@ -170,55 +171,55 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <TimePicker
-        android:id="@+id/time_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleX="0.6"
-        android:scaleY="0.6"
-        android:theme="@style/my_time_picker_style"
-        android:timePickerMode="spinner"
-        app:layout_constraintRight_toRightOf="@id/water_recommend_last_label"
-        app:layout_constraintTop_toBottomOf="@id/water_recommend_last_label"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+<!--    <TimePicker-->
+<!--        android:id="@+id/time_picker"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:scaleX="0.6"-->
+<!--        android:scaleY="0.6"-->
+<!--        android:theme="@style/my_time_picker_style"-->
+<!--        android:timePickerMode="spinner"-->
+<!--        app:layout_constraintRight_toRightOf="@id/water_recommend_last_label"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/water_recommend_last_label"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
 
-    <TimePicker
-        android:id="@+id/wake_time_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleX="0.6"
-        android:scaleY="0.6"
-        android:theme="@style/my_time_picker_style"
-        android:timePickerMode="spinner"
-        app:layout_constraintLeft_toLeftOf="@id/water_recommend_last_label"
-        app:layout_constraintTop_toBottomOf="@id/water_recommend_last_label"
-        app:layout_constraintRight_toRightOf="parent"/>
+<!--    <TimePicker-->
+<!--        android:id="@+id/wake_time_picker"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:scaleX="0.6"-->
+<!--        android:scaleY="0.6"-->
+<!--        android:theme="@style/my_time_picker_style"-->
+<!--        android:timePickerMode="spinner"-->
+<!--        app:layout_constraintLeft_toLeftOf="@id/water_recommend_last_label"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/water_recommend_last_label"-->
+<!--        app:layout_constraintRight_toRightOf="parent"/>-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bed_time"
-        android:padding="8dp"
-        android:textColor="@color/lime_100"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintLeft_toLeftOf="@id/time_picker"
-        app:layout_constraintRight_toRightOf="@id/time_picker"
-        app:layout_constraintTop_toBottomOf="@id/grey_blank_view_small"/>
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/bed_time"-->
+<!--        android:padding="8dp"-->
+<!--        android:textColor="@color/lime_100"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textSize="18sp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        app:layout_constraintLeft_toLeftOf="@id/time_picker"-->
+<!--        app:layout_constraintRight_toRightOf="@id/time_picker"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/grey_blank_view_small"/>-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wake_time"
-        android:padding="8dp"
-        android:textColor="@color/lime_100"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintLeft_toLeftOf="@id/wake_time_picker"
-        app:layout_constraintRight_toRightOf="@id/wake_time_picker"
-        app:layout_constraintTop_toBottomOf="@id/grey_blank_view_small"/>
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/wake_time"-->
+<!--        android:padding="8dp"-->
+<!--        android:textColor="@color/lime_100"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textSize="18sp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        app:layout_constraintLeft_toLeftOf="@id/wake_time_picker"-->
+<!--        app:layout_constraintRight_toRightOf="@id/wake_time_picker"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/grey_blank_view_small"/>-->
 
     <ImageView
         android:id="@+id/grey_blank_view_small"
