@@ -1,7 +1,10 @@
 package cf.khanhsb.icare_v2;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -33,7 +36,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
+import cf.khanhsb.icare_v2.Model.AlertReceiver;
 import cf.khanhsb.icare_v2.Model.ProgressBarAnimation;
 
 import static java.time.DayOfWeek.MONDAY;
@@ -44,13 +50,14 @@ public class SleepTimeActivity extends AppCompatActivity {
     private ImageView backButton, moreButton, plusButton, minusButton;
     private ConstraintLayout bottomSheetContainer, setUpSleepGoalConstraint;
     private ProgressBar progressBar;
-    private int sleepGoal = 8,sleepHour = 10,sleepMin = 30;
+    private int sleepGoal = 8, sleepHour = 10, sleepMin = 30;
     private FirebaseFirestore firestore;
     private static final String tempEmail = "tempEmail";
-    private TextView numOfHoursTextView, doneButton, setUpGoal, dateTextView, recommendLabel;
+    private TextView numOfHoursTextView, doneButton, setUpGoal, dateTextView, recommendLabel, loadingLabel, timeToSleep, timeToWake;
     private DocumentReference docRef;
     private Button setupButton, chooseTimeToSleepButton;
     private LinearLayout sleepTimeLinear, wakeTimeLinear;
+    private String theTempEmail;
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -70,6 +77,9 @@ public class SleepTimeActivity extends AppCompatActivity {
         recommendLabel = findViewById(R.id.recommend_label_sleep_time);
         sleepTimeLinear = findViewById(R.id.sleep_time_linear);
         wakeTimeLinear = findViewById(R.id.wake_time_linear);
+        loadingLabel = findViewById(R.id.loading_title_sleep_time);
+        timeToSleep = findViewById(R.id.time_to_sleep);
+        timeToWake = findViewById(R.id.time_to_wake);
 
         Intent intent = getIntent();
         String tempSleepTime = intent.getStringExtra("sleepTime");
@@ -81,10 +91,10 @@ public class SleepTimeActivity extends AppCompatActivity {
         String monthString = (String) DateFormat.format("MMM", calendar); // Jun
         String realDate = day + " " + monthString;
 
-        dateTextView.setText(realDate);
+        dateTextView.setText("Today, " + realDate);
 
         SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
-        String theTempEmail = sharedPreferences.getString("Email", "");
+        theTempEmail = sharedPreferences.getString("Email", "");
 
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
@@ -101,22 +111,30 @@ public class SleepTimeActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document != null) {
-                                String temp = document.getString("sleep_goal");
+                                String tempSleepGoal = document.getString("sleep_goal");
                                 String timeToSleep = document.getString("time_to_sleep");
-                                assert temp != null;
-                                if (temp.equals("empty")) {
+                                assert tempSleepGoal != null;
+                                if (tempSleepGoal.equals("empty")) {
                                     setUpSleepGoalConstraint.setVisibility(View.VISIBLE);
+                                    setUpGoal.setVisibility(View.VISIBLE);
+                                    setupButton.setVisibility(View.VISIBLE);
+                                    loadingLabel.setVisibility(View.GONE);
                                     setUpGoal.bringToFront();
                                     setupButton.bringToFront();
                                 } else {
                                     setUpSleepGoalConstraint.setVisibility(View.VISIBLE);
                                     setUpGoal.setVisibility(View.GONE);
                                     setupButton.setVisibility(View.GONE);
-                                    sleepGoal = Integer.parseInt(temp);
+                                    sleepGoal = Integer.parseInt(tempSleepGoal);
 
                                     if (timeToSleep.equals("empty")) {
                                         chooseTimeToSleepButton.setVisibility(View.VISIBLE);
                                     } else {
+                                        String[] splitString = timeToSleep.split(":");
+                                        sleepHour = Integer.parseInt(splitString[0]);
+                                        sleepMin = Integer.parseInt(splitString[1]);
+                                        SetUpSleepTime();
+
                                         sleepTimeLinear.setVisibility(View.VISIBLE);
                                         wakeTimeLinear.setVisibility(View.VISIBLE);
                                         recommendLabel.setVisibility(View.VISIBLE);
@@ -135,6 +153,20 @@ public class SleepTimeActivity extends AppCompatActivity {
 
         Thread setUpSleepTimeThread = new Thread(setUpSleepTimeRunnable);
         setUpSleepTimeThread.start();
+
+        Runnable setUpSleepNotificationRunnable = new Runnable() {
+            @Override
+            public void run() {
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.HOUR_OF_DAY, sleepHour);
+                c.set(Calendar.MINUTE, sleepMin);
+                c.set(Calendar.SECOND,0);
+
+                SetUpSleepNotification(c);
+            }
+        };
+        Thread setUpSleepNotiThread = new Thread(setUpSleepNotificationRunnable);
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,21 +202,80 @@ public class SleepTimeActivity extends AppCompatActivity {
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 sleepHour = hourOfDay;
                                 sleepMin = minute;
-
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(0,0,0,sleepHour,sleepMin);
-                                chooseTimeToSleepButton.setVisibility(View.GONE);
-                                sleepTimeLinear.setVisibility(View.VISIBLE);
-                                wakeTimeLinear.setVisibility(View.VISIBLE);
-                                recommendLabel.setVisibility(View.VISIBLE);
-
+                                SetUpSleepTime();
+                                setUpSleepNotiThread.start();
                             }
-                        },12,0,false
+                        }, 12, 0, true
                 );
-                timePickerDialog.updateTime(sleepHour,sleepMin);
+                timePickerDialog.updateTime(sleepHour, sleepMin);
                 timePickerDialog.show();
             }
         });
+
+        timeToSleep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        SleepTimeActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                sleepHour = hourOfDay;
+                                sleepMin = minute;
+                                SetUpSleepTime();
+                                setUpSleepNotiThread.start();
+                            }
+                        }, 12, 0, true
+                );
+                timePickerDialog.updateTime(sleepHour, sleepMin);
+                timePickerDialog.show();
+            }
+        });
+    }
+
+    private void SetUpSleepNotification(Calendar calendar) {
+        //sleep Alert
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(SleepTimeActivity.this, AlertReceiver.class);
+        intent.putExtra("time", String.valueOf(sleepGoal));
+        intent.putExtra("userEmail", theTempEmail);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(SleepTimeActivity.this, 1, intent, 0);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+    }
+
+    private void SetUpSleepTime() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(0, 0, 0, sleepHour, sleepMin);
+        chooseTimeToSleepButton.setVisibility(View.GONE);
+        sleepTimeLinear.setVisibility(View.VISIBLE);
+        wakeTimeLinear.setVisibility(View.VISIBLE);
+        recommendLabel.setVisibility(View.VISIBLE);
+        loadingLabel.setVisibility(View.GONE);
+        String tempSleepTime = String.valueOf(sleepHour) + ":" + String.valueOf(sleepMin);
+        timeToSleep.setText(tempSleepTime);
+
+        long timeInSecs = calendar.getTimeInMillis();
+        Date wakeUpTime = new Date(timeInSecs + ((sleepGoal * 60 + 14) * 60 * 1000));
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        df.setTimeZone(TimeZone.getDefault());
+        String formattedDate = df.format(wakeUpTime);
+
+        timeToWake.setText(formattedDate);
+
+        Runnable saveSleepTimeRunnable = new Runnable() {
+            @Override
+            public void run() {
+                firestore = FirebaseFirestore.getInstance();
+                firestore.collection("users")
+                        .document(theTempEmail)
+                        .update("time_to_sleep", tempSleepTime);
+            }
+        };
+
+        Thread backgroundThread = new Thread(saveSleepTimeRunnable);
+        backgroundThread.start();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -217,11 +308,11 @@ public class SleepTimeActivity extends AppCompatActivity {
 
         progressBar.setMax(12000);
         progressBar.setProgress(sleepGoal * 1000);
+        numOfHoursTextView.setText(String.valueOf(sleepGoal));
 
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sleepGoal = Integer.parseInt(numOfHoursTextView.getText().toString());
                 if (sleepGoal == 11) {
                     plusButton.setVisibility(View.GONE);
                 }
@@ -281,22 +372,9 @@ public class SleepTimeActivity extends AppCompatActivity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                //sleep Alert
-//                if (setTimeHour != wakeTimeHour) {
-//                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//                    Intent intent = new Intent(SleepTimeActivity.this, AlertReceiver.class);
-//                    intent.putExtra("time", String.valueOf(tempHour) + ":" + String.valueOf(tempMin));
-//                    intent.putExtra("userEmail", theTempEmail);
-//                    PendingIntent pendingIntent = PendingIntent.getBroadcast(SleepTimeActivity.this, 1, intent, 0);
-//                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
                 //update value
-//                    firestore.collection("users").document(theTempEmail).
-//                            update("time_to_sleep", String.valueOf(setTimeHour) + ":" + String.valueOf(setTimeMin));
-//                    firestore.collection("users").document(theTempEmail).
-//                            update("time_to_wake", String.valueOf(wakeTimeHour) + ":" + String.valueOf(wakeTimeMin));
+                firestore.collection("users").document(theTempEmail).
+                        update("sleep_goal", String.valueOf(sleepGoal));
 
                 docRef = firestore.collection("users").document(theTempEmail);
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -311,6 +389,7 @@ public class SleepTimeActivity extends AppCompatActivity {
                                     setUpSleepGoalConstraint.setVisibility(View.VISIBLE);
                                     setUpGoal.setVisibility(View.VISIBLE);
                                     setupButton.setVisibility(View.VISIBLE);
+                                    loadingLabel.setVisibility(View.GONE);
                                     setUpGoal.bringToFront();
                                     setupButton.bringToFront();
                                 } else {
@@ -322,6 +401,11 @@ public class SleepTimeActivity extends AppCompatActivity {
                                     if (timeToSleep.equals("empty")) {
                                         chooseTimeToSleepButton.setVisibility(View.VISIBLE);
                                     } else {
+                                        String[] splitString = timeToSleep.split(":");
+                                        sleepHour = Integer.parseInt(splitString[0]);
+                                        sleepMin = Integer.parseInt(splitString[1]);
+                                        SetUpSleepTime();
+
                                         sleepTimeLinear.setVisibility(View.VISIBLE);
                                         wakeTimeLinear.setVisibility(View.VISIBLE);
                                         recommendLabel.setVisibility(View.VISIBLE);
