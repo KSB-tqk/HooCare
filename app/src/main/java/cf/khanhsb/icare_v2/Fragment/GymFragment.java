@@ -63,12 +63,26 @@ public class GymFragment extends Fragment {
             "Leg - Advanced",
             "Shoulder & Back - Advanced"};
     private String[] gymListTime = {"15 min", "6 min", "16 min", "21 min", "14 min"};
+    private String[] gymListTimeIntermediate = {"27 min", "15 min", "24 min", "29 min", "19 min"};
+    private String[] gymListTimeAdvance = {"30 min", "19 min", "27 min", "41 min", "21 min"};
     private String[] focusBodyPart = {"Abs","Chest","Arm","Leg","Shoulder & Back"};
     private int[] gymListImage = {R.drawable.abs_workout_image,
             R.drawable.chest_workout_image,
             R.drawable.arm_workout_image,
-            R.drawable.leg_workout_image,
+            R.drawable.leg_workout_beginner_image,
+            R.drawable.shoulder_workout_beginner_image};
+
+    private int[] gymListImageIntermediate = {R.drawable.abs_workout_intermediate_image,
+            R.drawable.chest_workout_intermediate_image,
+            R.drawable.arm_workout_intermediate_image,
+            R.drawable.leg_workout_intermediate_image,
             R.drawable.shoulder_workout_image};
+
+    private int[] gymListImageAdvance = {R.drawable.abs_workout_advance_image,
+            R.drawable.chest_workout_advance_image,
+            R.drawable.arm_workout_advance_image,
+            R.drawable.leg_workout_image,
+            R.drawable.shoulder_workout_advance_image};
     /**
      * Gym listview
      */
@@ -184,17 +198,17 @@ public class GymFragment extends Fragment {
         listView_intermediate = (NonScrollListView) rootView.findViewById(R.id.classic_workout_listview_intermediate);
         GymListViewAdapter listViewAdapter_intermediate = new GymListViewAdapter(getActivity(),
                 R.layout.item_workout_list,
-                gymListImage,
+                gymListImageIntermediate,
                 gymListTitleIntermediate,
-                gymListTime);
+                gymListTimeIntermediate);
         listView_intermediate.setAdapter(listViewAdapter_intermediate);
         listView_intermediate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), List_Data_Activity.class);
                 intent.putExtra("workoutTitle", gymListTitleIntermediate[position]);
-                intent.putExtra("workoutImage", gymListImage[position]);
-                intent.putExtra("workoutTime",gymListTime[position]);
+                intent.putExtra("workoutImage", gymListImageIntermediate[position]);
+                intent.putExtra("workoutTime",gymListTimeIntermediate[position]);
                 intent.putExtra("focusBodyPart",focusBodyPart[position]);
                 startActivity(intent);
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
@@ -204,17 +218,17 @@ public class GymFragment extends Fragment {
         listView_advanced = (NonScrollListView) rootView.findViewById(R.id.classic_workout_listview_advanced);
         GymListViewAdapter listViewAdapter_advanced = new GymListViewAdapter(getActivity(),
                 R.layout.item_workout_list,
-                gymListImage,
+                gymListImageAdvance,
                 gymListTitleAdvanced,
-                gymListTime);
+                gymListTimeAdvance);
         listView_advanced.setAdapter(listViewAdapter_advanced);
         listView_advanced.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), List_Data_Activity.class);
                 intent.putExtra("workoutTitle", gymListTitleAdvanced[position]);
-                intent.putExtra("workoutImage", gymListImage[position]);
-                intent.putExtra("workoutTime",gymListTime[position]);
+                intent.putExtra("workoutImage", gymListImageAdvance[position]);
+                intent.putExtra("workoutTime",gymListTimeAdvance[position]);
                 intent.putExtra("focusBodyPart",focusBodyPart[position]);
                 startActivity(intent);
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
