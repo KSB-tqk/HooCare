@@ -95,7 +95,7 @@ public class UsageStatisticActivity extends AppCompatActivity {
         super.onResume();
         long end_time = System.currentTimeMillis();
 
-        LocalTime now = LocalTime.now();
+        LocalTime now = LocalTime.now();    
         long start_time = now.getHour() * 1000 * 60 * 60 + now.getMinute() * 1000 * 60 + now.getSecond() * 1000;
 
         SharedPreferences sharedPreferences = getSharedPreferences(allowUsageAccess, MODE_PRIVATE);
@@ -107,20 +107,19 @@ public class UsageStatisticActivity extends AppCompatActivity {
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
 
+        setUpWeekData(monday, today);
+        noData.setVisibility(View.GONE);
+
         if (!allowUsage.equals("")) {
             setUpTimeUsageLinear.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
             totalTimeUsageCardView.setVisibility(View.VISIBLE);
 
-            setUpWeekData(monday, today);
-            noData.setVisibility(View.GONE);
+
         } else {
             setUpTimeUsageLinear.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
             totalTimeUsageCardView.setVisibility(View.INVISIBLE);
-
-            noData.setVisibility(View.VISIBLE);
-            verticalViewPager2.setVisibility(View.GONE);
         }
 
     }
@@ -168,8 +167,6 @@ public class UsageStatisticActivity extends AppCompatActivity {
             listView.setVisibility(View.GONE);
             totalTimeUsageCardView.setVisibility(View.INVISIBLE);
 
-            noData.setVisibility(View.VISIBLE);
-            verticalViewPager2.setVisibility(View.GONE);
         }
 
         mOpenUsageSettingButton.setOnClickListener(new View.OnClickListener() {
