@@ -250,6 +250,9 @@ public class SleepTimeActivity extends AppCompatActivity {
         timeToSleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String splitString[] = timeToSleep.getText().toString().split(":");
+                String oldHour = splitString[0];
+                String oldMin = splitString[1];
                 TimePickerDialog timePickerDialog = new TimePickerDialog(
                         SleepTimeActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
@@ -258,7 +261,14 @@ public class SleepTimeActivity extends AppCompatActivity {
                                 sleepHour = hourOfDay;
                                 sleepMin = minute;
                                 SetUpSleepTime();
-                                setUpSleepNotiThread.start();
+                                if (setUpSleepNotiThread.getState() == Thread.State.NEW)
+                                {
+                                    setUpSleepNotiThread.start();
+                                }
+                                else {
+                                    Toast.makeText(SleepTimeActivity.this, "Please wait a min and try again", Toast.LENGTH_SHORT).show();
+                                    timeToSleep.setText(oldHour+":"+oldMin);
+                                }
                             }
                         }, 12, 0, true
                 );
@@ -386,7 +396,17 @@ public class SleepTimeActivity extends AppCompatActivity {
         wakeTimeLinear.setVisibility(View.VISIBLE);
         recommendLabel.setVisibility(View.VISIBLE);
         loadingLabel.setVisibility(View.GONE);
-        String tempSleepTime = String.valueOf(sleepHour) + ":" + String.valueOf(sleepMin);
+
+        String tempSleepMin = "";
+        if(sleepMin == 0) {
+            tempSleepMin = "00";
+        } else if(sleepMin < 10 && sleepMin> 0){
+            tempSleepMin = "0" + String.valueOf(sleepMin);
+        } else {
+            tempSleepMin = String.valueOf(sleepMin);
+        }
+
+        String tempSleepTime = String.valueOf(sleepHour) + ":" + tempSleepMin;
         timeToSleep.setText(tempSleepTime);
 
         long timeInSecs = calendar.getTimeInMillis();
