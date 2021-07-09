@@ -1,4 +1,4 @@
-# HooCare [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue)](https://github.com/AlexMachin1997/Shopping-List-Assistant-With-Expo/README.md) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/AlexMachin1997/Shopping-List-Assistant-With-Expo/pulls) [![style: styled-components](https://img.shields.io/badge/style-%F0%9F%92%85%20styled--components-orange.svg?colorB=daa357&colorA=db748e)](https://github.com/styled-components/styled-components)
+# HooCare [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue)](https://github.com/KSB-tqk/HooCare/blob/master/LICENSE) 
 
 This repository contains code for the HooCare project
 
