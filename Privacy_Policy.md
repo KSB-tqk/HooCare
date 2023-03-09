@@ -2,8 +2,6 @@ Privacy Policy
 
 # HooCare [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue)](https://github.com/KSB-tqk/HooCare/blob/master/LICENSE) 
 
-This repository contains code for the HooCare project
-
 <center>
 <img src="app/src/main/res/mipmap-hdpi/ic_launcher.png"/>
 </center>
