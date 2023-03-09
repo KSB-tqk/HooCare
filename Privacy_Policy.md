@@ -1,6 +1,12 @@
-Privacy Policy for HooCare - FreePrivacyPolicy.com             window.dataLayer = window.dataLayer || \[\]; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-QSMNQ8CKJG');
+Privacy Policy
 
-Privacy Policy for HooCare
+# HooCare [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue)](https://github.com/KSB-tqk/HooCare/blob/master/LICENSE) 
+
+This repository contains code for the HooCare project
+
+<center>
+<img src="app/src/main/res/mipmap-hdpi/ic_launcher.png"/>
+</center>
 
 Privacy Policy
 ==============
