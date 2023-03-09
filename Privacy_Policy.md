@@ -84,8 +84,6 @@ The Company allows You to create an account and log in to use the Service throug
 
 *   Google
 *   Facebook
-*   Twitter
-*   LinkedIn
 
 If You decide to register through or otherwise grant us access to a Third-Party Social Media Service, We may collect Personal data that is already associated with Your Third-Party Social Media Service's account, such as Your name, Your email address, Your activities or Your contact list associated with that account.
 
@@ -203,6 +201,4 @@ Contact Us
 
 If you have any questions about this Privacy Policy, You can contact us:
 
-*   By email: [\[email protected\]](/cdn-cgi/l/email-protection)
-
-const tabLinks = Array.from(document.querySelectorAll(".tab-link")); const tabContents = document.querySelectorAll(".tab-content"); tabLinks.forEach(function(tabLink) { tabLink.addEventListener("click", toggleTab); }); let priorActiveTab = null; function toggleTab(event) { tabLinks.forEach(function(tabLink, index){ tabLink.classList.remove("active"); tabLink.classList.add("inactive"); tabContents\[index\].classList.remove("visible"); tabContents\[index\].classList.add("hidden"); }); if(priorActiveTab === this) { this.classList.remove("active"); this.classList.add("inactive"); tabContents\[tabLinks.indexOf(this)\].classList.remove("visible"); tabContents\[tabLinks.indexOf(this)\].classList.add("hidden"); priorActiveTab = null; } else { this.classList.remove("inactive"); this.classList.add("active"); tabContents\[tabLinks.indexOf(this)\].classList.remove("hidden"); tabContents\[tabLinks.indexOf(this)\].classList.add("visible"); priorActiveTab = this; } if (priorActiveTab === null) { this.classList.remove("inactive"); this.classList.add("active"); tabContents\[tabLinks.indexOf(this)\].classList.remove("hidden"); tabContents\[tabLinks.indexOf(this)\].classList.add("visible"); } event.preventDefault(); } "use strict"; window.LCG\_TRACKING\_APPLICATION = "freeprivacypolicy-livelink"; window.LCG\_TRACKING\_ENVIRONMENT = "production"; window.LCG\_TRACKING\_EPOCH = "2020-e01"; ![](/track/v1/px)
+*   By email: [hoocare.contact@gmail.com](hoocare.contact@gmail.com)
