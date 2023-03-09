@@ -2,7 +2,7 @@
 <img src="app/src/main/res/mipmap-hdpi/ic_launcher.png"/>
 </center>
 
-Privacy Policy HooCare
+HooCare Privacy Policy
 ==============
 
 Last updated: March 09, 2023
