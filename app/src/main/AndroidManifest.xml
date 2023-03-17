@@ -8,6 +8,8 @@
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS"/>
 
     <application
         android:allowBackup="true"
@@ -17,16 +19,23 @@
         android:screenOrientation="sensorPortrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.ICare_v2">
-        <activity android:name=".CompleteUserInfoActivity"></activity>
-        <activity android:name=".WorkoutHistoryActivity" />
-        <activity android:name=".WorkoutActivity" />
+        <activity android:name=".CompleteUserInfoActivity"
+            android:exported="true"/>
+        <activity android:name=".WorkoutHistoryActivity"
+            android:exported="true"/>
+        <activity android:name=".WorkoutActivity"
+            android:exported="true"/>
 
         <receiver android:name=".Model.AlertReceiver" />
 
-        <activity android:name=".SleepTimeActivity" />
-        <activity android:name=".UsageStatisticActivity" />
-        <activity android:name=".SplashScreenActivity2" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".SleepTimeActivity"
+            android:exported="true"/>
+        <activity android:name=".UsageStatisticActivity"
+            android:exported="true"/>
+        <activity android:name=".SplashScreenActivity2"
+            android:exported="true"/>
+        <activity android:name=".SplashScreenActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,6 +48,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
+            android:exported="true"
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
@@ -54,14 +64,22 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".List_Data_Activity" />
-        <activity android:name=".ResetPWActivity" />
-        <activity android:name=".StepCountActivity" />
-        <activity android:name=".SigninActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".OnBoardActivity" />
-        <activity android:name=".WaterActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".List_Data_Activity"
+            android:exported="true"/>
+        <activity android:name=".ResetPWActivity"
+            android:exported="true"/>
+        <activity android:name=".StepCountActivity"
+            android:exported="true"/>
+        <activity android:name=".SigninActivity"
+            android:exported="true"/>
+        <activity android:name=".SignupActivity"
+            android:exported="true"/>
+        <activity android:name=".OnBoardActivity"
+            android:exported="true"/>
+        <activity android:name=".WaterActivity"
+            android:exported="true"/>
+        <activity android:name=".MainActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

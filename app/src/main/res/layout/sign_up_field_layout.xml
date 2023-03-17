@@ -22,7 +22,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fullname_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/CustomTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_labelsignup"
@@ -30,6 +30,7 @@
             android:hint="Full Name">
 
             <com.google.android.material.textfield.TextInputEditText
+                style="@style/CustomTextInputEditText"
                 android:id="@+id/et_fullname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -38,7 +39,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/username_input"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/CustomTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/fullname_input_layout"
@@ -46,6 +47,7 @@
             android:hint="Username">
 
             <com.google.android.material.textfield.TextInputEditText
+                style="@style/CustomTextInputEditText"
                 android:id="@+id/et_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -53,7 +55,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/email_input_layout_signup"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/CustomTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/username_input"
@@ -61,6 +63,7 @@
             android:hint="Email">
 
             <com.google.android.material.textfield.TextInputEditText
+                style="@style/CustomTextInputEditText"
                 android:id="@+id/et_email_signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -68,7 +71,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/password_input_layout_signup"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/CustomTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/email_input_layout_signup"
@@ -77,6 +80,7 @@
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
+                style="@style/CustomTextInputEditText"
                 android:id="@+id/et_password_signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,10 +95,10 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:background="@drawable/nav_menu_item_background"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:paddingStart="20dp"
+            android:paddingTop="10dp"
             android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
             android:text="Select your date of birth"
             android:textColor="@color/black"
             android:textSize="20sp" />
@@ -119,11 +123,11 @@
                 android:id="@+id/date_of_birth_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date of Birth"
                 android:layout_marginTop="10dp"
+                android:text="Date of Birth"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/male_checkbox"
-                app:layout_constraintLeft_toLeftOf="parent" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/male_checkbox" />
 
             <CheckBox
                 android:id="@+id/male_checkbox"

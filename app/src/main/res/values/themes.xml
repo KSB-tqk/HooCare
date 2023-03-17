@@ -66,4 +66,11 @@
     <style name="my_time_picker_style">
         <item name="android:textSize">30sp</item>
     </style>
+
+    <style name="CustomTextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    </style>
+
+    <style name="CustomTextInputEditText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

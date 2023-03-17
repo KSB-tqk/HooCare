@@ -1,16 +1,81 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ICare_v2" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.ICare_v2" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/lime_200</item>
+        <item name="colorPrimaryVariant">@color/lime_100</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/lime_100</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="shapeAppearanceMediumComponent">
+            @style/ShapeAppearance.HooCare.MediumComponent.Rounded
+        </item>
+        <item name="fab_addButtonColorNormal">@style/MyFabStyle</item>
+    </style>
+
+    <style name="GoogleButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">#F42A2A</item>
+        <item name="rippleColor">@color/black</item>
+    </style>
+
+    <style name="MyFabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/lime_200</item>
+        <item name="rippleColor">@color/black</item>
+    </style>
+
+    <style name="ShapeAppearance.HooCare.MediumComponent.Rounded" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeTopRight">45dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="behavior_peekHeight">700dp</item>
+    </style>
+
+    <style name="buttonView" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/button_bg_white</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="CustomTextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/black</item>
+        <item name="colorAccent">@color/lime_100</item>
+        <item name="boxStrokeColor">@color/lime_200</item>
+        <item name="boxStrokeWidth">1dp</item>
+    </style>
+
+    <style name="CustomTextInputEditText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="CustomButtonThemeOverlay">
+        <item name="colorPrimary">#ED3C3C</item>
+    </style>
+
+    <style name="buttonView1" parent="Widget.MaterialComponents.Button">
+        <item name="materialThemeOverlay">@style/CustomButtonThemeOverlay1</item>
+    </style>
+
+    <style name="CustomButtonThemeOverlay1">
+        <item name="colorPrimary">@color/facebookcolor</item>
+    </style>
+
+    <style name="my_time_picker_style">
+        <item name="android:textSize">30sp</item>
     </style>
 </resources>
